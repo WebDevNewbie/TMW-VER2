@@ -1,6 +1,69 @@
-angular.module('starter.services', [])
+var app = angular.module('tradeapp.services', [])
+app.factory('Auth', ['$http','$rootScope', 
+			 function($http,  $rootScope)
+{
+	// $rootScope.baseURL   = 'http://tradeapp.com';
+	 $rootScope.baseURL   = 'http://localhost/tradeappbackend/public_html';
 
-.factory('Chats', function() {
+
+	$rootScope._remove_white_space = function (str)
+	  {
+		var string = str;
+		var _no_space = string.replace(/ /g,'');
+		return _no_space;
+	  }
+
+	$rootScope.inputLength = function (name) 
+	{
+      if(name=="") { return false; }
+      if(!isNaN(name)) { return false; }
+      if((name.length < 6) || (name.length > 40)) { return false; }
+      return true;
+    }
+	$rootScope.allLetters = function (name) 
+	{
+      if(name=="") { return false; }
+      if((name.length < 3) || (name.length > 250)) { return false; }
+      return true;
+    }
+	$rootScope.isNumber = function (n) 
+	{
+		return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+	
+	$rootScope.isLogged  = false;
+	$rootScope.show_item  = 0;
+    var fac              = {};
+	fac.STORE_DATA = function(database,data)
+	{
+		localStorage.setItem(database,JSON.stringify(data));
+	}
+
+	fac.FETCH_DATA = function(name)
+	{
+		var checker = localStorage.getItem(name);
+		return checker ? JSON.parse(checker) : false;
+	}
+
+	fac.REQUEST = function(obj)
+	{ 
+		var http = $http(
+			                {
+			                    method            : obj.method,
+			                    url               : obj.url,
+			                    data              : obj.data,
+			                    params            : obj.params,
+			                    transformRequest  : angular.identity,
+			                    headers           : { 'Content-Type':undefined }
+			                }
+	                    );
+		return http;
+	}	
+
+	return fac;
+}]);
+
+/*.factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 
   // Some fake testing data
@@ -48,3 +111,4 @@ angular.module('starter.services', [])
     }
   };
 });
+*/
