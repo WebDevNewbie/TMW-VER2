@@ -1,6 +1,76 @@
 angular.module('tradeapp.controllers', [])
 
-.controller('RegisterCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {})
+.controller('RegisterCtrl',['$scope','$window','$ionicActionSheet','$ionicModal','$rootScope','$ionicPlatform','$ionicHistory','$ionicLoading','$ionicPopup','Auth',
+                     function($scope, $window, $ionicActionSheet, $ionicModal, $rootScope,  $ionicPlatform,  $ionicHistory,  $ionicLoading, $ionicPopup, Auth)  {
+	$scope.user = [];
+	$scope.uname = [];
+	$scope.pass = [];
+	$scope.cpass = [];
+	$scope.notEqual = [];
+	$scope.clean_uname = "";
+	
+	$scope.uname.error = false;
+	$scope.pass.error = false;
+	$scope.cpass.error = false;
+	$scope.notEqual.error = false;
+	
+	$scope.register = function (){
+		console.log(document.getElementById('user_role').value);
+		var validInput = $scope.VALIDATE_REGISTER_INPUT();
+		if(validInput){
+			if($scope.user.pass == $scope.user.cpass){
+				//$scope.ADD_TO_SERVER();
+				console.log("add to server");
+				$scope.notEqual.error = false;
+			}
+			else{
+				console.log("not added to server");
+				console.log("Password did not match.");
+				$scope.notEqual.error = true;
+				$scope.notEqual.desc = "Password did not match.";
+			}
+		}
+	}
+	$scope.VALIDATE_REGISTER_INPUT = function ()
+	  {
+		var ret = true;
+		$scope.clean_uname = $rootScope._remove_white_space($scope.user.uname);
+		$scope.clean_userPass = $rootScope._remove_white_space($scope.user.pass);
+		$scope.clean_userConfirmPass = $rootScope._remove_white_space($scope.user.cpass);
+		var return_bol = true;
+		
+		if(!$rootScope.inputLength($scope.clean_uname))
+		{
+		  $scope.uname.error = true;
+		  $scope.uname.desc = "Atleast 6 and maximum of 40 alphanumeric characters.";
+		  ret = false;
+		} else {
+		  $scope.uname.error = false;
+		}
+		
+		if (!$rootScope.inputLength($scope.user.pass))
+		{
+		  $scope.pass.error = true;
+		  $scope.pass.desc = "Atleast 6 and maximum of 40 alphanumeric characters.";
+		  ret = false;
+		}else {
+		  $scope.pass.error = false;
+		}
+		
+		if (!$rootScope.inputLength($scope.user.cpass))
+		{
+		  $scope.cpass.error = true;
+		  $scope.cpass.desc = "Atleast 6 and maximum of 40 alphanumeric characters.";
+		  ret = false;
+		}else {
+		  $scope.cpass.error = false;
+		}
+
+	 
+		return ret;
+
+	  }
+}])
 .controller('DashCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {})
 .controller('LoginCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 	console.log($rootScope.baseURL);

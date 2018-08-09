@@ -7,36 +7,52 @@
 		<div class="list list-inset">
 			<h4>Log In Credentials</h4>
 		  <label class="item item-input">
-			<input type="text" placeholder="Username">
+			<input type="text" placeholder="Username" ng-model="user.uname">
 		  </label>
+			<span ng-show="uname.error" class="h6 assertive">{{ uname.desc}}</span> 
 		  <label class="item item-input">
-			<input type="password" placeholder="Password">
+			<input type="password" placeholder="Password" ng-model="user.pass">
 		  </label>
+		  <span ng-show="pass.error" class="h6 assertive">{{ pass.desc}}</span> 
 		  <label class="item item-input">
-			<input type="password" placeholder="Confirm Password">
+			<input type="password" placeholder="Confirm Password" ng-model="user.cpass">
+		  </label>
+		  <span ng-show="cpass.error" class="h6 assertive">{{ cpass.desc}}</span> 
+		  <span ng-show="notEqual.error" class="h6 assertive">{{ notEqual.desc}}</span> 
+		   <label class="item item-input item-select">
+			<div class="input-label">
+			  Member Package
+			</div>
+			<select id="user_role">
+			  <option value="1" selected>Free</option>
+			  <option value="2" >Gold</option>
+			  <option value="3">Diamond</option>
+			</select>
 		  </label>
 		</div>
+		
 		<div class="list list-inset">
 			<h4>Personal Info</h4>
 		  <label class="item item-input">
-			<input type="text" placeholder="First Name">
+			<input type="text" placeholder="First Name" ng-model="user.fname">
 		  </label>
 		  <label class="item item-input">
-			<input type="text" placeholder="Last Name">
+			<input type="text" placeholder="Last Name" ng-model="user.lname">
 		  </label>
 		  <label class="item item-input">
-			<input type="text" placeholder="Age">
+			<input type="text" placeholder="Age" ng-model="user.age">
 		  </label>
 		  <label class="item item-input">
-			<input type="text" placeholder="Birthday">
+			<input type="date" placeholder="Birthday" ng-model="user.bday">
 		  </label>
 		  <label class="item item-input">
-			<input type="text" placeholder="Address">
+			<input type="text" placeholder="Address" ng-model="user.address">
 		  </label>
 		</div>
 		<div class="list list-inset">
-			<button type="submit" class="button button-block button-positive">Sign Up</button>
+			<button ng-click="register()" type="submit" class="button button-block button-positive">Sign Up</button>
 		</div>
 	</div>
+	
 	</ion-content>
 </ion-view>
