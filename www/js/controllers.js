@@ -9,6 +9,12 @@ angular.module('tradeapp.controllers', [])
 	$scope.notEqual = [];
 	$scope.clean_uname = "";
 	
+	$scope.user.fname_error = false;
+	$scope.user.lname_error = false;
+	$scope.user.age_error = false;
+	$scope.user.bday_error = false;
+	$scope.user.address_error = false;
+	
 	$scope.uname.error = false;
 	$scope.pass.error = false;
 	$scope.cpass.error = false;
@@ -34,6 +40,12 @@ angular.module('tradeapp.controllers', [])
 	$scope.VALIDATE_REGISTER_INPUT = function ()
 	  {
 		var ret = true;
+		$scope.clean_fname = $rootScope._remove_white_space($scope.user.fname);
+		$scope.clean_lname = $rootScope._remove_white_space($scope.user.lname);
+		$scope.clean_age = $rootScope._remove_white_space($scope.user.age);
+		$scope.clean_bday = $rootScope._remove_white_space($scope.user.bday);
+		$scope.clean_address = $rootScope._remove_white_space($scope.user.address);
+		
 		$scope.clean_uname = $rootScope._remove_white_space($scope.user.uname);
 		$scope.clean_userPass = $rootScope._remove_white_space($scope.user.pass);
 		$scope.clean_userConfirmPass = $rootScope._remove_white_space($scope.user.cpass);

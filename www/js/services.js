@@ -20,6 +20,11 @@ app.factory('Auth', ['$http','$rootScope',
       if((name.length < 6) || (name.length > 40)) { return false; }
       return true;
     }
+	$rootScope.inputBlank = function (name) 
+	{
+      if(name=="") { return false; }
+      return true;
+    }
 	$rootScope.allLetters = function (name) 
 	{
       if(name=="") { return false; }
