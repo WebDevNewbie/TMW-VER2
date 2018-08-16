@@ -20,6 +20,14 @@ app.factory('Auth', ['$http','$rootScope',
       if((name.length < 6) || (name.length > 40)) { return false; }
       return true;
     }
+	$rootScope.checkInput = function (name) 
+	{
+      for(var i = 0; i < name.length; i++){
+		 
+		  if(name[i] == undefined || name[i] == ""){return false;}
+		  else{return true;}
+	  }
+    }
 	$rootScope.inputBlank = function (name) 
 	{
       if(name=="") { return false; }

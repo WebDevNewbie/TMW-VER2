@@ -21,35 +21,88 @@ angular.module('tradeapp.controllers', [])
 	$scope.notEqual.error = false;
 	
 	$scope.register = function (){
-		console.log(document.getElementById('user_role').value);
-		var validInput = $scope.VALIDATE_REGISTER_INPUT();
-		if(validInput){
-			if($scope.user.pass == $scope.user.cpass){
+		//console.log(document.getElementById('user_role').value);
+			var validInput = $scope.VALIDATE_REGISTER_INPUT();
+			if(validInput){
+				
 				//$scope.ADD_TO_SERVER();
 				console.log("add to server");
-				$scope.notEqual.error = false;
+
 			}
-			else{
-				console.log("not added to server");
-				console.log("Password did not match.");
-				$scope.notEqual.error = true;
-				$scope.notEqual.desc = "Password did not match.";
-			}
-		}
+
+		
 	}
 	$scope.VALIDATE_REGISTER_INPUT = function ()
 	  {
+		if($scope.user.uname == undefined) $scope.user.uname="";  
+		if($scope.user.pass == undefined) $scope.user.pass="";  
+		if($scope.user.cpass == undefined) $scope.user.cpass="";  
+		if($scope.user.fname == undefined) $scope.user.fname="";  
+		if($scope.user.lname == undefined) $scope.user.lname="";  
+		if($scope.user.age == undefined) $scope.user.age="";  
+		if($scope.user.bday == undefined) $scope.user.bday="";  
+		if($scope.user.address == undefined) $scope.user.address=""; 
+		if($scope.user.pass != $scope.user.cpass){
+			$scope.notEqual.error = true;
+			$scope.notEqual.desc = "Password did not match.";
+		}else{$scope.notEqual.error = false;}
 		var ret = true;
 		$scope.clean_fname = $rootScope._remove_white_space($scope.user.fname);
 		$scope.clean_lname = $rootScope._remove_white_space($scope.user.lname);
 		$scope.clean_age = $rootScope._remove_white_space($scope.user.age);
-		$scope.clean_bday = $rootScope._remove_white_space($scope.user.bday);
+		
 		$scope.clean_address = $rootScope._remove_white_space($scope.user.address);
 		
 		$scope.clean_uname = $rootScope._remove_white_space($scope.user.uname);
 		$scope.clean_userPass = $rootScope._remove_white_space($scope.user.pass);
 		$scope.clean_userConfirmPass = $rootScope._remove_white_space($scope.user.cpass);
 		var return_bol = true;
+		
+		if(!$rootScope.inputBlank($scope.clean_fname))
+		{
+		  $scope.user.fname_error = true;
+		  $scope.user.fname_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.fname_error = false;
+		}
+		if(!$rootScope.inputBlank($scope.clean_lname))
+		{
+		  $scope.user.lname_error = true;
+		  $scope.user.lname_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.lname_error = false;
+		}
+		if(!$rootScope.inputBlank($scope.clean_age))
+		{
+		  $scope.user.age_error = true;
+		  $scope.user.age_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+			if(!$rootScope.isNumber($scope.clean_age)){
+				$scope.user.age_error = true;
+				$scope.user.age_desc = "Please input a number.";
+			}else{
+				$scope.user.age_error = false;
+			}
+		}
+		if(!$rootScope.inputBlank($scope.user.bday))
+		{
+		  $scope.user.bday_error = true;
+		  $scope.user.bday_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.bday_error = false;
+		}
+		if(!$rootScope.inputBlank($scope.clean_address))
+		{
+		  $scope.user.address_error = true;
+		  $scope.user.address_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.address_error = false;
+		}
 		
 		if(!$rootScope.inputLength($scope.clean_uname))
 		{
