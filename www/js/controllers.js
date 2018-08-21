@@ -50,18 +50,18 @@ angular.module('tradeapp.controllers', [])
             ); 
 	}
 	$scope.register = function (){
-		var tDate = new Date($scope.user.bday);
-		var monD = tDate.getMonth() + 1;
-		var todD = tDate.getDate();
-		if(monD < 10){ monD = "0"+monD }
-		if(todD < 10){ todD = "0"+todD }
-		var newDate = tDate.getFullYear()+"-"+monD+"-"+todD;
-		$scope.user.pack = document.getElementById('user_role').value;
-		$scope.user.bday = newDate;
 		
 		var validInput = $scope.VALIDATE_REGISTER_INPUT();
 		if(validInput){
-			
+			var tDate = new Date($scope.user.bday);
+			var monD = tDate.getMonth() + 1;
+			var todD = tDate.getDate();
+			if(monD < 10){ monD = "0"+monD }
+			if(todD < 10){ todD = "0"+todD }
+			var newDate = tDate.getFullYear()+"-"+monD+"-"+todD;
+			$scope.user.pack = document.getElementById('user_role').value;
+			$scope.user.bday = newDate;
+		
 			$scope.ADD_TO_SERVER();
 			console.log("add to server");
 
@@ -72,6 +72,7 @@ angular.module('tradeapp.controllers', [])
 	}
 	$scope.VALIDATE_REGISTER_INPUT = function ()
 	  {
+		
 		if($scope.user.uname == undefined) $scope.user.uname="";  
 		if($scope.user.pass == undefined) $scope.user.pass="";  
 		if($scope.user.cpass == undefined) $scope.user.cpass="";  
