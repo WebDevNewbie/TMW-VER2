@@ -3,8 +3,7 @@ app.factory('Auth', ['$http','$rootScope',
 			 function($http,  $rootScope)
 {
 	// $rootScope.baseURL   = 'http://tradeapp.com';
-	 $rootScope.baseURL   = 'http://localhost/tradeappbackend/public_html';
-
+	 $rootScope.baseURL   = '/host';
 
 	$rootScope._remove_white_space = function (str)
 	  {

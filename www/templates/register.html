@@ -7,7 +7,7 @@
 		<div class="list list-inset">
 			<h4>Log In Credentials</h4>
 		  <label class="item item-input">
-			<input type="text" placeholder="Username" ng-model="user.uname">
+			<input type="text" placeholder="Username" ng-keyup="chkUsername()" ng-model="user.uname">
 		  </label>
 			<span ng-show="uname.error" class="h6 assertive">{{ uname.desc}}</span> 
 		  <label class="item item-input">

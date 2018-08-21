@@ -8,6 +8,7 @@ angular.module('tradeapp.controllers', [])
 	$scope.cpass = [];
 	$scope.notEqual = [];
 	$scope.clean_uname = "";
+	$scope.uname.check = false;
 	
 	$scope.user.fname_error = false;
 	$scope.user.lname_error = false;
@@ -20,17 +21,54 @@ angular.module('tradeapp.controllers', [])
 	$scope.cpass.error = false;
 	$scope.notEqual.error = false;
 	
+	$scope.chkUsername = function (){
+
+		console.log($scope.user.uname);
+		 var obj    = new Object();
+        obj.method = 'POST';
+        obj.url    = $rootScope.baseURL + "/mobile/user_controller/chckUsername";
+        obj.data   = new FormData();
+        obj.data.append('username',$scope.user.uname);
+        obj.params = {};
+   
+			Auth.REQUEST(obj).then(
+                function(success) { 
+                    console.log(success.data.success);
+					if(success.data.success  == true)
+					{
+						$scope.uname.error = true;
+						$scope.uname.desc = "Username is already taken.";
+						$scope.uname.check = true;
+					} else {
+						$scope.uname.error = false;
+						$scope.uname.check = false;
+					}
+                                  
+                },
+                function(error) { 
+               }
+            ); 
+	}
 	$scope.register = function (){
-		//console.log(document.getElementById('user_role').value);
-			var validInput = $scope.VALIDATE_REGISTER_INPUT();
-			if(validInput){
-				
-				//$scope.ADD_TO_SERVER();
-				console.log("add to server");
-
-			}
-
+		var tDate = new Date($scope.user.bday);
+		var monD = tDate.getMonth() + 1;
+		var todD = tDate.getDate();
+		if(monD < 10){ monD = "0"+monD }
+		if(todD < 10){ todD = "0"+todD }
+		var newDate = tDate.getFullYear()+"-"+monD+"-"+todD;
+		$scope.user.pack = document.getElementById('user_role').value;
+		$scope.user.bday = newDate;
 		
+		var validInput = $scope.VALIDATE_REGISTER_INPUT();
+		if(validInput){
+			
+			$scope.ADD_TO_SERVER();
+			console.log("add to server");
+
+		}else{
+			//console.log("invalid input");
+		}
+
 	}
 	$scope.VALIDATE_REGISTER_INPUT = function ()
 	  {
@@ -57,6 +95,7 @@ angular.module('tradeapp.controllers', [])
 		$scope.clean_userPass = $rootScope._remove_white_space($scope.user.pass);
 		$scope.clean_userConfirmPass = $rootScope._remove_white_space($scope.user.cpass);
 		var return_bol = true;
+		
 		
 		if(!$rootScope.inputBlank($scope.clean_fname))
 		{
@@ -110,7 +149,18 @@ angular.module('tradeapp.controllers', [])
 		  $scope.uname.desc = "Atleast 6 and maximum of 40 alphanumeric characters.";
 		  ret = false;
 		} else {
-		  $scope.uname.error = false;
+			
+		  if($scope.uname.check == true){
+				$scope.uname.error = true;
+				$scope.uname.desc = "Username is already taken.";	
+				ret = false;
+				//console.log("checkusername taken");
+			}
+			else{
+				$scope.uname.error = false;
+				 ret = true;
+				 //console.log("checkusername nottaken");
+			}
 		}
 		
 		if (!$rootScope.inputLength($scope.user.pass))
@@ -135,6 +185,62 @@ angular.module('tradeapp.controllers', [])
 		return ret;
 
 	  }
+	  
+	   $scope.ADD_TO_SERVER = function ()
+	  {
+
+		$ionicLoading.show({
+          template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
+        });
+        var obj    = new Object();
+        obj.method = 'POST';
+        obj.url    = $rootScope.baseURL + "/mobile/user_controller/addUser";
+        obj.data   = new FormData();
+        obj.data.append('username',$scope.user.uname);
+        obj.data.append('password',$scope.user.pass);
+        obj.data.append('fname',$scope.user.fname);
+        obj.data.append('lname',$scope.user.lname);
+        obj.data.append('age',$scope.user.age);
+        obj.data.append('address',$scope.user.address);
+        obj.data.append('bday',$scope.user.bday);
+        obj.data.append('package',$scope.user.pack);
+        obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
+        obj.params = {};
+   
+			Auth.REQUEST(obj).then(
+                function(success) { 
+                    console.log(success.data);
+					$ionicLoading.hide();
+					if(success.data.success == true){
+						$scope.user.uname = "";
+						$scope.user.pass = "";
+						$scope.user.cpass = "";
+						$scope.user.fname = "";
+						$scope.user.lname = "";
+						$scope.user.age = "";
+						$scope.user.address = "";
+						$scope.user.bday = "";
+						$scope.showSuccessMessage(); 
+					}
+					             
+                },
+                function(error) { 
+                    $ionicLoading.hide();
+               }
+            ); 
+	  }
+	  
+	   $scope.showSuccessMessage = function() {
+		   var alertPopup = $ionicPopup.alert({
+			 title: 'SUCCESS!',
+			 template: 'You can now login.'
+		   });
+
+		   alertPopup.then(function(res) {
+			   window.location.href = "#/search";
+			 //console.log('Thank you for not eating my delicious ice cream cone');
+		   });
+		};
 }])
 .controller('DashCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {})
 .controller('LoginCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {

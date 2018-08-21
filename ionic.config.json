@@ -3,6 +3,12 @@
   "integrations": {
     "cordova": {}
   },
+  "proxies": [
+    {
+      "path": "/host",
+      "proxyUrl": "http://localhost/tradeappbackend/public_html"
+    }
+  ],
   "type": "ionic1",
   "watchPatterns": [
     "scss/**/*",
