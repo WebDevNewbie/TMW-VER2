@@ -274,9 +274,13 @@ angular.module('tradeapp.controllers', [])
 											  var obj          = new Object();
 												  obj.user_id       = success.data.user_info.user_id;
 												  obj.username     = success.data.user_info.username;
+												  obj.user_role     = success.data.user_info.user_role;
 									   
 											  Auth.STORE_DATA('userData',obj);
 											  $rootScope.isLogged  = true;
+											  $rootScope.user_info = {user_id:success.data.user_info.user_id, username:success.data.user_info.username, user_role:success.data.user_info.user_role};
+											  
+											  console.log($rootScope.user_info);
 											  /*if(obj.role == 0){
 													window.location.href = "#/menuAdmin/dashboardAdmin";
 											  }
@@ -305,6 +309,11 @@ angular.module('tradeapp.controllers', [])
 	
 	//$rootScope.isLogged  = false;
 	console.log($rootScope.isLogged);
+	console.log($rootScope.user_info);
+	$scope.showProfile = function()
+    { 
+		 window.location.href = "#/chats";
+	}
 })
 
 .controller('ChatsCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {

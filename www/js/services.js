@@ -4,7 +4,10 @@ app.factory('Auth', ['$http','$rootScope',
 {
 	// $rootScope.baseURL   = 'http://tradeapp.com';
 	 $rootScope.baseURL   = '/host';
-
+	 
+	
+	$rootScope.user_info   = {};
+		
 	$rootScope._remove_white_space = function (str)
 	  {
 		var string = str;
