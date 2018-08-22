@@ -245,12 +245,12 @@ angular.module('tradeapp.controllers', [])
 }])
 .controller('DashCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {})
 .controller('LoginCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
-	console.log($rootScope.baseURL);
-	console.log($rootScope.isLogged);
+	//console.log($rootScope.baseURL);
+	//console.log($rootScope.isLogged);
 	$scope.login = function()
     { 
-		console.log($scope.user.name);
-		console.log($scope.user.pass);
+		//console.log($scope.user.name);
+		//console.log($scope.user.pass);
 		if($scope.user.name == "" && $scope.user.pass == ""){
 			//$rootScope.showToast('Please enter Username and Password.');
 		}
@@ -270,7 +270,9 @@ angular.module('tradeapp.controllers', [])
 				Auth.REQUEST(obj).then(
 									  function(success) { 
 										  if(JSON.stringify(success.data.success) == "true"){
-											  console.log(success.data.user_info);
+											 // console.log(success.data.user_info);
+											 $scope.user.name = "";
+											 $scope.user.pass = "";
 											  var obj          = new Object();
 												  obj.user_id       = success.data.user_info.user_id;
 												  obj.username     = success.data.user_info.username;
@@ -278,9 +280,8 @@ angular.module('tradeapp.controllers', [])
 									   
 											  Auth.STORE_DATA('userData',obj);
 											  $rootScope.isLogged  = true;
-											  $rootScope.user_info = {user_id:success.data.user_info.user_id, username:success.data.user_info.username, user_role:success.data.user_info.user_role};
+											  $rootScope.user_info =  Auth.FETCH_DATA('userData');
 											  
-											  console.log($rootScope.user_info);
 											  /*if(obj.role == 0){
 													window.location.href = "#/menuAdmin/dashboardAdmin";
 											  }
@@ -289,11 +290,11 @@ angular.module('tradeapp.controllers', [])
 											  }*/
 											  window.location.href = "#/search";
 											  $ionicLoading.hide();
-											  console.log("true");
+											 // console.log("true");
 										  }
 										  else{
 											$ionicLoading.hide();
-											console.log("false");
+											//console.log("false");
 											//$rootScope.showToast('Invalid Username/Password');
 										  }
 										},
@@ -308,12 +309,21 @@ angular.module('tradeapp.controllers', [])
 .controller('SearchCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 	
 	//$rootScope.isLogged  = false;
-	console.log($rootScope.isLogged);
+	//console.log($rootScope.isLogged);
 	console.log($rootScope.user_info);
 	$scope.showProfile = function()
     { 
 		 window.location.href = "#/chats";
 	}
+	$scope.logout = function()
+    {
+      Auth.STORE_DATA('userData',"");
+	  $rootScope.user_info =  Auth.FETCH_DATA('userData');
+	  $rootScope.isLogged  = false;
+      window.location.href = "#/search";
+	 // console.log(Auth.FETCH_DATA('userData'));
+	  //console.log($rootScope.user_info);
+    }
 })
 
 .controller('ChatsCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
