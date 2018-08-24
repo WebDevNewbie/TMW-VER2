@@ -311,10 +311,7 @@ angular.module('tradeapp.controllers', [])
 	//$rootScope.isLogged  = false;
 	//console.log($rootScope.isLogged);
 	console.log($rootScope.user_info);
-	$scope.showProfile = function()
-    { 
-		 window.location.href = "#/chats";
-	}
+
 	$scope.logout = function()
     {
       Auth.STORE_DATA('userData',"");
@@ -325,7 +322,9 @@ angular.module('tradeapp.controllers', [])
 	  //console.log($rootScope.user_info);
     }
 })
-
+.controller('UserProfileCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
+  
+})
 .controller('ChatsCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 
   $scope.chats = Chats.all();

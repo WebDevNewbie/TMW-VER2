@@ -47,6 +47,11 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
     templateUrl: "templates/search.html",
     controller: 'SearchCtrl'
   })
+  .state('user-profile', {
+    url: "/user-profile",
+    templateUrl: "templates/profile.html",
+    controller: 'UserProfileCtrl'
+  })
   .state('login', {
     url: "/login",
     templateUrl: "templates/login.html",
