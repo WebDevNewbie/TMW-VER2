@@ -77,7 +77,17 @@ app.factory('Auth', ['$http','$rootScope',
 
 	return fac;
 }]);
-
+app.directive('noCacheSrc', function($window) {
+  return {
+    priority: 99,
+    link: function(scope, element, attrs) {
+      attrs.$observe('noCacheSrc', function(noCacheSrc) {
+        noCacheSrc += '?' + (new Date()).getTime();
+        attrs.$set('src', noCacheSrc);
+      });
+    }
+  }
+});
 /*.factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 

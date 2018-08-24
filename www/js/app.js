@@ -32,11 +32,20 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
-    url: '/tab',
+    .state('menu', {
+    url: '/menu',
     abstract: true,
-    templateUrl: 'templates/tabs.html'
+    templateUrl: 'templates/menu.html'
   })
+  .state('menu.usersearch', {
+      url: '/usersearch',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/usersearch.html',
+          controller: 'SearchCtrl'
+        }
+      }
+    })
 	.state('signuptab', {
     url: '/signuptab',
     abstract: true,

@@ -288,7 +288,7 @@ angular.module('tradeapp.controllers', [])
 											  else{
 													window.location.href = "#/menu/dashboard";
 											  }*/
-											  window.location.href = "#/search";
+											  window.location.href = "#/menu/usersearch";
 											  $ionicLoading.hide();
 											 // console.log("true");
 										  }
@@ -322,8 +322,54 @@ angular.module('tradeapp.controllers', [])
 	  //console.log($rootScope.user_info);
     }
 })
-.controller('UserProfileCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
-  
+.controller('UserProfileCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth, $ionicHistory) {
+	
+	$scope.user = [];
+	
+	$scope.goBack = function()
+    {
+		$ionicHistory.goBack();
+		console.log(333);
+		//window.location.href = "#/menu/usersearch";
+	}
+	$scope.$on('$ionicView.enter', function(event) {
+		//console.log("get data");
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
+		});
+		var obj    = new Object();
+			obj.method = 'POST';
+			obj.url    = $rootScope.baseURL + "/mobile/user_controller/getUserData";
+			obj.data   = new FormData();
+			obj.data.append('userID',$rootScope.user_info.user_id);
+			obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
+			obj.params = {};
+			   
+				Auth.REQUEST(obj).then(
+					function(success) { 
+						if(JSON.stringify(success.data.success) == "true"){
+							$ionicLoading.hide();
+							console.log(success.data.user_info);
+							console.log(success.data.user_info.birthday);
+							document.getElementById("user_bday").value = success.data.user_info.birthday;
+							$scope.user.fname = success.data.user_info.first_name;
+							$scope.user.lname = success.data.user_info.last_name;
+							$scope.user.age = success.data.user_info.age;
+							$scope.user.address = success.data.user_info.address;
+						}
+						else{
+							$ionicLoading.hide();
+							//console.log("false");
+							//$rootScope.showToast('Invalid Username/Password');
+						}
+					},
+					function(error) { 
+						$ionicLoading.hide();
+						// $rootScope.showToast('Invalid Username/Password');
+					}
+				);   	
+	});
+	
 })
 .controller('ChatsCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 
@@ -333,6 +379,19 @@ angular.module('tradeapp.controllers', [])
   };
 })
 
+.controller('UserSearchCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
+  	console.log($rootScope.user_info);
+
+	$scope.logout = function()
+    {
+      Auth.STORE_DATA('userData',"");
+	  $rootScope.user_info =  Auth.FETCH_DATA('userData');
+	  $rootScope.isLogged  = false;
+      window.location.href = "#/search";
+	 // console.log(Auth.FETCH_DATA('userData'));
+	  //console.log($rootScope.user_info);
+    }
+})
 .controller('ChatDetailCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
   $scope.chat = Chats.get($stateParams.chatId);
 })

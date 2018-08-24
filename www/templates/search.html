@@ -1,10 +1,9 @@
-<ion-view cache-view="false" hide-nav-bar="true">
+<ion-view cache-view="true" hide-nav-bar="true">
 	
 	
 	<div class="bar bar-header bar-light">
 	  <h1 class="title">Trade App</h1>
-	  <a ng-show="isLogged == false" class="button button-clear pull-right" href="#/register"><i class="icon ion-person-add"></i></a>
-	  <a ng-show="isLogged == true" class="button button-clear pull-right" ng-click="logout()"><i class="icon ion-power"></i></a>
+	  <a class="button button-clear pull-right" href="#/register"><i class="icon ion-person-add"></i></a>
 	</div>
 	
     <div class="list list-inset" id="searchbox">
@@ -19,15 +18,6 @@
 		Log In
 	  </a>
 	</div>
-	<div ng-show="isLogged == true" class="tabs tabs-icon-left">
-	  <a class="tab-item" href="#/user-profile">
-		<i class="icon ion-gear-a"></i>
-		My Profile
-	  </a>
-	  <a class="tab-item" href="#">
-		<i class="icon ion-email"></i>
-		Messages
-	  </a>
-	</div>
+
 </ion-view>
 

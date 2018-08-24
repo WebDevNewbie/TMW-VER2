@@ -1,21 +1,37 @@
-<ion-view  cache-view="true" hide-nav-bar="true">
+<ion-view cache-view="true" hide-nav-bar="true">
 	
 	
-	<div class="bar bar-header bar-light">
+	<div class="bar bar-header bar-light" style="position:relative">
+	 <a class="button button-clear pull-left" ng-click="$ionicGoBack()"><i class="icon ion-ios-arrow-back"></i></a>
 	  <h1 class="title">My Profile</h1>
-	  
-	  <a class="button button-clear pull-left" ng-click="$ionicGoBack()"><i class="icon ion-ios-arrow-back"></i></a>
-	  <a class="button button-clear pull-right" href="#"><i class="icon ion-star"></i></a>
+
 	</div>
-	
+	<div class="list" id="profile-wrapper">
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">First Name</span>
+			<input type="text" placeholder="First Name" ng-model="user.fname" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Last Name</span>
+			<input type="text" placeholder="Last Name" ng-model="user.lname" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Age</span>
+			<input type="text" placeholder="Age" ng-model="user.age" disabled>
+		</label>	
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Birthdate</span>
+			<input type="date" ng-model="user.bday" id="user_bday" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Address</span>
+			<input type="text" placeholder="Address" ng-model="user.address" disabled>
+		</label>
+	</div>
 	<div class="tabs tabs-icon-left">
-	  <a class="tab-item" href="#">
-		<i class="icon ion-images"></i>
-		Photos
-	  </a>
-	  <a class="tab-item" href="#">
-		<i class="icon ion-videocamera"></i>
-		Videos
+	  <a class="tab-item">
+		<i class="icon ion-edit"></i>
+		Edit Profile
 	  </a>
 	</div>
 </ion-view>
