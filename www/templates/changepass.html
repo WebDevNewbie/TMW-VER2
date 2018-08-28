@@ -1,0 +1,33 @@
+<ion-view cache-view="true" hide-nav-bar="true">
+	<ion-header-bar class="bar-stable bar bar-header" align-title="center">
+		<div class="buttons buttons-left header-item">
+			<span class="left-buttons">
+				<button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+			</span>
+		</div>
+		<div class="title title-center header-item" style="left: 45px; right: 45px;">Change Password</div>
+	  </ion-header-bar>
+	<ion-content>
+	<div class="list">
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Old Password</span>
+			<input type="password" placeholder="********" ng-model="user.oldpass">
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">New Password</span>
+			<input type="password" placeholder="********" ng-model="user.newpass">
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Confirm New Password</span>
+			<input type="password" placeholder="********" ng-model="user.cnewpass">
+		</label>
+		<div class="btn-padding">
+			<button type="submit" class="button button-block button-positive">
+			  SAVE
+			</button>
+		</div>
+	</div>
+
+	</ion-content>
+</ion-view>
+

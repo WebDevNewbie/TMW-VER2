@@ -306,7 +306,22 @@ angular.module('tradeapp.controllers', [])
 			}							  
     }
 })
+.controller('UserSearchCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
+	
+	//$rootScope.isLogged  = false;
+	//console.log($rootScope.isLogged);
+	console.log($rootScope.user_info);
+	console.log(4444);
+
+})
 .controller('SearchCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
+	
+	//$rootScope.isLogged  = false;
+	//console.log($rootScope.isLogged);
+	console.log($rootScope.user_info);
+
+})
+.controller('MenuCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 	
 	//$rootScope.isLogged  = false;
 	//console.log($rootScope.isLogged);
@@ -322,20 +337,26 @@ angular.module('tradeapp.controllers', [])
 	  //console.log($rootScope.user_info);
     }
 })
+.controller('ChangePassCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
+	
+	//$rootScope.isLogged  = false;
+	//console.log($rootScope.isLogged);
+	console.log($rootScope.user_info);
+})
 .controller('UserProfileCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth, $ionicHistory) {
 	
 	$scope.user = [];
-	
+
 	$scope.goBack = function()
     {
-		$ionicHistory.goBack();
+		//$ionicHistory.goBack();
 		console.log(333);
 		//window.location.href = "#/menu/usersearch";
 	}
 	$scope.$on('$ionicView.enter', function(event) {
 		//console.log("get data");
 		$ionicLoading.show({
-			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
+			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
 		});
 		var obj    = new Object();
 			obj.method = 'POST';
@@ -348,7 +369,8 @@ angular.module('tradeapp.controllers', [])
 				Auth.REQUEST(obj).then(
 					function(success) { 
 						if(JSON.stringify(success.data.success) == "true"){
-							$ionicLoading.hide();
+							
+							setTimeout(function(){ $ionicLoading.hide(); }, 1000);
 							console.log(success.data.user_info);
 							console.log(success.data.user_info.birthday);
 							document.getElementById("user_bday").value = success.data.user_info.birthday;
@@ -358,17 +380,18 @@ angular.module('tradeapp.controllers', [])
 							$scope.user.address = success.data.user_info.address;
 						}
 						else{
-							$ionicLoading.hide();
+							setTimeout(function(){ $ionicLoading.hide(); }, 1000);
 							//console.log("false");
 							//$rootScope.showToast('Invalid Username/Password');
 						}
 					},
 					function(error) { 
-						$ionicLoading.hide();
+						setTimeout(function(){ $ionicLoading.hide(); }, 1000);
 						// $rootScope.showToast('Invalid Username/Password');
 					}
 				);   	
-	});
+	})
+	
 	
 })
 .controller('ChatsCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
@@ -379,19 +402,6 @@ angular.module('tradeapp.controllers', [])
   };
 })
 
-.controller('UserSearchCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
-  	console.log($rootScope.user_info);
-
-	$scope.logout = function()
-    {
-      Auth.STORE_DATA('userData',"");
-	  $rootScope.user_info =  Auth.FETCH_DATA('userData');
-	  $rootScope.isLogged  = false;
-      window.location.href = "#/search";
-	 // console.log(Auth.FETCH_DATA('userData'));
-	  //console.log($rootScope.user_info);
-    }
-})
 .controller('ChatDetailCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
   $scope.chat = Chats.get($stateParams.chatId);
 })

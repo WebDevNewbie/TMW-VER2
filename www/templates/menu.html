@@ -17,17 +17,23 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close href="#/user-profile">
-          Profile
+		<ion-item menu-close href="#/menu/usersearch">
+          <span class="icon ion-home">&emsp;Home
         </ion-item>
-		<ion-item menu-close>
-          Change Password
+        <ion-item menu-close href="#/menu/userprofile">
+          <span class="icon ion-person">&emsp;Profile
+        </ion-item>
+		<ion-item menu-close  href="#/menu/changepass">
+          <span class="icon ion-locked">&emsp;Change Password
         </ion-item>
         <ion-item menu-close>
-          Photos
+          <span class="icon ion-images">&emsp;Photos
         </ion-item>
         <ion-item menu-close>
-          Videos
+          <span class="icon ion-videocamera">&emsp;Videos
+        </ion-item>
+		<ion-item menu-close ng-click="logout()">
+          <span class="icon ion-power">&emsp;Log Out
         </ion-item>
       </ion-list>
     </ion-content>

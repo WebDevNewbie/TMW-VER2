@@ -35,14 +35,15 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
     .state('menu', {
     url: '/menu',
     abstract: true,
-    templateUrl: 'templates/menu.html'
+    templateUrl: 'templates/menu.html',
+	controller: 'MenuCtrl'
   })
   .state('menu.usersearch', {
       url: '/usersearch',
       views: {
         'menuContent': {
           templateUrl: 'templates/usersearch.html',
-          controller: 'SearchCtrl'
+          controller: 'UserSearchCtrl'
         }
       }
     })
@@ -56,11 +57,24 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
     templateUrl: "templates/search.html",
     controller: 'SearchCtrl'
   })
-  .state('user-profile', {
-    url: "/user-profile",
-    templateUrl: "templates/profile.html",
-    controller: 'UserProfileCtrl'
-  })
+  .state('menu.userprofile', {
+      url: '/userprofile',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/profile.html',
+		  controller: 'UserProfileCtrl'
+        }
+      }
+    })
+  .state('menu.changepass', {
+      url: '/changepass',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/changepass.html',
+		  controller: 'ChangePassCtrl'
+        }
+      }
+    })
   .state('login', {
     url: "/login",
     templateUrl: "templates/login.html",
