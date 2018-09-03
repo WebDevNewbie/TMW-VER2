@@ -342,6 +342,72 @@ angular.module('tradeapp.controllers', [])
 	//$rootScope.isLogged  = false;
 	//console.log($rootScope.isLogged);
 	console.log($rootScope.user_info);
+	$scope.user = [];
+	$scope.user.changeStat = false;
+	$scope.user.changeStatSucc = false;
+	$scope.changepass = function()
+    { 
+		if($scope.user.oldpass == undefined) $scope.user.oldpass = "";
+		if($scope.user.newpass == undefined) $scope.user.newpass = "";
+		if($scope.user.cnewpass == undefined) $scope.user.cnewpass = "";
+		//console.log($scope.user.oldpass);
+		//console.log($scope.user.newpass);
+		//console.log($scope.user.cnewpass);
+		if($scope.user.newpass == "" || $scope.user.cnewpass == "" || $scope.user.oldpass == ""){
+			$scope.user.changeStat = true;
+			$scope.user.changeDesc = "Please fill out all fields.";
+		}
+		else{
+			if($scope.user.newpass == $scope.user.cnewpass){
+				$ionicLoading.show({
+				  template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
+				});
+				var obj    = new Object();
+				obj.method = 'POST';
+				obj.url    = $rootScope.baseURL + "/mobile/login_controller/changePass";
+				obj.data   = new FormData();
+				obj.data.append('user_id',$rootScope.user_info.user_id);
+				obj.data.append('password',$scope.user.oldpass);
+				obj.data.append('newpassword',$scope.user.newpass);
+				obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
+				obj.params = {};
+		   
+				Auth.REQUEST(obj).then(
+					function(success) { 
+						if(JSON.stringify(success.data.success) == "true"){
+							// console.log(success.data.user_info);
+							$scope.user.oldpass = "";
+							$scope.user.newpass = "";
+							$scope.user.cnewpass = "";
+							//window.location.href = "#/menu/usersearch";
+							$ionicLoading.hide();
+							console.log("true");
+							$scope.user.changeStatSucc = true;
+							$scope.user.changeStat = false;
+							$scope.user.changeSuccDesc = "Your password has been successfully updated.";
+							setTimeout(function(){
+								document.getElementById('changeStatSucc').style.display = 'none';
+							}, 2000);
+						}
+						else{
+							$ionicLoading.hide();
+							$scope.user.changeStat = true;
+							$scope.user.changeDesc = "Old Password is incorrect.";
+							console.log("false");
+							}
+					},
+					function(error) { 
+						$ionicLoading.hide();
+						$scope.user.changeStat = true;
+						$scope.user.changeDesc = "Old Password is incorrect.";
+					}
+				);    
+			}else{
+				$scope.user.changeStat = true;
+				$scope.user.changeDesc = "New and confirm password does not match.";
+			}
+		}							  
+    }
 })
 .controller('UserProfileCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth, $ionicHistory) {
 	

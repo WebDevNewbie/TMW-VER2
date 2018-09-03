@@ -11,18 +11,20 @@
 	<div class="list">
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Old Password</span>
-			<input type="password" placeholder="********" ng-model="user.oldpass">
+			<input type="password" placeholder="********" value="" ng-model="user.oldpass">
 		</label>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">New Password</span>
-			<input type="password" placeholder="********" ng-model="user.newpass">
+			<input type="password" placeholder="********" value="" ng-model="user.newpass">
 		</label>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Confirm New Password</span>
-			<input type="password" placeholder="********" ng-model="user.cnewpass">
+			<input type="password" placeholder="********" value="" ng-model="user.cnewpass">
 		</label>
+		<div ng-show="user.changeStat" class="h5 assertive text-center">{{ user.changeDesc}}</div> 
+		<div ng-show="user.changeStatSucc" id="changeStatSucc" class="h5 balanced text-center">{{ user.changeSuccDesc}}</div> 
 		<div class="btn-padding">
-			<button type="submit" class="button button-block button-positive">
+			<button type="submit" ng-click="changepass()" class="button button-block button-positive">
 			  SAVE
 			</button>
 		</div>
