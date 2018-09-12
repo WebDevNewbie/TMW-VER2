@@ -412,7 +412,17 @@ angular.module('tradeapp.controllers', [])
 .controller('UserProfileCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth, $ionicHistory) {
 	
 	$scope.user = [];
-
+	$scope.user.clickedEdit = false;
+	$scope.editProfile = function()
+    {
+		$scope.user.clickedEdit = true;
+		$("#profile-wrapper label input").prop("disabled", false);
+	}
+	$scope.saveProfile = function()
+    {
+		$scope.user.clickedEdit = false;
+		$("#profile-wrapper label input").prop("disabled", true);
+	}
 	$scope.goBack = function()
     {
 		//$ionicHistory.goBack();
