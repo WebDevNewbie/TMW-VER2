@@ -20,6 +20,16 @@
 		</label>
 		<span ng-show="user.lname_error" class="h6 assertive">{{ user.lname_desc}}</span> 
 		<label class="item item-input item-stacked-label">
+			<span class="input-label">Service Name</span>
+			<input type="text" placeholder="Service Name" ng-model="user.servname">
+		</label>
+		<span ng-show="user.servname_error" class="h6 assertive">{{ user.servname_desc}}</span> 
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Service Description</span>
+			<textarea placeholder="Service Description" ng-model="user.servdesc" style="height:60px"></textarea>
+		</label>
+		  <span ng-show="user.servdesc_error" class="h6 assertive">{{ user.servdesc_desc}}</span> 
+		<label class="item item-input item-stacked-label">
 			<span class="input-label">Age</span>
 			<input type="text" placeholder="Age" ng-model="user.age" disabled>
 		</label>	

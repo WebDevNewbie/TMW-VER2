@@ -15,6 +15,8 @@ angular.module('tradeapp.controllers', [])
 	$scope.user.age_error = false;
 	$scope.user.bday_error = false;
 	$scope.user.address_error = false;
+	$scope.user.servname_error = false;
+	$scope.user.servdesc_error = false;
 	
 	$scope.uname.error = false;
 	$scope.pass.error = false;
@@ -73,6 +75,8 @@ angular.module('tradeapp.controllers', [])
 	$scope.VALIDATE_REGISTER_INPUT = function ()
 	  {
 		
+		if($scope.user.servname == undefined) $scope.user.servname="";  
+		if($scope.user.servdesc == undefined) $scope.user.servdesc="";  
 		if($scope.user.uname == undefined) $scope.user.uname="";  
 		if($scope.user.pass == undefined) $scope.user.pass="";  
 		if($scope.user.cpass == undefined) $scope.user.cpass="";  
@@ -90,6 +94,9 @@ angular.module('tradeapp.controllers', [])
 		$scope.clean_lname = $rootScope._remove_white_space($scope.user.lname);
 		$scope.clean_age = $rootScope._remove_white_space($scope.user.age);
 		
+		$scope.clean_servname = $rootScope._remove_white_space($scope.user.servname);
+		$scope.clean_servdesc = $rootScope._remove_white_space($scope.user.servdesc);
+		
 		$scope.clean_address = $rootScope._remove_white_space($scope.user.address);
 		
 		$scope.clean_uname = $rootScope._remove_white_space($scope.user.uname);
@@ -98,6 +105,22 @@ angular.module('tradeapp.controllers', [])
 		var return_bol = true;
 		
 		
+		if(!$rootScope.inputBlank($scope.clean_servname))
+		{
+		  $scope.user.servname_error = true;
+		  $scope.user.servname_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.servname_error = false;
+		}
+		if(!$rootScope.inputBlank($scope.clean_servdesc))
+		{
+		  $scope.user.servdesc_error = true;
+		  $scope.user.servdesc_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.servdesc_error = false;
+		}
 		if(!$rootScope.inputBlank($scope.clean_fname))
 		{
 		  $scope.user.fname_error = true;
@@ -197,6 +220,8 @@ angular.module('tradeapp.controllers', [])
         obj.method = 'POST';
         obj.url    = $rootScope.baseURL + "/mobile/user_controller/addUser";
         obj.data   = new FormData();
+        obj.data.append('servicename',$scope.user.servname);
+        obj.data.append('servicedesc',$scope.user.servdesc);
         obj.data.append('username',$scope.user.uname);
         obj.data.append('password',$scope.user.pass);
         obj.data.append('fname',$scope.user.fname);
@@ -419,6 +444,8 @@ angular.module('tradeapp.controllers', [])
 	$scope.user.bday_error = false;
 	$scope.user.address_error = false;
 	$scope.user.clickedEdit = false;
+	$scope.user.servname_error = false;
+	$scope.user.servdesc_error = false;
 	
 	$scope.editProfile = function()
     {
@@ -429,6 +456,8 @@ angular.module('tradeapp.controllers', [])
     {
 		//$scope.user.clickedEdit = false;
 		//$("#profile-wrapper label input").prop("disabled", true);
+		if($scope.user.servname == undefined) $scope.user.servname="";  
+		if($scope.user.servdesc == undefined) $scope.user.servdesc="";  
 		if($scope.user.fname == undefined) $scope.user.fname="";  
 		if($scope.user.lname == undefined) $scope.user.lname="";  
 		if($scope.user.age == undefined) $scope.user.age="";  
@@ -473,12 +502,28 @@ angular.module('tradeapp.controllers', [])
 		$scope.clean_fname = $rootScope._remove_white_space($scope.user.fname);
 		$scope.clean_lname = $rootScope._remove_white_space($scope.user.lname);
 		$scope.clean_age = $rootScope._remove_white_space($scope.user.age);
-		
+		$scope.clean_servname = $rootScope._remove_white_space($scope.user.servname);
+		$scope.clean_servdesc = $rootScope._remove_white_space($scope.user.servdesc);
 		$scope.clean_address = $rootScope._remove_white_space($scope.user.address);
 
 		var return_bol = true;
 		
-		
+		if(!$rootScope.inputBlank($scope.clean_servname))
+		{
+		  $scope.user.servname_error = true;
+		  $scope.user.servname_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.servname_error = false;
+		}
+		if(!$rootScope.inputBlank($scope.clean_servdesc))
+		{
+		  $scope.user.servdesc_error = true;
+		  $scope.user.servdesc_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.servdesc_error = false;
+		}
 		if(!$rootScope.inputBlank($scope.clean_fname))
 		{
 		  $scope.user.fname_error = true;
@@ -543,12 +588,14 @@ angular.module('tradeapp.controllers', [])
 			if($scope.user.activity2 != ""){actArray.push($scope.user.activity2);}
 			if($scope.user.activity3 != ""){actArray.push($scope.user.activity3);}
 		}	
-			
+ 	
         var obj    = new Object();
         obj.method = 'POST';
         obj.url    = $rootScope.baseURL + "/mobile/user_controller/updateUser";
         obj.data   = new FormData();
         obj.data.append('user_id',$rootScope.user_info.user_id);
+        obj.data.append('servname',$scope.user.servname);
+        obj.data.append('servdesc',$scope.user.servdesc);
         obj.data.append('fname',$scope.user.fname);
         obj.data.append('lname',$scope.user.lname);
         obj.data.append('age',$scope.user.age);
@@ -626,20 +673,26 @@ angular.module('tradeapp.controllers', [])
 						if(JSON.stringify(success.data.success) == "true"){
 							
 							var act = success.data.user_info.activity;
-							var actini = $scope.replaceAll(act,'"','');
-							var actfinal = actini.split(",");
+							console.log(act);
+							if(act == "" || act == null || act == "null"){
+								console.log("act null");
+							}else{
+								var actini = $scope.replaceAll(act,'"','');
+								var actfinal = actini.split(",");
+								$scope.user.activity1 = actfinal[0];
+								$scope.user.activity2 = actfinal[1];
+								$scope.user.activity3 = actfinal[2];
+							}
 							setTimeout(function(){ $ionicLoading.hide(); }, 500);
 							console.log(success.data.user_info);
 
-							console.log(actfinal);
+							
 							document.getElementById("user_bday").value = success.data.user_info.birthday;
 							$scope.user.fname = success.data.user_info.first_name;
 							$scope.user.lname = success.data.user_info.last_name;
 							$scope.user.age = success.data.user_info.age;
 							$scope.user.address = success.data.user_info.address;
-							$scope.user.activity1 = actfinal[0];
-							$scope.user.activity2 = actfinal[1];
-							$scope.user.activity3 = actfinal[2];
+							
 							$scope.user.occupation = success.data.user_info.occupation;
 							$scope.user.hobbies = success.data.user_info.hobbies;
 							$scope.user.skill = success.data.user_info.skills;
@@ -657,6 +710,8 @@ angular.module('tradeapp.controllers', [])
 							document.getElementById("user_live_athome").value = success.data.user_info.live_athome;
 							$scope.user.children = success.data.user_info.children;
 							$scope.user.ethniticity = success.data.user_info.ethniticity;
+							$scope.user.servname = success.data.user_info.service_name;
+							$scope.user.servdesc = success.data.user_info.service_desc;
 						}
 						else{
 							setTimeout(function(){ $ionicLoading.hide(); }, 1000);

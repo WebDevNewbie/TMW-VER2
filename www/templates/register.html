@@ -29,6 +29,14 @@
 			  <option value="3">Diamond</option>
 			</select>
 		  </label>
+		  <label class="item item-input">
+			<input type="text" placeholder="Service Name" ng-model="user.servname">
+		  </label>
+		  <span ng-show="user.servname_error" class="h6 assertive">{{ user.servname_desc}}</span> 
+		  <label class="item item-input">
+			<textarea placeholder="Service Description" ng-model="user.servdesc" style="height:60px"></textarea>
+		  </label>
+		  <span ng-show="user.servdesc_error" class="h6 assertive">{{ user.servdesc_desc}}</span> 
 		</div>
 		
 		<div class="list list-inset">
