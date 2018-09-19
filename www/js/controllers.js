@@ -306,6 +306,7 @@ angular.module('tradeapp.controllers', [])
 											  Auth.STORE_DATA('userData',obj);
 											  $rootScope.isLogged  = true;
 											  $rootScope.user_info =  Auth.FETCH_DATA('userData');
+											  console.log(JSON.stringify($rootScope.user_info.user_id));	
 											  
 											  /*if(obj.role == 0){
 													window.location.href = "#/menuAdmin/dashboardAdmin";
@@ -338,12 +339,144 @@ angular.module('tradeapp.controllers', [])
 	console.log($rootScope.user_info);
 	console.log(4444);
 
+
+
 })
 .controller('SearchCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 	
 	//$rootScope.isLogged  = false;
 	//console.log($rootScope.isLogged);
-	console.log($rootScope.user_info);
+	
+	console.log('in search controller');
+	$scope.startSearch = function()
+    { 
+		
+		if($scope.user.search == ""){
+			//$rootScope.showToast('Please enter Username and Password.');
+		}
+		else{
+			$ionicLoading.show({
+			  template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
+			});
+			var obj    = new Object();
+			obj.method = 'POST';
+			obj.url    = $rootScope.baseURL + "/mobile/user_controller/startSearch";
+			obj.data   = new FormData();
+			obj.data.append('search',$scope.user.search);
+			obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
+			obj.params = {};
+	   
+			Auth.REQUEST(obj).then(
+			  function(success) { 
+				  if(JSON.stringify(success.data.success) == "true"){
+					 console.log(JSON.stringify(success.data.search_result));
+					 $scope.user.search = "";
+					 $scope.result = success.data.search_result;
+					
+					  // var obj          = new Object();
+						 //  obj.user_id       = success.data.user_info.user_id;
+						 //  obj.username     = success.data.user_info.username;
+						 //  obj.user_role     = success.data.user_info.user_role;
+			   		
+					 
+					  $ionicLoading.hide();
+					 
+					 // console.log("true");
+				  }
+				  else{
+				  	console.log(JSON.stringify(success.data.search_result));
+				  	$scope.result = success.data.search_result;
+					$ionicLoading.hide();
+					
+					//console.log("false");
+					//$rootScope.showToast('Invalid Username/Password');
+				  }
+				},
+				function(error) { 
+				  $ionicLoading.hide();
+				  // $rootScope.showToast('Invalid Username/Password');
+				}
+			  );    
+		}							  
+    }
+
+    $scope.replaceAll = function(str, find, replace)
+    {
+		return str.replace(new RegExp(find, 'g'), replace);
+	}
+
+    $scope.viewMore = function(data)
+    { 
+
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
+		});
+		var obj    = new Object();
+			obj.method = 'POST';
+			obj.url    = $rootScope.baseURL + "/mobile/user_controller/getUserData";
+			obj.data   = new FormData();
+			obj.data.append('userID',data);
+			obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
+			obj.params = {};
+			   
+				Auth.REQUEST(obj).then(
+					function(success) { 
+						if(JSON.stringify(success.data.success) == "true"){
+							
+							var act = success.data.user_info.activity;
+							console.log(act);
+							if(act == "" || act == null || act == "null"){
+								console.log("act null");
+							}else{
+								var actini = $scope.replaceAll(act,'"','');
+								var actfinal = actini.split(",");
+								$scope.user.activity1 = actfinal[0];
+								$scope.user.activity2 = actfinal[1];
+								$scope.user.activity3 = actfinal[2];
+							}
+							setTimeout(function(){ $ionicLoading.hide(); }, 500);
+							console.log(success.data.user_info);
+
+							
+							document.getElementById("user_bday").value = success.data.user_info.birthday;
+							$scope.user.fname = success.data.user_info.first_name;
+							$scope.user.lname = success.data.user_info.last_name;
+							$scope.user.age = success.data.user_info.age;
+							$scope.user.address = success.data.user_info.address;
+							
+							$scope.user.occupation = success.data.user_info.occupation;
+							$scope.user.hobbies = success.data.user_info.hobbies;
+							$scope.user.skill = success.data.user_info.skills;
+							$scope.user.learn = success.data.user_info.learn;
+							$scope.user.todo = success.data.user_info.todo;
+							$scope.user.visit = success.data.user_info.visit;
+							$scope.user.language = success.data.user_info.languages;
+							$scope.user.education = success.data.user_info.education;
+							$scope.user.collegecourse = success.data.user_info.collegecourse;
+							$scope.user.certificate = success.data.user_info.certificate;
+							document.getElementById("user_group").value = success.data.user_info.prefer_group;
+							document.getElementById("user_place_prefer").value = success.data.user_info.prefer_place;
+							$scope.user.religion = success.data.user_info.religion;
+							document.getElementById("user_civil_status").value = success.data.user_info.civil_status;
+							document.getElementById("user_live_athome").value = success.data.user_info.live_athome;
+							$scope.user.children = success.data.user_info.children;
+							$scope.user.ethniticity = success.data.user_info.ethniticity;
+							$scope.user.servname = success.data.user_info.service_name;
+							$scope.user.servdesc = success.data.user_info.service_desc;
+						}
+						else{
+							setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+							//console.log("false");
+							//$rootScope.showToast('Invalid Username/Password');
+						}
+					},
+					function(error) { 
+						setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+						// $rootScope.showToast('Invalid Username/Password');
+					}
+				);   	
+
+    }
 
 })
 .controller('MenuCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
@@ -657,6 +790,7 @@ angular.module('tradeapp.controllers', [])
 	}
 	$scope.$on('$ionicView.enter', function(event) {
 		//console.log("get data");
+		console.log(JSON.stringify($rootScope.user_info));
 		$ionicLoading.show({
 			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
 		});

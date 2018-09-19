@@ -43,10 +43,11 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
       views: {
         'menuContent': {
           templateUrl: 'templates/usersearch.html',
-          controller: 'UserSearchCtrl'
+          controller: 'SearchCtrl'
         }
       }
     })
+
 	.state('signuptab', {
     url: '/signuptab',
     abstract: true,
@@ -55,6 +56,11 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
 	.state('search', {
     url: "/search",
     templateUrl: "templates/search.html",
+    controller: 'SearchCtrl'
+  })
+  .state('trader-profile', {
+    url: "/trader-profile",
+    templateUrl: "templates/trader-profile.html",
     controller: 'SearchCtrl'
   })
   .state('menu.userprofile', {
