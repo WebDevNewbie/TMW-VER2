@@ -1,6 +1,14 @@
 <ion-view title="Trader Profile">
 	<ion-content>
 	<div class="list" id="profile-wrapper">
+		<a class="item item-avatar item-button-right" href="#">
+	      <img src="img/man.png">
+	      <h2>{{ user.servname }}</h2>
+	      <p>{{ user.address }}</p>
+	       <button class="button button-positive button-outline">
+		     <i class="icon ion-chatbubble-working"></i>
+		   </button>
+	    </a>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">First Name</span>
 			<input type="text" placeholder="First Name" ng-model="user.fname" disabled>

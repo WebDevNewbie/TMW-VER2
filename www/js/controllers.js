@@ -412,11 +412,6 @@ angular.module('tradeapp.controllers', [])
 		}							  
     }
 
-    $scope.replaceAll = function(str, find, replace)
-    {
-		return str.replace(new RegExp(find, 'g'), replace);
-	}
-
     $scope.viewMore = function(data)
     { 
 		console.log(data);
@@ -511,6 +506,11 @@ angular.module('tradeapp.controllers', [])
 					}
 				);   	
 	})
+
+	$scope.chat_trader = function(){
+		alert("Currently chatting this Trader is ID:" + $rootScope.user_info.user_id);
+	}
+
 }])	
 .controller('MenuCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 	
