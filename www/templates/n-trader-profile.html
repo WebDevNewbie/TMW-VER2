@@ -1,0 +1,138 @@
+<ion-view title="Trader Profile">
+	<ion-content>
+	<div class="list" id="profile-wrapper">
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">First Name</span>
+			<input type="text" placeholder="First Name" ng-model="user.fname" disabled>
+		</label>
+		<span ng-show="user.fname_error" class="h6 assertive">{{ user.fname_desc}}</span> 
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Last Name</span>
+			<input type="text" placeholder="Last Name" ng-model="user.lname" disabled>
+		</label>
+		<span ng-show="user.lname_error" class="h6 assertive">{{ user.lname_desc}}</span> 
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Service Name</span>
+			<input type="text" placeholder="Service Name" ng-model="user.servname">
+		</label>
+		<span ng-show="user.servname_error" class="h6 assertive">{{ user.servname_desc}}</span> 
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Service Description</span>
+			<textarea placeholder="Service Description" ng-model="user.servdesc" style="height:60px"></textarea>
+		</label>
+		  <span ng-show="user.servdesc_error" class="h6 assertive">{{ user.servdesc_desc}}</span> 
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Age</span>
+			<input type="text" placeholder="Age" ng-model="user.age" disabled>
+		</label>	
+		<span ng-show="user.age_error" class="h6 assertive">{{ user.age_desc}}</span>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Birthdate</span>
+			<input type="date" ng-model="user.bday" id="user_bday" disabled>
+		</label>
+		<span ng-show="user.bday_error" class="h6 assertive">{{ user.bday_desc}}</span> 
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Address</span>
+			<input type="text" placeholder="Address" ng-model="user.address" disabled>
+		</label>
+		<span ng-show="user.address_error" class="h6 assertive">{{ user.address_desc}}</span>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Favorite Activities</span>
+			<input type="text" placeholder="Activity 1" ng-model="user.activity1" disabled>
+			<input type="text" placeholder="Activity 2" ng-model="user.activity2" disabled>
+			<input type="text" placeholder="Activity 3" ng-model="user.activity3" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Occupation</span>
+			<input type="text" placeholder="Occupation" ng-model="user.occupation" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Hobbies</span>
+			<input type="text" placeholder="Hobby 1, Hobby 2, Hobby 3, and etc..." ng-model="user.hobbies" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Skills/Tallents</span>
+			<input type="text" placeholder="Skill 1, Skill 2, Skill 3, and etc..." ng-model="user.skill" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Want To Learn</span>
+			<input type="text" placeholder="What you want to learn?" ng-model="user.learn" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Want To Do</span>
+			<input type="text" placeholder="What you want to do?" ng-model="user.todo" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Want To Visit</span>
+			<input type="text" placeholder="Where do you want to visit?" ng-model="user.visit" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Languages</span>
+			<input type="text" placeholder="Language 1, Language 2, Language 3, and etc..." ng-model="user.language" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Level of Education</span>
+			<input type="text" placeholder="Bachelor's, Master's, Doctoral and etc." ng-model="user.education" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">College Course</span>
+			<input type="text" placeholder="What is your Bachelor's Course?" ng-model="user.collegecourse" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Certifications</span>
+			<input type="text" placeholder="Certificate 1, Certificate 2, and etc..." ng-model="user.certificate" disabled>
+		</label>
+		<label class="item item-input item-select">
+			<div class="input-label">
+			  What you prefer?
+			</div>
+			<select id="user_group">
+			  <option value="1" selected>Small Group</option>
+			  <option value="2" >Large Group</option>
+			</select>
+		</label>
+		<label class="item item-input item-select">
+			<div class="input-label">
+			  What do you want?
+			</div>
+			<select id="user_place_prefer">
+			  <option value="1" selected>City</option>
+			  <option value="2" >Country</option>
+			</select>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Religion</span>
+			<input type="text" placeholder="What is your religion?" ng-model="user.religion" disabled>
+		</label>
+		<label class="item item-input item-select">
+			<div class="input-label">
+			  Civil Status
+			</div>
+			<select id="user_civil_status">
+			  <option value="1" selected>Single</option>
+			  <option value="2" >Married</option>
+			  <option value="3" >Widowed</option>
+			  <option value="4" >Divorced</option>
+			</select>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Children</span>
+			<input type="text" placeholder="How many children do you have?" ng-model="user.children" disabled>
+		</label>
+		<label class="item item-input item-select">
+			<div class="input-label">
+			  Do they still live at home?
+			</div>
+			<select id="user_live_athome">
+			  <option value="1" selected>Yes</option>
+			  <option value="2" >No</option>
+			</select>
+		</label>
+		<label class="item item-input item-stacked-label" style="padding-bottom: 60px;">
+			<span class="input-label">Ethniticity</span>
+			<input type="text" placeholder="What is your ethniticity?" ng-model="user.ethniticity" disabled>
+		</label>
+	</div>
+
+	</ion-content>
+</ion-view>

@@ -343,10 +343,22 @@ angular.module('tradeapp.controllers', [])
 
 })
 .controller('SearchCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
+		
 	
 	//$rootScope.isLogged  = false;
 	//console.log($rootScope.isLogged);
-	
+	$scope.user = [];
+	$scope.users = [];
+
+	$scope.user.fname_error = false;
+	$scope.user.lname_error = false;
+	$scope.user.age_error = false;
+	$scope.user.bday_error = false;
+	$scope.user.address_error = false;
+	$scope.user.clickedEdit = false;
+	$scope.user.servname_error = false;
+	$scope.user.servdesc_error = false;
+
 	console.log('in search controller');
 	$scope.startSearch = function()
     { 
@@ -407,15 +419,37 @@ angular.module('tradeapp.controllers', [])
 
     $scope.viewMore = function(data)
     { 
-
+		console.log(data);
+		$rootScope.s_u_ID = data;
+		window.location.href = "#/menu/trader-profile";
+    }
+	
+	 $scope.n_viewMore = function(data)
+    { 
+		console.log(data);
+		$rootScope.s_u_ID = data;
+		window.location.href = "#/n-trader-profile";
+    }
+})
+.controller('traderProfileCtrl',['$scope','$window','$ionicActionSheet','$ionicModal','$rootScope','$ionicPlatform','$ionicHistory','$ionicLoading','$ionicPopup','Auth',
+                     function($scope, $window, $ionicActionSheet, $ionicModal, $rootScope,  $ionicPlatform,  $ionicHistory,  $ionicLoading, $ionicPopup, Auth){
+	
+	$scope.user = [];
+	$scope.replaceAll = function(str, find, replace)
+    {
+		return str.replace(new RegExp(find, 'g'), replace);
+	}
+	$scope.$on('$ionicView.enter', function(event) {
+		
 		$ionicLoading.show({
 			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
 		});
+		
 		var obj    = new Object();
 			obj.method = 'POST';
 			obj.url    = $rootScope.baseURL + "/mobile/user_controller/getUserData";
 			obj.data   = new FormData();
-			obj.data.append('userID',data);
+			obj.data.append('userID',$rootScope.s_u_ID);
 			obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
 			obj.params = {};
 			   
@@ -463,6 +497,7 @@ angular.module('tradeapp.controllers', [])
 							$scope.user.ethniticity = success.data.user_info.ethniticity;
 							$scope.user.servname = success.data.user_info.service_name;
 							$scope.user.servdesc = success.data.user_info.service_desc;
+							
 						}
 						else{
 							setTimeout(function(){ $ionicLoading.hide(); }, 1000);
@@ -475,10 +510,8 @@ angular.module('tradeapp.controllers', [])
 						// $rootScope.showToast('Invalid Username/Password');
 					}
 				);   	
-
-    }
-
-})
+	})
+}])	
 .controller('MenuCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 	
 	//$rootScope.isLogged  = false;

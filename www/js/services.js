@@ -7,6 +7,7 @@ app.factory('Auth', ['$http','$rootScope',
 	 
 	
 	$rootScope.user_info   = {};
+	$rootScope.s_u_ID = 0;
 		
 	$rootScope._remove_white_space = function (str)
 	  {

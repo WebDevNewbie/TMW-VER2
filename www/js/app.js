@@ -47,7 +47,15 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
         }
       }
     })
-
+	.state('menu.trader-profile', {
+      url: '/trader-profile',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/trader-profile.html',
+          controller: 'traderProfileCtrl'
+        }
+      }
+    })
 	.state('signuptab', {
     url: '/signuptab',
     abstract: true,
@@ -58,10 +66,10 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
     templateUrl: "templates/search.html",
     controller: 'SearchCtrl'
   })
-  .state('trader-profile', {
-    url: "/trader-profile",
-    templateUrl: "templates/trader-profile.html",
-    controller: 'SearchCtrl'
+  .state('n-trader-profile', {
+    url: "/n-trader-profile",
+    templateUrl: "templates/n-trader-profile.html",
+    controller: 'traderProfileCtrl'
   })
   .state('menu.userprofile', {
       url: '/userprofile',
