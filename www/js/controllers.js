@@ -509,6 +509,7 @@ angular.module('tradeapp.controllers', [])
 
 	$scope.chat_trader = function(){
 		alert("Currently chatting this Trader is ID:" + $rootScope.user_info.user_id);
+		
 	}
 
 }])	
