@@ -1,7 +1,60 @@
 /* Empty. Add your own CSS if you like */
 #searchbox{margin-top:75px}
 #loginWrapper{margin-top:75px}
+#loginWrapper .list-inset{border-radius:50px;border: 2px solid #fff;}
+#registerWrapper .item{border-radius:50px;border: 2px solid #fff;
+-webkit-box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
+-moz-box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
+box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
+}
+#searchWrapper{
+	    margin-top: 20px;
+    width: 85%;
+    margin-left: 7%;
+    border-radius: 50px;
+    border: 2px solid #fff;
+    background: rgba(000, 000, 000, 0.5);
+}
+#loginWrapper .item-input{    background: rgba(191, 224, 136);}
+#loginWrapper .icon{color:#fff;}
+#loginWrapper input{color:#fff;}
+#loginWrapper input::placeholder{color:#fff;}
+#searchWrapper input::placeholder{color:#fff;}
+#searchWrapper input{color:#fff;}
+#searchWrapper .item-input-wrapper{background: transparent;}
+#searchWrapper button{background: transparent;}
+#registerWrapper .list-inset{background: transparent;    margin: 20px 20px;}
+#registerWrapper .input-label{color:#7ec12e}
+#loginWrapper button{    width: 80%;
+    margin-left: 10%;
+    border-radius: 50px;}
+#registerWrapper button{ 
+    border-radius: 50px;}
 #registerWrapper{margin-top:-10px}
 .bar .title{text-align:center !important;    margin-left: -10px;}
 .back-text .default-title{display:none !important}
 .btn-padding{padding-left:15px;padding-right:15px;}
+.bgGreen,.bar-header{
+	background-color: #aad542; /* For browsers that do not support gradients */
+    background-image: linear-gradient(#aad542, #80c22f);
+}
+.button.button-clear{
+	    color: #fff !important;
+}
+.bar-header{
+	border:none !Important;
+	background-color: #a7d341 !important;
+}
+.color-white{color:#fff;}
+.registerBg{background:#f7f9fb;}
+.color-h4-green{color:#7ec12e;}
+.select-data{color:#7ec12e !important; font-weight:bold;    border-radius: 50px;}
+.bgSearch{
+	width: 100%;
+    height: 100%;
+    background-image: url('../img/search-bg.jpg');
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+.title{color:#fff !important}
+.scroll{    padding-bottom: 20px !important;}
