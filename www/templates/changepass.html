@@ -1,33 +1,41 @@
-<ion-view cache-view="true" hide-nav-bar="true">
-	<ion-header-bar class="bar-stable bar bar-header" align-title="center">
+<ion-view cache-view="true" hide-nav-bar="true" class="bgGreen">
+	<ion-header-bar class="bar-stable bar bar-header" align-title="center" style="background-image: none;">
 		<div class="buttons buttons-left header-item">
 			<span class="left-buttons">
 				<button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
 			</span>
 		</div>
-		<div class="title title-center header-item" style="left: 45px; right: 45px;">Change Password</div>
 	  </ion-header-bar>
 	<ion-content>
-	<div class="list">
-		<label class="item item-input item-stacked-label">
-			<span class="input-label">Old Password</span>
-			<input type="password" placeholder="********" value="" ng-model="user.oldpass">
-		</label>
-		<label class="item item-input item-stacked-label">
-			<span class="input-label">New Password</span>
-			<input type="password" placeholder="********" value="" ng-model="user.newpass">
-		</label>
-		<label class="item item-input item-stacked-label">
-			<span class="input-label">Confirm New Password</span>
-			<input type="password" placeholder="********" value="" ng-model="user.cnewpass">
-		</label>
-		<div ng-show="user.changeStat" class="h5 assertive text-center">{{ user.changeDesc}}</div> 
-		<div ng-show="user.changeStatSucc" id="changeStatSucc" class="h5 balanced text-center">{{ user.changeSuccDesc}}</div> 
-		<div class="btn-padding">
-			<button type="submit" ng-click="changepass()" class="button button-block button-positive">
-			  SAVE
-			</button>
+	<div id="changepass-wrapper">
+		<div id="img-wrapper"><img src="../img/changepass-icon.png"></div>
+		<h4 class="text-center h3 color-white">CHANGE PASSWORD</h4>
+		<div class="list list-inset">
+			<label class="item item-input">
+				<i class="icon ion-locked placeholder-icon"></i>
+				<input type="password" placeholder="Old Password" value="" ng-model="user.oldpass">
+			</label>
 		</div>
+		<div class="list list-inset">
+			<label class="item item-input">
+				<i class="icon ion-locked placeholder-icon"></i>
+				<input type="password" placeholder="New Password" value="" ng-model="user.newpass">
+			</label>
+		</div>
+		<div class="list list-inset">
+			<label class="item item-input">
+				<i class="icon ion-locked placeholder-icon"></i>
+				<input type="password" placeholder="Confirm New Password" value="" ng-model="user.cnewpass">
+			</label>
+			<div ng-show="user.changeStat" class="h5 assertive text-center">{{ user.changeDesc}}</div> 
+			<div ng-show="user.changeStatSucc" id="changeStatSucc" class="h5 balanced text-center">{{ user.changeSuccDesc}}</div> 
+			
+		</div>
+		<div class="btn-padding">
+				<button type="submit" ng-click="changepass()" class="button button-block button-positive">
+				  SAVE
+				</button>
+			</div>
 	</div>
 
 	</ion-content>

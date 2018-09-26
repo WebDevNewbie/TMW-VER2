@@ -35,7 +35,7 @@ box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
 .back-text .default-title{display:none !important}
 .btn-padding{padding-left:15px;padding-right:15px;}
 .bgGreen,.bar-header{
-	background-color: #aad542; /* For browsers that do not support gradients */
+	background-color: #aad542; 
     background-image: linear-gradient(#aad542, #80c22f);
 }
 .button.button-clear{
@@ -58,3 +58,41 @@ box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
 }
 .title{color:#fff !important}
 .scroll{    padding-bottom: 20px !important;}
+#loginWrapper .list-inset {
+    margin: 20px 25px;
+}
+#loginWrapper #img-wrapper{
+	width:100%;
+	height:100%;
+}
+
+#loginWrapper #img-wrapper img{
+	max-width:170px;height:auto;
+	display:block;
+	margin:0 auto;
+}
+
+#changepass-wrapper .list-inset {
+    margin: 20px 25px;
+}
+#changepass-wrapper #img-wrapper{
+	width:100%;
+	height:100%;
+}
+
+#changepass-wrapper #img-wrapper img{
+	max-width:170px;height:auto;
+	display:block;
+	margin:0 auto;
+}
+#changepass-wrapper button{    width: 90%;
+    margin-left: 5%;
+    border-radius: 50px;}
+#changepass-wrapper .list-inset{border-radius:50px;border: 2px solid #fff;}
+#changepass-wrapper .item-input{    background: rgba(191, 224, 136);}
+#changepass-wrapper .icon{color:#fff;}
+#changepass-wrapper input{color:#fff;}
+#changepass-wrapper input::placeholder{color:#fff;}
+.menu-item.item{background:transparent;color:#fff;}
+.menu-item.item a{background:transparent;color:#fff;}
+.menu-item a.activated{background-color: #80c22f !important;color:#fff;}
