@@ -96,3 +96,19 @@ box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
 .menu-item.item{background:transparent;color:#fff;}
 .menu-item.item a{background:transparent;color:#fff;}
 .menu-item a.activated{background-color: #80c22f !important;color:#fff;}
+#profile-wrapper input::placeholder{padding-left:15px;}
+#profile-wrapper input{padding:20px 0px 20px 15px;}
+#profile-wrapper .input-label{color:#7ec12e;padding-bottom: 5px;}
+#profile-wrapper .item{border:none}
+#profBtn a.tab-item{    color: #7ec12e;
+    font-size: 15px;
+    position: relative;
+    top: -2px;}
+#profile-wrapper{background: transparent;    margin:20px 20px 0px 5px;}
+#profile-wrapper input{
+background:#fff;
+border-radius:50px;border: 2px solid #fff;
+-webkit-box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
+-moz-box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
+box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
+}

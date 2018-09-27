@@ -27,10 +27,9 @@
 				<i class="icon ion-locked placeholder-icon"></i>
 				<input type="password" placeholder="Confirm New Password" value="" ng-model="user.cnewpass">
 			</label>
-			<div ng-show="user.changeStat" class="h5 assertive text-center">{{ user.changeDesc}}</div> 
-			<div ng-show="user.changeStatSucc" id="changeStatSucc" class="h5 balanced text-center">{{ user.changeSuccDesc}}</div> 
-			
 		</div>
+		<div ng-show="user.changeStat" class="h5 assertive text-center">{{ user.changeDesc}}</div> 
+		<div ng-show="user.changeStatSucc" id="changeStatSucc" class="h5 positive text-center">{{ user.changeSuccDesc}}</div>
 		<div class="btn-padding">
 				<button type="submit" ng-click="changepass()" class="button button-block button-positive">
 				  SAVE
