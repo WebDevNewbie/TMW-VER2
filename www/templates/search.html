@@ -16,20 +16,15 @@
   
 	<ion-content style="margin-top:115px;">
 	<div class="card" ng-repeat="data in result">
-	  <div class="item item-text-wrap item-button-right">
-	   <h2 style='font-weight:bold;'>Quick Details</h2>
-	    <a class="button button-positive button-outline" ng-click="n_viewMore(data.user_id)">
+	  <div class="item item-avatar" style="background-image:url('img/noservice-picture.jpg');background-size:cover">
+	   	
+	   	<img src="img/man.png" style="z-index:1;">
+		<a class="button button-outline" style="border:none;color:#fff;float:right;" ng-click="n_viewMore(data.user_id)">
       		<i class="icon ion-person-stalker"></i>
     	</a>
+	    <h2  style="color:#5ea509;">{{ data.service_name }}</h2>
+	    <p  style="color:#fff;">{{ data.address }}</p>
 	  </div>
-	  <div class="item item-avatar">
-	   	<img src="img/man.png">
-	    <h2>{{ data.service_name }}</h2>
-	    <p>{{ data.address }}</p>
-	  </div>
-	  <div class="item item-divider">
-   <h3>Trade Description</h3>
-  	 </div>
 	  <div class="item item-text-wrap">
 	    <p>
 	      {{ data.service_desc }}.

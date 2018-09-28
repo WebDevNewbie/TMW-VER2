@@ -384,7 +384,7 @@ angular.module('tradeapp.controllers', [])
 					 console.log(JSON.stringify(success.data.search_result));
 					 $scope.user.search = "";
 					 $scope.result = success.data.search_result;
-					
+					console.log(success.data.search_result);
 					  // var obj          = new Object();
 						 //  obj.user_id       = success.data.user_info.user_id;
 						 //  obj.username     = success.data.user_info.username;
