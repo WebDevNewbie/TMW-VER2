@@ -1,4 +1,4 @@
-<ion-view cache-view="true" hide-nav-bar="true">
+<ion-view cache-view="true" hide-nav-bar="true"  class="registerBg"> 
 	<ion-header-bar class="bar-stable bar bar-header" align-title="center">
 		<div class="buttons buttons-left header-item">
 			<span class="left-buttons">
@@ -90,20 +90,20 @@
 			<span class="input-label">Certifications</span>
 			<input type="text" placeholder="Certificate 1, Certificate 2, and etc..." ng-model="user.certificate" disabled>
 		</label>
-		<label class="item item-input item-select">
+		<label class="item item-input item-select"  style="box-shadow: none;border: none;background: transparent;">
 			<div class="input-label">
 			  What you prefer?
 			</div>
-			<select id="user_group">
+			<select id="user_group" class="select-data">
 			  <option value="1" selected>Small Group</option>
 			  <option value="2" >Large Group</option>
 			</select>
 		</label>
-		<label class="item item-input item-select">
+		<label class="item item-input item-select"  style="box-shadow: none;border: none;background: transparent;">
 			<div class="input-label">
 			  What do you want?
 			</div>
-			<select id="user_place_prefer">
+			<select id="user_place_prefer" class="select-data">
 			  <option value="1" selected>City</option>
 			  <option value="2" >Country</option>
 			</select>
@@ -112,11 +112,11 @@
 			<span class="input-label">Religion</span>
 			<input type="text" placeholder="What is your religion?" ng-model="user.religion" disabled>
 		</label>
-		<label class="item item-input item-select">
+		<label class="item item-input item-select"  style="box-shadow: none;border: none;background: transparent;">
 			<div class="input-label">
 			  Civil Status
 			</div>
-			<select id="user_civil_status">
+			<select id="user_civil_status" class="select-data">
 			  <option value="1" selected>Single</option>
 			  <option value="2" >Married</option>
 			  <option value="3" >Widowed</option>
@@ -127,11 +127,11 @@
 			<span class="input-label">Children</span>
 			<input type="text" placeholder="How many children do you have?" ng-model="user.children" disabled>
 		</label>
-		<label class="item item-input item-select">
+		<label class="item item-input item-select"  style="box-shadow: none;border: none;background: transparent;">
 			<div class="input-label">
 			  Do they still live at home?
 			</div>
-			<select id="user_live_athome">
+			<select id="user_live_athome" class="select-data">
 			  <option value="1" selected>Yes</option>
 			  <option value="2" >No</option>
 			</select>
@@ -143,7 +143,7 @@
 	</div>
 
 	</ion-content>
-	<div class="tabs tabs-icon-left">
+	<div class="tabs tabs-icon-left" id="profBtn">
 	  <a class="tab-item" ng-show="user.clickedEdit == false" ng-click="editProfile()">
 		<i class="icon ion-edit"></i>
 		Edit Profile

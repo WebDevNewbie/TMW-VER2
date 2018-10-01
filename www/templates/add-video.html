@@ -1,0 +1,23 @@
+<ion-view title="Add Trade Videos">
+	<ion-content>
+	<div class="card" >
+		<div class="item item-avatar"> 
+		    <img src="img/movie-player.png">
+		    <h2>Trade Video for Upload</h2>
+		    <p>will be displayed here!</p>
+	  	</div>
+	</div>
+	<div class="list card" ng-show="videoURL != null">
+		<div class="item item-image">
+			 <video ng-src="{{ trustSrc(videoURL) }}" type="video/mp4" controls="controls" autoplay></video>
+		</div>
+		<div id="videoArea"></div>
+	</div>	
+	</ion-content>
+	<div class="tabs tabs-icon-left">
+	  <div class="button-bar">
+	  <button class="button icon ion-upload button-balanced button-outline" ng-disabled="videoURL === null"> Upload Video</button>
+	  <button ng-click="captureVideo()" class="button icon ion-android-download button-positive button-outline" > Select Video</button>
+</div>
+	</div>
+</ion-view>

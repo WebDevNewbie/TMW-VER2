@@ -7,8 +7,9 @@ app.factory('Auth', ['$http','$rootScope',
 	 
 	
 	$rootScope.user_info   = {};
+  $rootScope.pictureImage = 0;
 	$rootScope.s_u_ID = 0;
-		
+  
 	$rootScope._remove_white_space = function (str)
 	  {
 		var string = str;
@@ -89,6 +90,7 @@ app.directive('noCacheSrc', function($window) {
     }
   }
 });
+
 /*.factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 

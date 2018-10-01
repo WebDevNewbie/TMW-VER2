@@ -1,0 +1,22 @@
+<ion-view title="Add Trade Image">
+	<ion-content>
+	<div class="card" >
+		<div class="item item-avatar"> 
+		    <img src="img/pictures.png">
+		    <h2>Image for upload</h2>
+		    <p>will be displayed here!</p>
+	  	</div>
+	</div>
+	<div class="list card" ng-show="pictureUrl != null">
+		<div class="item item-image">
+			<img ng-src="{{ pictureUrl }}">
+		</div>
+	</div>	
+	</ion-content>
+	<div class="tabs tabs-icon-left">
+	  <div class="button-bar">
+	  <button class="button icon ion-upload button-balanced button-outline" ng-disabled="pictureUrl === null" ng-click="uploadImage()"> Upload Image</button>
+	  <button class="button icon ion-android-download button-positive button-outline" ng-click="takePicture()"> Select Image</button>
+</div>
+	</div>
+</ion-view>

@@ -1,20 +1,24 @@
-<ion-view title="Login to Trade App">
-	<div id="loginWrapper">
-		<div class="list list-inset">
-		  <label class="item item-input">
-			<i class="icon ion-person placeholder-icon"></i>
-			<input type="text" placeholder="Username" ng-model="user.name">
-		  </label>
+
+	<ion-view class="bgGreen" title="">
+		<div id="loginWrapper">
+			<div id="img-wrapper"><img src="../img/login-icon.png"></div>
+			<h4 class="text-center h3 color-white">MEMBER LOGIN</h4>
+			<div class="list list-inset">
+			  <label class="item item-input">
+				<i class="icon ion-person placeholder-icon"></i>
+				<input type="text" placeholder="Username" ng-model="user.name">
+			  </label>
+			</div>
+			<div class="list list-inset">
+			  <label class="item item-input">
+				<i class="icon ion-locked placeholder-icon"></i>
+				<input type="password" placeholder="Password" ng-model="user.pass">
+			  </label>
+			</div>
+			
+				<button type="submit" ng-click="login2()" class="button button-block button-positive">LOGIN</button>
+			
 		</div>
-		<div class="list list-inset">
-		  <label class="item item-input">
-			<i class="icon ion-locked placeholder-icon"></i>
-			<input type="password" placeholder="Password" ng-model="user.pass">
-		  </label>
-		</div>
-		<div class="list list-inset">
-			<button type="submit" ng-click="login()" class="button button-block button-positive">Log In</button>
-		</div>
-	</div>
-</ion-view>
+	</ion-view>
+
 

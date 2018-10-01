@@ -1,0 +1,27 @@
+<ion-view title="Trade Video List">
+	<ion-content>
+	<div class="card" >
+		<div class="item item-avatar"> 
+		    <img src="img/movie-player.png">
+		    <h2>Trade Video List</h2>
+		    <p>will be displayed here!</p>
+	  	</div>
+	</div>
+	<div class="list">
+    <a class="item item-thumbnail-left" ng-repeat = "files in Images">
+      <img ng-src="https://192.168.1.22/tradeappbackend/public_html/MediaFiles/{{ Idholder }}/Images/{{ files.file_name }}">
+    <!--  <img src="192.168.1.22/tradeappbackend/public_html/MediaFiles/17/Images/5bafdc440302e.jpeg"> -->
+
+      <h2>{{ files.file_name }}</h2>
+      <textarea>http://192.168.1.22/tradeappbackend/public_html/MediaFiles/17/Images/5bafb5c21b21a.jpeg</textarea>
+    </a>
+	</div>
+
+	</ion-content>
+	<div class="tabs tabs-icon-left">
+	<a class="tab-item" href="#/menu/add-video">
+	  	<i class="icon ion-videocamera"></i>
+	  	Upload a Video
+	  </a>
+	</div>
+</ion-view>

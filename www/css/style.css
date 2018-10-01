@@ -1,7 +1,118 @@
 /* Empty. Add your own CSS if you like */
 #searchbox{margin-top:75px}
 #loginWrapper{margin-top:75px}
+#loginWrapper .list-inset{border-radius:50px;border: 2px solid #fff;}
+#registerWrapper .item{border-radius:50px;border: 2px solid #fff;
+-webkit-box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
+-moz-box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
+box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
+}
+#searchWrapper{
+	    margin-top: 20px;
+    width: 85%;
+    margin-left: 7%;
+    border-radius: 50px;
+    border: 2px solid #fff;
+    background: rgba(000, 000, 000, 0.5);
+}
+#loginWrapper .item-input{    background: rgba(191, 224, 136);}
+#loginWrapper .icon{color:#fff;}
+#loginWrapper input{color:#fff;}
+#loginWrapper input::placeholder{color:#fff;}
+#searchWrapper input::placeholder{color:#fff;}
+#searchWrapper input{color:#fff;}
+#searchWrapper .item-input-wrapper{background: transparent;}
+#searchWrapper button{background: transparent;}
+#registerWrapper .list-inset{background: transparent;    margin: 20px 20px;}
+#registerWrapper .input-label{color:#7ec12e}
+#registerWrapper span.h6{margin-left: 10px;}
+#loginWrapper button{    width: 80%;
+    margin-left: 10%;
+    border-radius: 50px;}
+#registerWrapper button{ 
+    border-radius: 50px;}
 #registerWrapper{margin-top:-10px}
 .bar .title{text-align:center !important;    margin-left: -10px;}
 .back-text .default-title{display:none !important}
 .btn-padding{padding-left:15px;padding-right:15px;}
+.bgGreen,.bar-header{
+	background-color: #aad542; 
+    background-image: linear-gradient(#aad542, #80c22f);
+}
+.button.button-clear{
+	    color: #fff !important;
+}
+.bar-header{
+	border:none !Important;
+	background-color: #a7d341 !important;
+}
+.color-white{color:#fff;}
+.registerBg{background:#f7f9fb;}
+.color-h4-green{color:#7ec12e;}
+.select-data{color:#7ec12e !important; font-weight:bold;    border-radius: 50px;}
+.bgSearch{
+	width: 100%;
+    height: 100%;
+    background-image: url('../img/search-bg.jpg');
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+.title{color:#fff !important}
+.scroll{    padding-bottom: 20px !important;}
+#loginWrapper .list-inset {
+    margin: 20px 25px;
+}
+#loginWrapper #img-wrapper{
+	width:100%;
+	height:100%;
+}
+
+#loginWrapper #img-wrapper img{
+	max-width:170px;height:auto;
+	display:block;
+	margin:0 auto;
+}
+
+#changepass-wrapper .list-inset {
+    margin: 20px 25px;
+}
+#changepass-wrapper #img-wrapper{
+	width:100%;
+	height:100%;
+}
+
+#changepass-wrapper #img-wrapper img{
+	max-width:170px;height:auto;
+	display:block;
+	margin:0 auto;
+}
+#changepass-wrapper button{    width: 90%;
+    margin-left: 5%;
+    border-radius: 50px;}
+#changepass-wrapper .list-inset{border-radius:50px;border: 2px solid #fff;}
+#changepass-wrapper .item-input{    background: rgba(191, 224, 136);}
+#changepass-wrapper .icon{color:#fff;}
+#changepass-wrapper input{color:#fff;}
+#changepass-wrapper input::placeholder{color:#fff;}
+.menu-item.item{background:transparent;color:#fff;}
+.menu-item.item a{background:transparent;color:#fff;}
+.menu-item a.activated{background-color: #80c22f !important;color:#fff;}
+#profile-wrapper input::placeholder{padding-left:15px;}
+#profile-wrapper input{padding:20px 0px 20px 15px;}
+#profile-wrapper .input-label{color:#7ec12e;padding-bottom: 5px;}
+#profile-wrapper .item{border:none}
+#profBtn a.tab-item{    color: #7ec12e;
+    font-size: 15px;
+    position: relative;
+    top: -2px;}
+#profile-wrapper{background: transparent;    margin:20px 20px 0px 5px;}
+#profile-wrapper input{
+background:#fff;
+border-radius:50px;border: 2px solid #fff;
+-webkit-box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
+-moz-box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
+box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
+}
+
+#profile-wrapper span.h6{margin-left:25px;}
+#service-picture{width:100%;position:absolute;top:-15px;left:0;}

@@ -1,63 +1,76 @@
-<ion-view title="Register Now">
+<ion-view title="Register Now" class="registerBg">
 
 	<ion-content>
 	
 	<div id="registerWrapper">
 		
 		<div class="list list-inset">
-			<h4>Log In Credentials</h4>
+			<h4 class="color-h4-green">Login Credentials</h4>
+			<br>
 		  <label class="item item-input">
 			<input type="text" placeholder="Username" ng-keyup="chkUsername()" ng-model="user.uname">
 		  </label>
 			<span ng-show="uname.error" class="h6 assertive">{{ uname.desc}}</span> 
+			<br>
 		  <label class="item item-input">
 			<input type="password" placeholder="Password" ng-model="user.pass">
 		  </label>
 		  <span ng-show="pass.error" class="h6 assertive">{{ pass.desc}}</span> 
+		  <br>
 		  <label class="item item-input">
 			<input type="password" placeholder="Confirm Password" ng-model="user.cpass">
 		  </label>
 		  <span ng-show="cpass.error" class="h6 assertive">{{ cpass.desc}}</span> 
 		  <span ng-show="notEqual.error" class="h6 assertive">{{ notEqual.desc}}</span> 
-		   <label class="item item-input item-select">
+		   <br>
+		   <label class="item item-input item-select" style="box-shadow: none;border: none;background: transparent;">
 			<div class="input-label">
 			  Member Package
 			</div>
-			<select id="user_role">
+			<select id="user_role" class="select-data">
 			  <option value="1" selected>Free</option>
 			  <option value="2" >Gold</option>
 			  <option value="3">Diamond</option>
 			</select>
 		  </label>
+		  <br>
 		  <label class="item item-input">
 			<input type="text" placeholder="Service Name" ng-model="user.servname">
 		  </label>
 		  <span ng-show="user.servname_error" class="h6 assertive">{{ user.servname_desc}}</span> 
+		  <br>
 		  <label class="item item-input">
 			<textarea placeholder="Service Description" ng-model="user.servdesc" style="height:60px"></textarea>
 		  </label>
 		  <span ng-show="user.servdesc_error" class="h6 assertive">{{ user.servdesc_desc}}</span> 
+		  <br>
 		</div>
 		
+		<div class="list list-inset"><hr></div>
 		<div class="list list-inset">
-			<h4>Personal Info</h4>
+			<h4 class="color-h4-green">Personal Info</h4>
+			<br>
 		  <label class="item item-input">
 			<input type="text" placeholder="First Name" ng-model="user.fname">
 		  </label>
 		  <span ng-show="user.fname_error" class="h6 assertive">{{ user.fname_desc}}</span> 
+		  <br>
 		  <label class="item item-input">
 			<input type="text" placeholder="Last Name" ng-model="user.lname">
 		  </label>
 		  <span ng-show="user.lname_error" class="h6 assertive">{{ user.lname_desc}}</span> 
+		  <br>
 		  <label class="item item-input">
 			<input type="text" placeholder="Age" ng-model="user.age">
 		  </label>
 		  <span ng-show="user.age_error" class="h6 assertive">{{ user.age_desc}}</span> 
+		  <br>
 		  <label class="item item-input">
 			<span class="input-label">Birthdate</span>
 			<input type="date" placeholder="Birthday" ng-model="user.bday">
 		  </label>
 		  <span ng-show="user.bday_error" class="h6 assertive">{{ user.bday_desc}}</span> 
+		  <br>
 		  <label class="item item-input">
 			<input type="text" placeholder="Address" ng-model="user.address">
 		  </label>

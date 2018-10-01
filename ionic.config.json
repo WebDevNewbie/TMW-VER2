@@ -3,7 +3,7 @@
   "integrations": {
     "cordova": {}
   },
-  "proxies": [
+  "proxies": [        
     {
       "path": "/host",
       "proxyUrl": "http://localhost/tradeappbackend/public_html"

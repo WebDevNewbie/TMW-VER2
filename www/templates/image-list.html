@@ -1,0 +1,27 @@
+<ion-view title="Trade Image List">
+	<ion-content>
+	<div class="card" >
+		<div class="item item-avatar"> 
+		    <img src="img/pictures.png">
+		    <h2>Trade Image for Upload</h2>
+		    <p>will be display here!</p>
+	  	</div>
+	</div>
+	<div class="list">
+    <a class="item item-thumbnail-left" ng-repeat = "files in Images">
+      <img ng-src="{{ mainDIR + IdholderDIR + files.file_name }}">
+    <!--  <img src="192.168.1.22/tradeappbackend/public_html/MediaFiles/17/Images/5bafdc440302e.jpeg"> -->
+
+      <h2>{{ files.file_name }}</h2>
+      <textarea>{{ mainDIR + IdholderDIR + files.file_name }}</textarea>
+    </a>
+	</div>
+
+	</ion-content>
+	<div class="tabs tabs-icon-left">
+	<a class="tab-item" href="#/menu/add-image">
+	  	<i class="icon ion-images"></i>
+	  	Upload an Image
+	  </a>
+	</div>
+</ion-view>

@@ -1,5 +1,5 @@
 
-angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'])
+angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services','ngCordova','ngSanitize'])
 
 .run(function($ionicPlatform, $rootScope) {
   $ionicPlatform.ready(function() {
@@ -71,6 +71,42 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
     templateUrl: "templates/n-trader-profile.html",
     controller: 'traderProfileCtrl'
   })
+  .state('menu.add-image', {
+      url: '/add-image',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/add-image.html',
+          controller: 'FilesCtrl'
+        }
+      }
+    })
+  .state('menu.image-list', {
+      url: '/image-list',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/image-list.html',
+          controller: 'ImageListCtrl'
+        }
+      }
+    })
+    .state('menu.add-video', {
+      url: '/add-video',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/add-video.html',
+          controller: 'VideosCtrl'
+        }
+      }
+    })
+  .state('menu.video-list', {
+      url: '/video-list',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/video-list.html',
+          controller: 'VideoListCtrl'
+        }
+      }
+    })
   .state('menu.userprofile', {
       url: '/userprofile',
       views: {

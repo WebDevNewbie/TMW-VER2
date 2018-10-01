@@ -1,4 +1,4 @@
-angular.module('tradeapp.controllers', [])
+angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 
 .controller('RegisterCtrl',['$scope','$window','$ionicActionSheet','$ionicModal','$rootScope','$ionicPlatform','$ionicHistory','$ionicLoading','$ionicPopup','Auth',
                      function($scope, $window, $ionicActionSheet, $ionicModal, $rootScope,  $ionicPlatform,  $ionicHistory,  $ionicLoading, $ionicPopup, Auth)  {
@@ -51,6 +51,32 @@ angular.module('tradeapp.controllers', [])
                }
             ); 
 	}
+
+	$scope.chkUsername2 = function (){
+
+        var query = 'http://192.168.1.22/tradeappbackend/checkUsername.php';
+			
+
+			var sOptions = {
+				username : $scope.user.uname
+			}
+	   		
+	   		$http.post(query, sOptions).then(function (res){
+            	$scope.response = res.data;
+   
+            	if ($scope.response.success == true) {
+            		$scope.uname.error = true;
+					$scope.uname.desc = "Username is already taken.";
+					$scope.uname.check = true;
+            		
+            	} else {
+					$scope.uname.error = false;
+					$scope.uname.check = false;
+            	}
+        	})
+	}
+
+
 	$scope.register = function (){
 		
 		var validInput = $scope.VALIDATE_REGISTER_INPUT();
@@ -210,8 +236,8 @@ angular.module('tradeapp.controllers', [])
 
 	  }
 	  
-	   $scope.ADD_TO_SERVER = function ()
-	  {
+	$scope.ADD_TO_SERVER = function ()
+	{
 
 		$ionicLoading.show({
           template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
@@ -254,25 +280,86 @@ angular.module('tradeapp.controllers', [])
                     $ionicLoading.hide();
                }
             ); 
-	  }
+	}
 	  
-	   $scope.showSuccessMessage = function() {
-		   var alertPopup = $ionicPopup.alert({
-			 title: 'SUCCESS!',
-			 template: 'You can now login.'
-		   });
+   	$scope.showSuccessMessage = function() {
+	   var alertPopup = $ionicPopup.alert({
+		 title: 'SUCCESS!',
+		 template: 'You can now login.'
+	   });
 
-		   alertPopup.then(function(res) {
-			   window.location.href = "#/search";
-			 //console.log('Thank you for not eating my delicious ice cream cone');
-		   });
-		};
+	   alertPopup.then(function(res) {
+		   window.location.href = "#/search";
+		 //console.log('Thank you for not eating my delicious ice cream cone');
+	   });
+	};
 }])
 .controller('DashCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {})
-.controller('LoginCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
+.controller('LoginCtrl', function($scope,  $http, $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 	//console.log($rootScope.baseURL);
 	//console.log($rootScope.isLogged);
 	$scope.login = function()
+    { 
+		
+		if($scope.user.name == "" && $scope.user.pass == ""){
+			//$rootScope.showToast('Please enter Username and Password.');
+		}
+		else{
+			$ionicLoading.show({
+			  template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
+			});
+			var obj    = new Object();
+			obj.method = 'POST';
+			obj.url    = $rootScope.baseURL + "/mobile/login_controller/logIn";
+			//obj.url = 'http://192.168.1.22/tradeappbackend/public_html/mobile/login_controller/logIn'
+			obj.data   = new FormData();
+			obj.data.append('chrUserName',$scope.user.name);
+			obj.data.append('passUserPassword',$scope.user.pass);
+			obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
+			obj.params = {};
+	   
+			Auth.REQUEST(obj).then(
+			  function(success) { 
+				  if(JSON.stringify(success.data.success) == "true"){
+					 // console.log(success.data.user_info);
+					 $scope.user.name = "";
+					 $scope.user.pass = "";
+					  var obj          = new Object();
+						  obj.user_id       = success.data.user_info.user_id;
+						  obj.username     = success.data.user_info.username;
+						  obj.user_role     = success.data.user_info.user_role;
+			   
+					  Auth.STORE_DATA('userData',obj);
+					  $rootScope.isLogged  = true;
+					  $rootScope.user_info =  Auth.FETCH_DATA('userData');
+					  console.log(JSON.stringify($rootScope.user_info.user_id));	
+					  
+					  /*if(obj.role == 0){
+							window.location.href = "#/menuAdmin/dashboardAdmin";
+					  }
+					  else{
+							window.location.href = "#/menu/dashboard";
+					  }*/
+					  window.location.href = "#/menu/usersearch";
+					  $ionicLoading.hide();
+					 // console.log("true");
+				  }
+				  else{
+					$ionicLoading.hide();
+					//console.log("false");
+					//$rootScope.showToast('Invalid Username/Password');
+				  }
+				},
+				function(error) { 
+				  $ionicLoading.hide();
+				  // $rootScope.showToast('Invalid Username/Password');
+				}
+			);    
+		}							  
+    }
+
+    // test login function
+    $scope.login2 = function()
     { 
 		//console.log($scope.user.name);
 		//console.log($scope.user.pass);
@@ -280,56 +367,42 @@ angular.module('tradeapp.controllers', [])
 			//$rootScope.showToast('Please enter Username and Password.');
 		}
 		else{
-				$ionicLoading.show({
-				  template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
-				});
-				var obj    = new Object();
-				obj.method = 'POST';
-				obj.url    = $rootScope.baseURL + "/mobile/login_controller/logIn";
-				obj.data   = new FormData();
-				obj.data.append('chrUserName',$scope.user.name);
-				obj.data.append('passUserPassword',$scope.user.pass);
-				obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
-				obj.params = {};
-		   
-				Auth.REQUEST(obj).then(
-									  function(success) { 
-										  if(JSON.stringify(success.data.success) == "true"){
-											 // console.log(success.data.user_info);
-											 $scope.user.name = "";
-											 $scope.user.pass = "";
-											  var obj          = new Object();
-												  obj.user_id       = success.data.user_info.user_id;
-												  obj.username     = success.data.user_info.username;
-												  obj.user_role     = success.data.user_info.user_role;
-									   
-											  Auth.STORE_DATA('userData',obj);
-											  $rootScope.isLogged  = true;
-											  $rootScope.user_info =  Auth.FETCH_DATA('userData');
-											  console.log(JSON.stringify($rootScope.user_info.user_id));	
-											  
-											  /*if(obj.role == 0){
-													window.location.href = "#/menuAdmin/dashboardAdmin";
-											  }
-											  else{
-													window.location.href = "#/menu/dashboard";
-											  }*/
-											  window.location.href = "#/menu/usersearch";
-											  $ionicLoading.hide();
-											 // console.log("true");
-										  }
-										  else{
-											$ionicLoading.hide();
-											//console.log("false");
-											//$rootScope.showToast('Invalid Username/Password');
-										  }
-										},
-										function(error) { 
-										  $ionicLoading.hide();
-										  // $rootScope.showToast('Invalid Username/Password');
-										}
-									  );    
-			}							  
+			$ionicLoading.show({
+			  template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
+			});
+
+			// Final backend url
+			// var query = 'http://localhost/tradeappbackend/login.php';
+			// testing backend url
+			var query = 'http://192.168.1.22/tradeappbackend/login.php';
+			
+
+			var sOptions = {
+				chrUserName : $scope.user.name,
+				passUserPassword:$scope.user.pass
+			}
+	   		
+	   		$http.post(query, sOptions).then(function (res){
+            	$scope.response = res.data;
+   
+            	if ($scope.response.success == true) {
+            		console.log(JSON.stringify($scope.response.success));
+            		Auth.STORE_DATA('userData',$scope.response.user_info);
+				  	$rootScope.isLogged  = true;
+				  	$rootScope.user_info =  Auth.FETCH_DATA('userData');
+				  	console.log(JSON.stringify($rootScope.user_info.user_id));
+            		
+            		window.location.href = "#/menu/usersearch";
+					$ionicLoading.hide();
+            		//$scope.message();
+            		
+            	} else {
+					console.log(JSON.stringify($scope.response.success));
+					$ionicLoading.hide();
+            	}
+        	})
+			
+		}							  
     }
 })
 .controller('UserSearchCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
@@ -342,7 +415,7 @@ angular.module('tradeapp.controllers', [])
 
 
 })
-.controller('SearchCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
+.controller('SearchCtrl', function($scope,  $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 		
 	
 	//$rootScope.isLogged  = false;
@@ -384,7 +457,7 @@ angular.module('tradeapp.controllers', [])
 					 console.log(JSON.stringify(success.data.search_result));
 					 $scope.user.search = "";
 					 $scope.result = success.data.search_result;
-					
+					console.log(success.data.search_result);
 					  // var obj          = new Object();
 						 //  obj.user_id       = success.data.user_info.user_id;
 						 //  obj.username     = success.data.user_info.username;
@@ -425,6 +498,7 @@ angular.module('tradeapp.controllers', [])
 		$rootScope.s_u_ID = data;
 		window.location.href = "#/n-trader-profile";
     }
+
 })
 .controller('traderProfileCtrl',['$scope','$window','$ionicActionSheet','$ionicModal','$rootScope','$ionicPlatform','$ionicHistory','$ionicLoading','$ionicPopup','Auth',
                      function($scope, $window, $ionicActionSheet, $ionicModal, $rootScope,  $ionicPlatform,  $ionicHistory,  $ionicLoading, $ionicPopup, Auth){
@@ -907,6 +981,304 @@ angular.module('tradeapp.controllers', [])
 .controller('ChatDetailCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
   $scope.chat = Chats.get($stateParams.chatId);
 })
+
+// handling Upload of images Contollers
+.controller('FilesCtrl', ['$scope','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
+	function($scope, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
+    $scope.pictureUrl = null;
+    $scope.takePicture = function(){
+    	var options = {
+    	  sourceType : Camera.PictureSourceType.SAVEDPHOTOALBUM,
+	      destinationType: Camera.DestinationType.DATA_URL,
+	      encodingType: Camera.EncodingType.JPEG
+	    }
+	    $ionicLoading.show({
+		  template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
+		});
+    	$cordovaCamera.getPicture(options)
+    	.then(function(data){
+    		
+    		$scope.pictureUrl = "data:image/jpeg;base64," + data;
+    		$rootScope.pictureImage = data;
+    		$ionicLoading.hide();
+    		 
+    	}, function(error){
+    		console.log('camera error:' + JSON.stringify(error));
+    		$ionicLoading.hide();
+    	});
+    }
+
+    $scope.showSuccessMessage = function(message) {
+	   var alertPopup = $ionicPopup.alert({
+		 title: 'SUCCESS!',
+		 template: message
+	   });
+	}
+
+    $scope.uploadImage = function(){
+
+    	var query = 'http://192.168.1.22/tradeappbackend/upload.php';
+    	var sOptions = {
+    		key: "upload", 
+    		base64 : $rootScope.pictureImage, 
+    		user_id: $rootScope.user_info.user_id
+    	}
+    	$http.post(query, sOptions).then(function (res){
+    		$ionicLoading.show({
+			  template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+			});
+            $scope.response = res.data;
+        	if ($scope.response.success == true) {
+        		
+        		console.log(JSON.stringify($scope.response.success));
+        		console.log(JSON.stringify($scope.response.message));
+        		$ionicLoading.hide();
+        		$scope.showSuccessMessage($scope.response.message);
+        		$scope.pictureUrl = null;
+        		//$scope.message();
+        		
+        	} else {
+				console.log(JSON.stringify($scope.response.success));
+				$ionicLoading.hide();
+        	}
+    	})
+    };
+
+ 
+}])
+.controller('ImageListCtrl', ['$scope','$sce','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
+	function($scope, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
+
+	$scope.$on('$ionicView.enter', function(event) {
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
+		});
+		var query = 'http://192.168.1.22/tradeappbackend/ListImages.php';
+		var sOptions = {
+			user_id: $rootScope.user_info.user_id
+		}
+   		
+   		$http.post(query, sOptions).then(function (res){
+    	$scope.response = res.data;
+
+        	if ($scope.response.success == true) {
+        		$scope.mainDIR = 'http://192.168.1.22/tradeappbackend/public_html/MediaFiles/'
+        		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Images/";
+        		$scope.Images = $scope.response.file_names;
+				$ionicLoading.hide();
+        	} else {
+				console.log(JSON.stringify($scope.response.success));
+				$ionicLoading.hide();
+        	}
+    	})
+	})
+
+	$scope.trustSrc = function(src) {
+    	return $sce.trustAsResourceUrl(src);
+  	} 
+}])
+
+// end
+
+// Handling Upload of videos Controllers
+.controller('VideosCtrl', ['$scope','$sce','$cordovaFileTransfer','$cordovaCapture','$cordovaFile','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth',
+	function($scope, $sce, $cordovaFileTransfer, $cordovaCapture, $cordovaFile, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
+    //$scope.videoUrl = null;
+
+  
+ 	
+	// $scope.captureVideo = function() {
+	// 	$cordovaCapture.captureVideo().then(function(videoData) {
+	// 		VideoService.saveVideo(videoData).success(function(data) {
+	// 			$scope.clip = data;
+	// 			$scope.$apply();
+	// 		}).error(function(data) {
+	// 			console.log('ERROR: ' + data);
+	// 		});
+	// 	});
+	// };
+
+	// $scope.takeVideo = function(){
+ //    	var options = {
+ //    	  sourceType : Camera.PictureSourceType.SAVEDPHOTOALBUM,
+	//       destinationType: Camera.DestinationType.DATA_URL,
+	//       encodingType: Camera.EncodingType.JPEG
+	//     }
+	//     $ionicLoading.show({
+	// 	  template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
+	// 	});
+ //    	$cordovaCamera.getPicture(options)
+ //    	.then(function(data){
+    		
+ //    		$scope.videoFile = "data:video/mp4;base64," + data;
+
+ //    		$scope.savebase64AsFile(cordova.file.externalRootDirectory + 'UserFiles',);
+ //    		console.log(data);
+ //    		$ionicLoading.hide();
+ //    	}, function(error){
+ //    		console.log('camera error:' + JSON.stringify(error));
+ //    		$ionicLoading.hide();
+ //    	});
+ //    }
+
+ // 	$scope.CreateDirectory = function() {
+	//     var parentDirectory     = cordova.file.externalRootDirectory;
+	//     var directoryToCreate   = 'UserFiles'; // Make sure to change this to the directory name
+	//     window.resolveLocalFileSystemURL( parentDirectory , function (dirEntry) {
+	//     	function successHandler() {
+	//     		console.log(cordova.file.externalRootDirectory);
+	//     		console.log('Directory created');
+	//     	}
+	//     	function errorHandler(err) {
+	//     		console.log('Error in creating directory.', err);
+	//     	}
+	//        	dirEntry.getDirectory(directoryToCreate, { create: true }, successHandler, errorHandler);
+	//     });
+	// }
+
+	// $scope.savebase64AsFile = function(folderPath, fileName, base64, contentType){
+	//     var DataBlob = b64toBlob(base64,contentType);
+	//     window.resolveLocalFileSystemURL(folderPath, function(dir) {
+	//         dir.getFile(fileName, {create:true}, function(file) {
+	//             file.createWriter(function(fileWriter) {
+	//                 fileWriter.write(DataBlob);
+	//                 fileWriter.onwrite = function(){
+	//                     console.log('File written successfully.');
+	//                 }
+	//             }, function(){
+	//                 alert('Unable to save file in path '+ folderPath);
+	//             });
+	//         });
+	//     });
+	// }
+
+	$scope.videoURL = null;
+
+    $scope.showSuccessMessage = function(message) {
+	   var alertPopup = $ionicPopup.alert({
+		 title: 'SUCCESS!',
+		 template: message
+	   });
+	}
+
+	$scope.trustSrc = function(src) {
+    	return $sce.trustAsResourceUrl(src);
+  	}
+	$scope.captureVideo = function() {
+		var URLs = '';
+	    var options = { limit: 1, duration: 15 };
+
+	    $cordovaCapture.captureVideo(options).then(function(videoData) {
+	     //$scope.createFileEntry(videoData[0].localURL);
+	     	console.log(videoData)
+	    
+	     	window.plugins.Base64.encodeFile(videoData[0].fullPath, function(base64){
+ 				 base64.replace("data:image/*", "data:video/mp4");
+ 				 
+ 			});
+
+			// Replace the first instance of "How" with "Where"
+			// $scope.videoURL = URLs;
+
+ 			 // $scope.UrL = $base64.encode(videoData[0].fullPath);
+ 			 // console.log($scope.UrL);
+ 			 // $scope.videoURL =  "data:video/mp4;base64," + $scope.UrL;
+ 			  console.log(base64);
+
+	    }, function(err) {
+	      // An error occurred. Show a message to the user
+	    });
+	}
+
+	$scope.createFileEntry = function(fileURI) {
+		window.resolveLocalFileSystemURL(fileURI, function(entry) {
+			return $scope.copyFile(entry);
+		});
+	}
+	 
+	// Create a unique name for the videofile
+	// Copy the recorded video to the app dir
+	$scope.copyFile = function(fileEntry) {
+		var name = fileEntry.fullPath.substr(fileEntry.fullPath.lastIndexOf('/') + 1);
+		var newName = $scope.makeid() + name;
+	 
+		window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(fileSystem2) {
+			fileEntry.copyTo(fileSystem2, newName, function(succ) {
+				//console.log(succ);
+				console.log('New Location:' + succ);
+				$scope.onCopySuccess(succ);
+			});
+		});
+	}
+
+	$scope.makeid = function() {
+		var text = '';
+		var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		for ( var i=0; i < 5; i++ ) {
+			text += possible.charAt(Math.floor(Math.random() * possible.length));
+		}
+		return text;
+	}
+
+	$scope.onCopySuccess = function(entry) {
+		var name = entry.nativeURL.slice(0, -4);
+		
+
+		$scope.videoURL = name + '.mp4';
+		console.log('Final Location:' + $scope.videoURL);
+		var v = "<video controls='controls'>";
+		v += "<source src='" + $scope.trustSrc($scope.videoURL) + "' type='video/mp4'>";
+		v += "</video>";
+		document.querySelector("#videoArea").innerHTML = v;
+		// var options = {
+		//     mimeType: "video/mp4"
+		// };
+		// $cordovaFileTransfer.upload('http://192.168.1.22/tradeappbackend/public_html/MediaFiles/16/Images', $scope.videoURL,options)
+	 //      .then(function(result) {
+	 //        console.log(result);
+	 //      }, function(err) {
+	 //        console.log(err);
+	 //      }, function (progress) {
+	 //         console.log(progress);
+  //       });
+
+	}
+
+
+
+	
+ 
+}])
+
+.controller('VideoListCtrl', ['$scope','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
+	function($scope, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
+
+	// 	$scope.$on('$ionicView.enter', function(event) {
+	// 	$ionicLoading.show({
+	// 		template: '<ion-spinner class="spinner-calm"></ion-spinner>',
+	// 	});
+	// 	var query = 'http://192.168.1.22/tradeappbackend/ListImages.php';
+	// 	var sOptions = {
+	// 		user_id: $rootScope.user_info.user_id
+	// 	}
+   		
+ //   		$http.post(query, sOptions).then(function (res){
+ //        	$scope.response = res.data;
+
+ //        	if ($scope.response.success == true) {
+ //        		$scope.Images = $scope.response.file_names;
+ //        		$scope.Idholder =  $rootScope.user_info.user_id;
+	// 			$ionicLoading.hide();
+ //        	} else {
+	// 			console.log(JSON.stringify($scope.response.success));
+	// 			$ionicLoading.hide();
+ //        	}
+ //    	})
+	// }) 
+}])
+
+
+// end
 
 .controller('AccountCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
   $scope.settings = {
