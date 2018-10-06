@@ -4,7 +4,7 @@ app.factory('Auth', ['$http','$rootScope',
 {
 	// $rootScope.baseURL   = 'http://tradeapp.com';
   // My backend connection url
-	   $rootScope.baseURL   = 'http://192.168.1.23/tradeappbackend/public_html';
+	 $rootScope.baseURL   = 'http://192.168.1.23/tradeappbackend/public_html';
 
   // set backend connection here
 	// $rootScope.baseURL   = ''; 
@@ -13,7 +13,8 @@ app.factory('Auth', ['$http','$rootScope',
   $rootScope.pictureImage = 0;
   $rootScope.videofile = 0;
 	$rootScope.s_u_ID = 0;
-  
+  $rootScope.newFilename = 0;
+  $rootScope.pathTodel = 0;
 	$rootScope._remove_white_space = function (str)
 	  {
 		var string = str;

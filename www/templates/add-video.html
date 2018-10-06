@@ -7,15 +7,15 @@
 		    <p>will be displayed here!</p>
 	  	</div>
 	</div>
-	<div class="list card" ng-show="videoLoaded != false">
+	<div class="list card" ng-show="videoLoaded != null">
 		<div class="item item-image">
-			 <video type="video/mp4" controls="controls" autoplay id="videoHolder" style="width:100%;height:100px;"></video>
+			 <video ng-src="{{ trustSrc(videoLoaded) }}" type="video/3gp" controls="controls" id="videoHolder" style="width:100%;height:400px;"></video>
 		</div>
 	</div>	
 	</ion-content>
 	<div class="tabs tabs-icon-left">
 	  <div class="button-bar">
-	  <button class="button icon ion-upload button-balanced button-outline" ng-disabled="videoLoaded === false" ng-click="uploadVideo()"> Upload Video</button>
+	  <button class="button icon ion-upload button-balanced button-outline" ng-disabled="videoLoaded === null" ng-click="uploadVideo()"> Upload Video</button>
 	  <button ng-click="captureVideo()" class="button icon ion-camera button-positive button-outline" > Choose Video</button>
 </div>
 	</div>

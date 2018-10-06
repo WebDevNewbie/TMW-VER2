@@ -9,7 +9,8 @@
 	</div>
 	<div class="list">
     <a class="item item-thumbnail-left" ng-repeat = "files in Images">
-      <img ng-src="{{ mainDIR + IdholderDIR + files.file_name }}">
+     <!--  <img ng-src="{{ mainDIR + IdholderDIR + files.file_name }}"> -->
+     <img ng-src="http://192.168.1.23/tradeappbackend/public_html/MediaFiles/17/Images/{{ files.file_name }}">
     <!--  <img src="192.168.1.22/tradeappbackend/public_html/MediaFiles/17/Images/5bafdc440302e.jpeg"> -->
 
       <h2>{{ files.file_name }}</h2>

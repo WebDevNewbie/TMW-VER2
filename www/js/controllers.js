@@ -999,6 +999,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
     	.then(function(data){
     		
     		$scope.pictureUrl = "data:image/jpeg;base64," + data;
+    		console.log($scope.pictureUrl);
     		$rootScope.pictureImage = data;
     		$ionicLoading.hide();
     		 
@@ -1022,7 +1023,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	   
 		var obj    = new Object();
 		obj.method = 'POST';
-		obj.url    = $rootScope.baseURL + "/mobile/upload_controller/upload_file";
+		obj.url    = $rootScope.baseURL + "/mobile/upload_controller/upload_image";
 		obj.data   = new FormData();
 		obj.data.append('folder',"Images");
 		obj.data.append('base64',$rootScope.pictureImage);
@@ -1047,6 +1048,23 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			}
 		);
     };
+
+    $scope.multiplePics = function(){
+    	 var options = {
+		   maximumImagesCount: 10,
+		   width: 800,
+		   height: 800,
+		   quality: 80
+		  }
+		  $cordovaCamera.getPictures(options)
+		    .then(function (results) {
+		      for (var i = 0; i < results.length; i++) {
+		        console.log('Image URI: ' + results[i]);
+		      }
+		    }, function(error) {
+		      // error getting photos
+		    });
+    	}
 
  
 }])
@@ -1089,7 +1107,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 .controller('VideosCtrl', ['$scope','$sce','$cordovaFile','$cordovaFileTransfer','$cordovaCapture','$cordovaFile','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth',
 	function($scope, $sce, $cordovaFile, $cordovaFileTransfer, $cordovaCapture, $cordovaFile, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
     
-	$scope.videoLoaded = false;
+	$scope.videoLoaded = null;
 
     $scope.showSuccessMessage = function(message) {
 	   var alertPopup = $ionicPopup.alert({
@@ -1098,71 +1116,162 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	   });
 	}
 
-	$scope.trustSrc = function(src) {
-    	return $sce.trustAsResourceUrl(src);
-  	}
+	// copy video file
+	$scope.copyFile = function(namePath,name,toPath,filename){
+		$cordovaFile.copyFile(namePath, name, toPath, filename)
+	      .then(function(info) {
+	      	console.log('Copying file..');
+	      	$rootScope.pathTodel = toPath;
+	       	$scope.videoLoaded = info.nativeURL;
+	       	$rootScope.videofile = info.nativeURL;
+	       	console.log('Copied file:' + JSON.stringify(info));
+	       
+	       	$ionicLoading.hide();
+	      }, function(e) {
+	      	console.log(JSON.stringify('Error copying:' + e.message));
+	    });
+	}
+  	
 	$scope.captureVideo = function() {
-
-		var URLs = '';
 	    var options = { limit: 1, duration: 15 };
 
 	    $cordovaCapture.captureVideo(options).then(function(videoData) {
 	    	$ionicLoading.show({
 				template: '<ion-spinner class="spinner-calm"></ion-spinner>',
 			});
-	     	console.log(videoData);
- 			window.plugins.Base64.encodeFile(videoData[0].fullPath, function(base64){
 
-				var video = document.getElementById('videoHolder');
-				video.src = base64.replace("data:image/*", "data:video/mp4");
-				$rootScope.videofile = base64.replace("data:image/*;charset=utf-8;base64,","");
-				$scope.videoLoaded = true;
-				$ionicLoading.hide();
-				$scope.showSuccessMessage('Video successfully loaded');
-				
-			});
-			
+			 console.log(videoData);
+	     	 var name = videoData[0].fullPath.substr(videoData[0].fullPath.lastIndexOf('/') + 1);
+        	 var namePath = videoData[0].fullPath.substr(0, videoData[0].fullPath.lastIndexOf('/') + 1);
+        	 var newName = name;
+        	 var tempDirname = 'TMWFILES';
+        	 var toPath = cordova.file.dataDirectory;
+        	 var pathTocopy = toPath + tempDirname;
+			 $rootScope.newFilename = newName;
 
+			 window.resolveLocalFileSystemURL( toPath , function (dirEntry) {
+			 	 console.log("dataDirectory path:" + cordova.file.dataDirectory);
+			 	 $cordovaFile.checkDir(toPath, tempDirname)
+			      .then(function (success) {
+			      	// if it exists, copy video 
+			       	$scope.copyFile(namePath,newName,pathTocopy,newName);
+			        $ionicLoading.hide();
+			     }, function (error) {
+			       // else create directory and copy video
+			       $scope.createTempstorage(toPath,tempDirname,pathTocopy,newName,namePath);
+			       $ionicLoading.hide();
+			     });
+		     });
 	    }, function(err) {
-	      // An error occurred. Show a message to the user
+	    	 $ionicLoading.hide();
 	    });
 	}
 
-	$scope.uploadVideo = function(){
-    	$ionicLoading.show({
-		  template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
-		});
-		var obj    = new Object();
-		obj.method = 'POST';
-		obj.url    = $rootScope.baseURL + "/mobile/upload_controller/upload_file";
-		obj.data   = new FormData();
-		obj.data.append('folder',"Videos");
-		obj.data.append('base64',$rootScope.videofile);
-		obj.data.append('user_id',$rootScope.user_info.user_id);
-		obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
-		obj.params = {};
+	// creating the directory TMWFILES.
+	$scope.createTempstorage = function(parentDirectory,directoryToCreate,pathTocopy,newName,namePath) {
+	    window.resolveLocalFileSystemURL( parentDirectory , function (dirEntry) {
+	    	function successHandler() {
+	    		console.log('Directory created');
+	    		$scope.copyFile(namePath,newName,pathTocopy,newName);
+	    	}
+	    	function errorHandler(err) {
+	    		console.log('Error in creating directory.', err);
+	    	}
+	       	dirEntry.getDirectory(directoryToCreate, { create: true }, successHandler, errorHandler);
+	    });
+	}
+
+  //   $scope.uploadVideo = function(){
+  //   	var filename = $rootScope.newFilename;
+ 	// 	var pathTodel = $rootScope.pathTodel;
+  //   	$ionicLoading.show({
+		//   template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+		// });
+	   
+		// var obj    = new Object();
+		// obj.method = 'POST';
+		// obj.url    = $rootScope.baseURL + "/mobile/upload_controller/video";
+		// obj.data   = new FormData();
+		// obj.data.append('folder',"Videos");
+		// obj.data.append('pathTofile',$rootScope.videofile);
+		// obj.data.append('filename',filename);
+		// obj.data.append('user_id',$rootScope.user_info.user_id);
+		// obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
+		// obj.params = {};
    
-		Auth.REQUEST(obj).then(
-		  function(success) { 
-			  if(JSON.stringify(success.data.success) == "true"){
-				$ionicLoading.hide();
-        		$scope.showSuccessMessage(success.data.message);
-        		$scope.videoLoaded = false;
-			  }
-			  else{
-				$ionicLoading.hide();
+		// Auth.REQUEST(obj).then(
+		//   function(success) { 
+		// 	  if(JSON.stringify(success.data.success) == "true"){
+		// 		$ionicLoading.hide();
+  //       		//$scope.showSuccessMessage(success.data.message);
+  //       		$scope.fileTodelete(pathTodel,filename);
+  //       		console.log(JSON.stringify(success.data.message));
+  //       		$scope.videoLoaded = null;
+		// 	  }
+		// 	  else{
+		// 		$ionicLoading.hide();
 				
-			  }
-			},
-			function(error) { 
-			  $ionicLoading.hide();
-			}
-		);
+		// 	  }
+		// 	},
+		// 	function(error) { 
+		// 	  $ionicLoading.hide();
+		// 	}
+		// );
+  //   };
 
+  	$scope.uploadVideo = function(){
+  		$ionicLoading.show({
+		  template: '<ion-spinner class="spinner-calm" icon="android"> Uploading Trade video..</ion-spinner> ',
+		});
 
-    }
-	
-	
+  		// settings for uploading process
+  		var server = $rootScope.baseURL + "/mobile/upload_controller/upload_video";
+  		var filePath = $scope.videoLoaded;
+  		var filename = $rootScope.newFilename;
+  		var pathTodel = $rootScope.pathTodel;
+  		var options = {
+		    fileKey: "file",
+		    fileName: filename,
+		    chunkedMode: true,
+		    mimeType: "multipart/form-data",
+		    params : {
+		    	'fileName': filename,
+		    	'user'	  : $rootScope.user_info.user_id			
+		    }
+		};
+
+	   // attempt on uploading the video file
+	   $cordovaFileTransfer.upload(server, filePath, options)
+      	.then(function(result) {
+      		// if upload was a success.
+       		$scope.showSuccessMessage(result.response);
+       		$scope.fileTodelete(pathTodel,filename);
+       		$scope.videoLoaded = null;
+       		$ionicLoading.hide();
+      	}, function(err) {
+      		// if there was an error
+        	console.log(JSON.stringify(err));
+        	$ionicLoading.hide();
+      	});
+  	}
+
+  	$scope.fileTodelete = function(path,filename){
+  		window.resolveLocalFileSystemURL(path, function(dir) {
+			dir.getFile(filename, {create:false}, function(fileEntry) {
+              fileEntry.remove(function(success){
+                 console.log(success);
+              },function(error){
+                 console.log(error);
+              },function(Existing){
+                 console.log(Existing);
+              });
+			});
+		});
+  	}
+
+  	$scope.trustSrc = function(src) {
+    	return $sce.trustAsResourceUrl(src);
+  	}; 
  
 }])
 
