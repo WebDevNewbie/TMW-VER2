@@ -946,7 +946,6 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
     	.then(function(data){
     		
     		$scope.pictureUrl = "data:image/jpeg;base64," + data;
-    		console.log($scope.pictureUrl);
     		$rootScope.pictureImage = data;
     		$ionicLoading.hide();
     		 
@@ -1127,44 +1126,6 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	       	dirEntry.getDirectory(directoryToCreate, { create: true }, successHandler, errorHandler);
 	    });
 	}
-
-  //   $scope.uploadVideo = function(){
-  //   	var filename = $rootScope.newFilename;
- 	// 	var pathTodel = $rootScope.pathTodel;
-  //   	$ionicLoading.show({
-		//   template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
-		// });
-	   
-		// var obj    = new Object();
-		// obj.method = 'POST';
-		// obj.url    = $rootScope.baseURL + "/mobile/upload_controller/video";
-		// obj.data   = new FormData();
-		// obj.data.append('folder',"Videos");
-		// obj.data.append('pathTofile',$rootScope.videofile);
-		// obj.data.append('filename',filename);
-		// obj.data.append('user_id',$rootScope.user_info.user_id);
-		// obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
-		// obj.params = {};
-   
-		// Auth.REQUEST(obj).then(
-		//   function(success) { 
-		// 	  if(JSON.stringify(success.data.success) == "true"){
-		// 		$ionicLoading.hide();
-  //       		//$scope.showSuccessMessage(success.data.message);
-  //       		$scope.fileTodelete(pathTodel,filename);
-  //       		console.log(JSON.stringify(success.data.message));
-  //       		$scope.videoLoaded = null;
-		// 	  }
-		// 	  else{
-		// 		$ionicLoading.hide();
-				
-		// 	  }
-		// 	},
-		// 	function(error) { 
-		// 	  $ionicLoading.hide();
-		// 	}
-		// );
-  //   };
 
   	$scope.uploadVideo = function(){
   		$ionicLoading.show({
