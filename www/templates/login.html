@@ -6,13 +6,13 @@
 			<div class="list list-inset">
 			  <label class="item item-input">
 				<i class="icon ion-person placeholder-icon"></i>
-				<input type="text" placeholder="Username" ng-model="user.name">
+				<input id ="user" type="text" placeholder="Username" ng-model="user.name">
 			  </label>
 			</div>
 			<div class="list list-inset">
 			  <label class="item item-input">
 				<i class="icon ion-locked placeholder-icon"></i>
-				<input type="password" placeholder="Password" ng-model="user.pass">
+				<input id="pass" type="password" placeholder="Password" ng-model="user.pass">
 			  </label>
 			</div>
 			<button type="submit" ng-click="login()" class="button button-block button-positive">LOGIN</button>

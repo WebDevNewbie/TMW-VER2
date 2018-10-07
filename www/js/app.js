@@ -1,7 +1,7 @@
 
 angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services','ngCordova','ngSanitize'])
 
-.run(function($ionicPlatform, $rootScope) {
+.run(function($ionicPlatform, $rootScope, $cordovaToast) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -17,9 +17,15 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
   });
   $rootScope.showToast = function(msg)
   {
-    window.plugins.toast.showShortBottom(msg, 
-        function(a) { console.log('toast success: ' + a) }, 
-        function(b) { console.log('toast error: ' + b) });
+    // window.plugins.toast.showShortBottom(msg, 
+    //     function(a) { console.log('toast success: ' + a) }, 
+    //     function(b) { console.log('toast error: ' + b) });
+    $cordovaToast.showShortBottom(msg).then(function(success) {
+    // success
+    }, function (error) {
+      // error
+    });
+
   }
 })
 

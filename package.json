@@ -21,7 +21,8 @@
       "cordova-plugin-media-capture": {},
       "cordova-plugin-file-transfer": {},
       "com-badrit-base64": {},
-      "cordova-plugin-ionic-webview": {}
+      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-x-toast": {}
     },
     "platforms": [
       "android"
@@ -41,6 +42,7 @@
     "cordova-plugin-ionic-webview": "^1.2.1",
     "cordova-plugin-media-capture": "^3.0.2",
     "cordova-plugin-splashscreen": "^5.0.2",
-    "cordova-plugin-whitelist": "^1.3.3"
+    "cordova-plugin-whitelist": "^1.3.3",
+    "cordova-plugin-x-toast": "git+https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git"
   }
 }

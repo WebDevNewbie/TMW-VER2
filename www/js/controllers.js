@@ -300,9 +300,11 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	//console.log($rootScope.isLogged);
 	$scope.login = function()
     { 
-		
-		if($scope.user.name == "" && $scope.user.pass == ""){
-			//$rootScope.showToast('Please enter Username and Password.');
+		var username = document.getElementById("user").value;
+		var password = document.getElementById("pass").value;
+
+		if(username == "" && password == ""){
+			$rootScope.showToast('Username and Password is required!');
 		}
 		else{
 			$ionicLoading.show({
@@ -311,7 +313,6 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			var obj    = new Object();
 			obj.method = 'POST';
 			obj.url    = $rootScope.baseURL + "/mobile/login_controller/logIn";
-			//obj.url = 'http://192.168.1.22/tradeappbackend/public_html/mobile/login_controller/logIn'
 			obj.data   = new FormData();
 			obj.data.append('chrUserName',$scope.user.name);
 			obj.data.append('passUserPassword',$scope.user.pass);
@@ -347,7 +348,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 				  else{
 					$ionicLoading.hide();
 					//console.log("false");
-					//$rootScope.showToast('Invalid Username/Password');
+					$rootScope.showToast('Invalid Username or Password, Please try again!');
 				  }
 				},
 				function(error) { 
@@ -358,52 +359,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		}							  
     }
 
-    // test login function
-    $scope.login2 = function()
-    { 
-		//console.log($scope.user.name);
-		//console.log($scope.user.pass);
-		if($scope.user.name == "" && $scope.user.pass == ""){
-			//$rootScope.showToast('Please enter Username and Password.');
-		}
-		else{
-			$ionicLoading.show({
-			  template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
-			});
-
-			// Final backend url
-			// var query = 'http://localhost/tradeappbackend/login.php';
-			// testing backend url
-			var query = 'http://192.168.1.23/tradeappbackend/login.php';
-			
-
-			var sOptions = {
-				chrUserName : $scope.user.name,
-				passUserPassword:$scope.user.pass
-			}
-	   		
-	   		$http.post(query, sOptions).then(function (res){
-            	$scope.response = res.data;
    
-            	if ($scope.response.success == true) {
-            		console.log(JSON.stringify($scope.response.success));
-            		Auth.STORE_DATA('userData',$scope.response.user_info);
-				  	$rootScope.isLogged  = true;
-				  	$rootScope.user_info =  Auth.FETCH_DATA('userData');
-				  	console.log(JSON.stringify($rootScope.user_info.user_id));
-            		
-            		window.location.href = "#/menu/usersearch";
-					$ionicLoading.hide();
-            		//$scope.message();
-            		
-            	} else {
-					console.log(JSON.stringify($scope.response.success));
-					$ionicLoading.hide();
-            	}
-        	})
-			
-		}							  
-    }
 })
 .controller('UserSearchCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 	
@@ -435,7 +391,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	console.log('in search controller');
 	$scope.startSearch = function()
     { 
-		
+		//var searchkey = document.getElementById("searchkey").value;
 		if($scope.user.search == ""){
 			//$rootScope.showToast('Please enter Username and Password.');
 		}
@@ -457,16 +413,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 					 console.log(JSON.stringify(success.data.search_result));
 					 $scope.user.search = "";
 					 $scope.result = success.data.search_result;
-					console.log(success.data.search_result);
-					  // var obj          = new Object();
-						 //  obj.user_id       = success.data.user_info.user_id;
-						 //  obj.username     = success.data.user_info.username;
-						 //  obj.user_role     = success.data.user_info.user_role;
-			   		
-					 
-					  $ionicLoading.hide();
-					 
-					 // console.log("true");
+					 $ionicLoading.hide();
 				  }
 				  else{
 				  	console.log(JSON.stringify(success.data.search_result));
