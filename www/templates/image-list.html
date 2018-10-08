@@ -9,15 +9,13 @@
 	</div>
 	<div class="list">
     <a class="item item-thumbnail-left" ng-repeat = "files in Images">
-      <img ng-src="{{ mainDIR + IdholderDIR + files.file_name }}">
-     <!-- <img ng-src="http://192.168.1.23/tradeappbackend/public_html/MediaFiles/17/Images/{{ files.file_name }}"> -->
-    <!--  <img src="192.168.1.22/tradeappbackend/public_html/MediaFiles/17/Images/5bafdc440302e.jpeg"> -->
-
+      <img ng-src="{{ mainDIR + IdholderDIR + files.file_name }}" style="width: 100%;
+height: auto;">
       <h2>{{ files.file_name }}</h2>
-      <p>Added a min ago</p>
+      <p>Added {{ files.dateadded }}</p>
     </a>
 	</div>
-
+	
 	</ion-content>
 	<div class="tabs tabs-icon-left">
 	<a class="tab-item" href="#/menu/add-image">

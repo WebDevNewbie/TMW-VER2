@@ -1014,15 +1014,15 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 
  
 }])
-.controller('ImageListCtrl', ['$scope','$sce','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
-	function($scope, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
+.controller('ImageListCtrl', ['$scope','$ionicModal','$sce','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
+	function($scope, $ionicModal, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
 
 	$scope.$on('$ionicView.enter', function(event) {
 		$ionicLoading.show({
 			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
 		});
 		//var query = 'http://192.168.1.23/tradeappbackend/ListImages.php';
-		var query = $rootScope.baseURL + "/mobile/user_controller/ListImages";
+		var query = $rootScope.baseURL + "/mobile/upload_controller/ListImages";
 		var sOptions = {
 			user_id: $rootScope.user_info.user_id
 		}
@@ -1034,6 +1034,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
         		$scope.mainDIR = 'http://192.168.1.23/tradeappbackend/public_html/MediaFiles/'
         		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Images/";
         		$scope.Images = $scope.response.file_names;
+        		console.log($scope.Images);
 				$ionicLoading.hide();
         	} else {
 				console.log(JSON.stringify($scope.response.success));
