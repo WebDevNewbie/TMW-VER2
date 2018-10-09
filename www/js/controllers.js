@@ -472,7 +472,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 				Auth.REQUEST(obj).then(
 					function(success) { 
 						if(JSON.stringify(success.data.success) == "true"){
-							
+							console.log(success.data.user_info);
 							var act = success.data.user_info.activity;
 							console.log(act);
 							if(act == "" || act == null || act == "null"){
@@ -487,7 +487,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 							setTimeout(function(){ $ionicLoading.hide(); }, 500);
 							console.log(success.data.user_info);
 
-							
+							$scope.user.user_id = success.data.user_info.user_id;
 							document.getElementById("user_bday").value = success.data.user_info.birthday;
 							$scope.user.fname = success.data.user_info.first_name;
 							$scope.user.lname = success.data.user_info.last_name;
@@ -528,12 +528,101 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 				);   	
 	})
 
-	$scope.chat_trader = function(){
-		alert("Currently chatting this Trader is ID:" + $rootScope.user_info.user_id);
-		
+	$scope.viewImages = function(){
+		window.location.href = "#/n-trader-images";
 	}
+	$scope.viewVideos = function(){
+		window.location.href = "#/n-trader-videos";
+	}
+	$scope.viewTradeimages = function(){
+		window.location.href = "#/menu/trader-images";
+	}
+	$scope.viewTradevideos = function(){
+		window.location.href = "#/menu/trader-videos";
+	};
 
-}])	
+}])
+.controller('traderImageCtrl',['$scope','$http','$window','$ionicActionSheet','$ionicModal','$rootScope','$ionicPlatform','$ionicHistory','$ionicLoading','$ionicPopup','Auth',
+                     function($scope, $http, $window, $ionicActionSheet, $ionicModal, $rootScope,  $ionicPlatform,  $ionicHistory,  $ionicLoading, $ionicPopup, Auth){
+	
+	$scope.user = [];
+
+	$scope.replaceAll = function(str, find, replace)
+    {
+		return str.replace(new RegExp(find, 'g'), replace);
+	}
+	$scope.$on('$ionicView.enter', function(event) {
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
+		});
+		//var query = 'http://192.168.1.23/tradeappbackend/ListImages.php';
+		var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+		var sOptions = {
+			user_id: $rootScope.s_u_ID,
+			dbTable: "imagefiles"
+		}
+   		
+   		$http.post(query, sOptions).then(function (res){
+    	$scope.response = res.data;
+
+        	if ($scope.response.success == true) {
+        		
+        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+        		$scope.IdholderDIR =  $rootScope.s_u_ID + "/Images/";
+        		$scope.tradeImages = $scope.response.file_names;
+        		console.log($scope.Videos);
+
+				$ionicLoading.hide();
+        	} else {
+        		$scope.tradeImages = null;
+				$ionicLoading.hide();
+        	}
+    	})
+	})
+
+}])
+.controller('traderVideoCtrl',['$scope','$sce','$http','$window','$ionicActionSheet','$ionicModal','$rootScope','$ionicPlatform','$ionicHistory','$ionicLoading','$ionicPopup','Auth',
+                     function($scope, $sce, $http, $window, $ionicActionSheet, $ionicModal, $rootScope,  $ionicPlatform,  $ionicHistory,  $ionicLoading, $ionicPopup, Auth){
+	
+	$scope.user = [];
+	$scope.trustSrc = function(src) {
+    	return $sce.trustAsResourceUrl(src);
+  	}; 
+	$scope.replaceAll = function(str, find, replace)
+    {
+		return str.replace(new RegExp(find, 'g'), replace);
+	}
+	$scope.$on('$ionicView.enter', function(event) {
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
+		});
+		//var query = 'http://192.168.1.23/tradeappbackend/ListImages.php';
+		var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+		var sOptions = {
+			user_id: $rootScope.s_u_ID,
+			dbTable: "videofiles"
+		}
+   		
+   		$http.post(query, sOptions).then(function (res){
+    	$scope.response = res.data;
+
+        	if ($scope.response.success == true) {
+        		
+        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+        		$scope.IdholderDIR =  $rootScope.s_u_ID + "/Videos/";
+        		$scope.tradeVideos = $scope.response.file_names;
+        		console.log($scope.Videos);
+        		
+				$ionicLoading.hide();
+        	} else {
+        		$scope.tradeVideos = null;
+				$ionicLoading.hide();
+        	}
+    	})
+	})
+
+}])
+
 .controller('MenuCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 	
 	//$rootScope.isLogged  = false;
@@ -916,6 +1005,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	})
 	
 	
+	
 }])
 .controller('ChatsCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 
@@ -994,50 +1084,32 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			}
 		);
     };
-
-    $scope.multiplePics = function(){
-    	 var options = {
-		   maximumImagesCount: 10,
-		   width: 800,
-		   height: 800,
-		   quality: 80
-		  }
-		  $cordovaCamera.getPictures(options)
-		    .then(function (results) {
-		      for (var i = 0; i < results.length; i++) {
-		        console.log('Image URI: ' + results[i]);
-		      }
-		    }, function(error) {
-		      // error getting photos
-		    });
-    	}
-
  
 }])
-.controller('ImageListCtrl', ['$scope','$ionicModal','$sce','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
-	function($scope, $ionicModal, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
+.controller('ImageListCtrl', ['$scope','$rootScope','$ionicModal','$sce','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
+	function($scope, $rootScope, $ionicModal, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
 
 	$scope.$on('$ionicView.enter', function(event) {
 		$ionicLoading.show({
 			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
 		});
 		//var query = 'http://192.168.1.23/tradeappbackend/ListImages.php';
-		var query = $rootScope.baseURL + "/mobile/upload_controller/ListImages";
+		var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
 		var sOptions = {
-			user_id: $rootScope.user_info.user_id
+			user_id: $rootScope.user_info.user_id,
+			dbTable: "imagefiles"
 		}
    		
    		$http.post(query, sOptions).then(function (res){
     	$scope.response = res.data;
 
         	if ($scope.response.success == true) {
-        		$scope.mainDIR = 'http://192.168.1.23/tradeappbackend/public_html/MediaFiles/'
+        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
         		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Images/";
         		$scope.Images = $scope.response.file_names;
         		console.log($scope.Images);
 				$ionicLoading.hide();
         	} else {
-				console.log(JSON.stringify($scope.response.success));
 				$ionicLoading.hide();
         	}
     	})
@@ -1184,31 +1256,38 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
  
 }])
 
-.controller('VideoListCtrl', ['$scope','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
-	function($scope, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
+.controller('VideoListCtrl', ['$scope','$sce','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
+	function($scope, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
 
-	// 	$scope.$on('$ionicView.enter', function(event) {
-	// 	$ionicLoading.show({
-	// 		template: '<ion-spinner class="spinner-calm"></ion-spinner>',
-	// 	});
-	// 	var query = 'http://192.168.1.22/tradeappbackend/ListImages.php';
-	// 	var sOptions = {
-	// 		user_id: $rootScope.user_info.user_id
-	// 	}
+	$scope.$on('$ionicView.enter', function(event) {
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
+		});
+		var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+		var sOptions = {
+			user_id: $rootScope.user_info.user_id,
+			dbTable : "videofiles"
+		}
    		
- //   		$http.post(query, sOptions).then(function (res){
- //        	$scope.response = res.data;
+   		$http.post(query, sOptions).then(function (res){
+    	$scope.response = res.data;
 
- //        	if ($scope.response.success == true) {
- //        		$scope.Images = $scope.response.file_names;
- //        		$scope.Idholder =  $rootScope.user_info.user_id;
-	// 			$ionicLoading.hide();
- //        	} else {
-	// 			console.log(JSON.stringify($scope.response.success));
-	// 			$ionicLoading.hide();
- //        	}
- //    	})
-	// }) 
+        	if ($scope.response.success == true) {
+        		$scope.mainDIR =  $rootScope.baseURL + '/MediaFiles/';
+        		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Videos/";
+        		$scope.Videos = $scope.response.file_names;
+        		console.log($scope.Videos);
+				$ionicLoading.hide();
+        	} else {
+				console.log(JSON.stringify($scope.response.success));
+				$ionicLoading.hide();
+        	}
+    	})
+	})
+
+	$scope.trustSrc = function(src) {
+    	return $sce.trustAsResourceUrl(src);
+  	};  
 }])
 
 

@@ -77,6 +77,34 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
     templateUrl: "templates/n-trader-profile.html",
     controller: 'traderProfileCtrl'
   })
+   .state('menu.trader-images', {
+      url: '/trader-images',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/trader-images.html',
+          controller: 'traderImageCtrl'
+        }
+      }
+    })
+    .state('menu.trader-videos', {
+      url: '/trader-videos',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/trader-videos.html',
+          controller: 'traderVideoCtrl'
+        }
+      }
+    })
+  .state('n-trader-images', {
+    url: "/n-trader-images",
+    templateUrl: "templates/n-trader-images.html",
+    controller: 'traderImageCtrl'
+  })
+  .state('n-trader-videos', {
+    url: "/n-trader-videos",
+    templateUrl: "templates/n-trader-videos.html",
+    controller: 'traderVideoCtrl'
+  })
   .state('menu.add-image', {
       url: '/add-image',
       views: {
