@@ -5,9 +5,6 @@
 	      <img src="img/man.png">
 	      <h2>{{ user.servname }}</h2>
 	      <p>{{ user.address }}</p>
-	       <button class="button button-positive button-outline">
-		     <i class="icon ion-chatbubble-working"></i>
-		   </button>
 	    </a>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">First Name</span>
@@ -141,19 +138,18 @@
 			<input type="text" placeholder="What is your ethniticity?" ng-model="user.ethniticity" disabled>
 		</label>
 	</div>
-
 	</ion-content>
 	<div class="tabs tabs-icon-left">
 	  <a class="tab-item" style="font-size: 18px;color:#7ec12e" ng-click="viewImages()">
 		<i class="icon ion-camera"></i>
-		Trader Images
+		Trade Images
 	  </a>
 	  <a class="tab-item"  style="font-size: 28px;max-width:30px;color:#7ec12e;top: -4px;position: relative;">
 		|
 	  </a>
 	  <a class="tab-item" style="font-size: 18px;color:#7ec12e;max-width: 170px;" ng-click="viewVideos()">
 		<i class="icon ion-ios-videocam"></i>
-		Trader Videos
+		Trade Videos
 	  </a>
 	</div>
 </ion-view>

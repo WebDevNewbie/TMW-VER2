@@ -1,5 +1,5 @@
 <ion-view title="Trade Video List">
-	<ion-content>
+	<ion-content style="background:#F0F3F8;">
 	<div class="card" >
 		<div class="item item-avatar"> 
 		    <img src="img/movie-player.png">
@@ -7,17 +7,22 @@
 		    <p>will be displayed here!</p>
 	  	</div>
 	</div>
-	<div class="list">
-    <a class="item item-thumbnail-left" ng-repeat = "files in Videos">
-      <video ng-src="{{ trustSrc(mainDIR + IdholderDIR + files.file_name) }}" controls="controls" style="width:100%;height:100px;"></video>
-      <h2>{{ files.file_name }}</h2>
-      <p>Added {{ files.dateadded }}</p>
-    </a>
+
+	<div class="list card" ng-repeat="files in Videos">
+	  <div class="item item-body">
+	    <video class="full-image" ng-src="{{ trustSrc(mainDIR + IdholderDIR + files.file_name) }}" controls="controls" style="width:100%;height:250px;"></video>
+	    
+	  </div>
+	 
+  	    <label class="item">
+	    <span class="icon ion-calendar" style="color:#a7d341;"> <i style="color:#9a9999;">Added {{ files.dateadded }}</i>
+	  </label>
 	</div>
+	
 
 	</ion-content>
 	<div class="tabs tabs-icon-left">
-	<a class="tab-item" href="#/menu/add-video">
+	<a class="tab-item" style="font-size: 18px;color:#7ec12e" href="#/menu/add-video">
 	  	<i class="icon ion-videocamera"></i>
 	  	Upload a Video
 	  </a>

@@ -508,6 +508,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 							document.getElementById("user_place_prefer").value = success.data.user_info.prefer_place;
 							$scope.user.religion = success.data.user_info.religion;
 							document.getElementById("user_civil_status").value = success.data.user_info.civil_status;
+							$scope.user.civil_status = success.data.user_info.civil_status;
 							document.getElementById("user_live_athome").value = success.data.user_info.live_athome;
 							$scope.user.children = success.data.user_info.children;
 							$scope.user.ethniticity = success.data.user_info.ethniticity;

@@ -3,9 +3,10 @@ app.factory('Auth', ['$http','$rootScope',
 			 function($http,  $rootScope)
 {
 	// $rootScope.baseURL   = 'http://tradeapp.com';
-  // My backend connection url
-	 $rootScope.baseURL   = 'http://192.168.1.23/tradeappbackend/public_html';
-
+  // prod backend connection url
+	$rootScope.baseURL   = 'http://escaperoomfactory.net/tradeappbackend/public_html';
+  // local backend connection url
+  // $rootScope.baseURL   = 'http://192.168.1.23/tradeappbackend/public_html';
   // set backend connection here
 	// $rootScope.baseURL   = ''; 
 	

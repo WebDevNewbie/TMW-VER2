@@ -1,10 +1,13 @@
 <ion-view title="Trade Videos">
-	<ion-content>
-	<div class="list" id="profile-wrapper">
+	<ion-content style="background:#F0F3F8;">
+
 	<div class="list card" ng-repeat="files in tradeVideos">
-	  <div class="item item-image">
-	     <video ng-src="{{ trustSrc(mainDIR + IdholderDIR + files.file_name) }}" controls="controls" style="width:100%;height:100px;"></video>
+	  <div class="item item-body">
+	    <video class="full-image" ng-src="{{ trustSrc(mainDIR + IdholderDIR + files.file_name) }}" controls="controls" style="width:100%;height:250px;"></video>
 	  </div>
+	   <label class="item">
+	    <span class="icon ion-calendar" style="color:#a7d341;"> <i style="color:#9a9999;">Added {{ files.dateadded }}</i>
+	  </label>
 	</div>
 	<div class="card"  ng-show="tradeVideos === null">
 		<div class="item item-avatar"> 
@@ -13,8 +16,5 @@
 		    <p>No Trade Videos to show!</p>
 	  	</div>
 	</div>
-	
-	</div>
-
 	</ion-content>
 </ion-view>
