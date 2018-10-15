@@ -410,7 +410,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			Auth.REQUEST(obj).then(
 			  function(success) { 
 				  if(JSON.stringify(success.data.success) == "true"){
-					 console.log(JSON.stringify(success.data.search_result));
+					 console.log(success.data.search_result);
 					 $scope.user.search = "";
 					 $scope.result = success.data.search_result;
 					 $ionicLoading.hide();
@@ -1143,7 +1143,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	      	console.log('Copying file..');
 	      	$rootScope.pathTodel = toPath;
 	       	$scope.videoLoaded = info.nativeURL;
-	       	$rootScope.videofile = info.nativeURL;
+	       	$rootScope.videofile = info.nativeURL;	
 	       	console.log('Copied file:' + JSON.stringify(info));
 	       
 	       	$ionicLoading.hide();
@@ -1152,29 +1152,70 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	    });
 	}
   	
-	$scope.captureVideo = function() {
-	    var options = { limit: 1, duration: 15 };
+  	// temprorary comment
+	// $scope.captureVideo = function() {
+	//     var options = { limit: 1, duration: 15 };
 
-	    $cordovaCapture.captureVideo(options).then(function(videoData) {
-	    	$ionicLoading.show({
-				template: '<ion-spinner class="spinner-calm"></ion-spinner>',
-			});
+	//     $cordovaCapture.captureVideo(options).then(function(videoData) {
+	//     	$ionicLoading.show({
+	// 			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
+	// 		});
 
-			 console.log(videoData);
-	     	 var name = videoData[0].fullPath.substr(videoData[0].fullPath.lastIndexOf('/') + 1);
-        	 var namePath = videoData[0].fullPath.substr(0, videoData[0].fullPath.lastIndexOf('/') + 1);
-        	 var newName = name;
-        	 var tempDirname = 'TMWFILES';
-        	 var toPath = cordova.file.dataDirectory;
-        	 var pathTocopy = toPath + tempDirname;
-			 $rootScope.newFilename = newName;
+	// 		 console.log(videoData);
+	//      	 var name = videoData[0].fullPath.substr(videoData[0].fullPath.lastIndexOf('/') + 1);
+ //        	 var namePath = videoData[0].fullPath.substr(0, videoData[0].fullPath.lastIndexOf('/') + 1);
+ //        	 var newName = name;
+ //        	 var tempDirname = 'TMWFILES';
+ //        	 var toPath = cordova.file.dataDirectory;
+ //        	 var pathTocopy = toPath + tempDirname;
+	// 		 $rootScope.newFilename = newName;
 
-			 window.resolveLocalFileSystemURL( toPath , function (dirEntry) {
-			 	 console.log("dataDirectory path:" + cordova.file.dataDirectory);
+	// 		 window.resolveLocalFileSystemURL( toPath , function (dirEntry) {
+	// 		 	 console.log("dataDirectory path:" + cordova.file.dataDirectory);
+	// 		 	 $cordovaFile.checkDir(toPath, tempDirname)
+	// 		      .then(function (success) {
+	// 		      	// if it exists, copy video 
+	// 		       	$scope.copyFile(namePath,newName,pathTocopy,newName);
+	// 		        $ionicLoading.hide();
+	// 		     }, function (error) {
+	// 		       // else create directory and copy video
+	// 		       $scope.createTempstorage(toPath,tempDirname,pathTocopy,newName,namePath);
+	// 		       $ionicLoading.hide();
+	// 		     });
+	// 	     });
+	//     }, function(err) {
+	//     	 $ionicLoading.hide();
+	//     });
+	// }
+
+	$scope.selectVideo = function(){
+    	var options = {
+    		
+    	  sourceType : Camera.PictureSourceType.SAVEDPHOTOALBUM,
+	      destinationType: Camera.DestinationType.FILE_URI,
+	      mediaType:Camera.MediaType.VIDEO
+	     
+	    }
+	    $ionicLoading.show({
+		  template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
+		});
+    	$cordovaCamera.getPicture(options)
+    	.then(function(videoData){
+    		console.log(videoData);
+	     	var name = videoData.substr(videoData.lastIndexOf('/') + 1);
+        	var namePath = videoData.substr(0, videoData.lastIndexOf('/') + 1);
+        	var newName = name;
+    		var tempDirname = 'TMWFILES';
+        	var toPath = cordova.file.dataDirectory;
+        	//var toPath = cordova.file.externalRootDirectory;
+        	var pathTocopy = toPath + tempDirname;
+			$rootScope.newFilename = newName;
+    		window.resolveLocalFileSystemURL( toPath , function (dirEntry) {
+			 	
 			 	 $cordovaFile.checkDir(toPath, tempDirname)
 			      .then(function (success) {
 			      	// if it exists, copy video 
-			       	$scope.copyFile(namePath,newName,pathTocopy,newName);
+			       	$scope.copyFile('file://'+ namePath,newName,pathTocopy,newName);
 			        $ionicLoading.hide();
 			     }, function (error) {
 			       // else create directory and copy video
@@ -1182,10 +1223,13 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			       $ionicLoading.hide();
 			     });
 		     });
-	    }, function(err) {
-	    	 $ionicLoading.hide();
-	    });
-	}
+    		$ionicLoading.hide();
+    		 
+    	}, function(error){
+    		console.log('camera error:' + JSON.stringify(error));
+    		$ionicLoading.hide();
+    	});
+    }
 
 	// creating the directory TMWFILES.
 	$scope.createTempstorage = function(parentDirectory,directoryToCreate,pathTocopy,newName,namePath) {
