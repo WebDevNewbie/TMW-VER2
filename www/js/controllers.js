@@ -552,34 +552,67 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
     {
 		return str.replace(new RegExp(find, 'g'), replace);
 	}
-	$scope.$on('$ionicView.enter', function(event) {
-		$ionicLoading.show({
-			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
-		});
-		//var query = 'http://192.168.1.23/tradeappbackend/ListImages.php';
-		var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
-		var sOptions = {
-			user_id: $rootScope.s_u_ID,
-			dbTable: "imagefiles"
-		}
+
+	// $scope.$on('$ionicView.enter', function(event) {
+	// 	$ionicLoading.show({
+	// 		template: '<ion-spinner class="spinner-calm"></ion-spinner>',
+	// 	});
+	// 	//var query = 'http://192.168.1.23/tradeappbackend/ListImages.php';
+	// 	var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+	// 	var sOptions = {
+	// 		user_id: $rootScope.s_u_ID,
+	// 		dbTable: "imagefiles"
+	// 	}
    		
-   		$http.post(query, sOptions).then(function (res){
-    	$scope.response = res.data;
+ //   		$http.post(query, sOptions).then(function (res){
+ //    	$scope.response = res.data;
 
-        	if ($scope.response.success == true) {
+ //        	if ($scope.response.success == true) {
         		
-        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
-        		$scope.IdholderDIR =  $rootScope.s_u_ID + "/Images/";
-        		$scope.tradeImages = $scope.response.file_names;
-        		console.log($scope.Videos);
+ //        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+ //        		$scope.IdholderDIR =  $rootScope.s_u_ID + "/Images/";
+ //        		$scope.tradeImages = $scope.response.file_names;
+ //        		console.log($scope.Videos);
 
-				$ionicLoading.hide();
-        	} else {
-        		$scope.tradeImages = null;
-				$ionicLoading.hide();
-        	}
-    	})
+	// 			$ionicLoading.hide();
+ //        	} else {
+ //        		$scope.tradeImages = null;
+	// 			$ionicLoading.hide();
+ //        	}
+ //    	})
+	// })
+
+	$scope.$on('$ionicView.enter', function(event){
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+		});
+		var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+		obj.data   = new FormData();
+		obj.data.append('user_id',$rootScope.s_u_ID);
+		obj.data.append('dbTable','imagefiles');
+		obj.params = {};
+		   
+		Auth.REQUEST(obj).then(
+			function(success) {
+				$scope.response = success.data;
+				if ($scope.response.success == true) {
+	        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+	        		$scope.IdholderDIR =  $rootScope.s_u_ID + "/Images/";
+	        		$scope.tradeImages = $scope.response.file_names;
+					$ionicLoading.hide();
+	        	} else {
+					$ionicLoading.hide();
+	        	}
+			},
+			function(error) { 
+				setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+			}
+		); 
 	})
+
+
 
 }])
 .controller('traderVideoCtrl',['$scope','$sce','$http','$window','$ionicActionSheet','$ionicModal','$rootScope','$ionicPlatform','$ionicHistory','$ionicLoading','$ionicPopup','Auth',
@@ -593,33 +626,64 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
     {
 		return str.replace(new RegExp(find, 'g'), replace);
 	}
-	$scope.$on('$ionicView.enter', function(event) {
-		$ionicLoading.show({
-			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
-		});
-		//var query = 'http://192.168.1.23/tradeappbackend/ListImages.php';
-		var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
-		var sOptions = {
-			user_id: $rootScope.s_u_ID,
-			dbTable: "videofiles"
-		}
+	
+	// $scope.$on('$ionicView.enter', function(event) {
+	// 	$ionicLoading.show({
+	// 		template: '<ion-spinner class="spinner-calm"></ion-spinner>',
+	// 	});
+	// 	//var query = 'http://192.168.1.23/tradeappbackend/ListImages.php';
+	// 	var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+	// 	var sOptions = {
+	// 		user_id: $rootScope.s_u_ID,
+	// 		dbTable: "videofiles"
+	// 	}
    		
-   		$http.post(query, sOptions).then(function (res){
-    	$scope.response = res.data;
+ //   		$http.post(query, sOptions).then(function (res){
+ //    	$scope.response = res.data;
 
-        	if ($scope.response.success == true) {
+ //        	if ($scope.response.success == true) {
         		
-        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
-        		$scope.IdholderDIR =  $rootScope.s_u_ID + "/Videos/";
-        		$scope.tradeVideos = $scope.response.file_names;
-        		console.log($scope.Videos);
+ //        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+ //        		$scope.IdholderDIR =  $rootScope.s_u_ID + "/Videos/";
+ //        		$scope.tradeVideos = $scope.response.file_names;
+ //        		console.log($scope.Videos);
         		
-				$ionicLoading.hide();
-        	} else {
-        		$scope.tradeVideos = null;
-				$ionicLoading.hide();
-        	}
-    	})
+	// 			$ionicLoading.hide();
+ //        	} else {
+ //        		$scope.tradeVideos = null;
+	// 			$ionicLoading.hide();
+ //        	}
+ //    	})
+	// })
+
+	$scope.$on('$ionicView.enter', function(event){
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+		});
+		var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+		obj.data   = new FormData();
+		obj.data.append('user_id',$rootScope.s_u_ID);
+		obj.data.append('dbTable','videofiles');
+		obj.params = {};
+		   
+		Auth.REQUEST(obj).then(
+			function(success) {
+				$scope.response = success.data;
+				if ($scope.response.success == true) {
+	        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+	        		$scope.IdholderDIR =  $rootScope.s_u_ID + "/Videos/";
+	        		$scope.tradeVideos = $scope.response.file_names;
+					$ionicLoading.hide();
+	        	} else {
+					$ionicLoading.hide();
+	        	}
+			},
+			function(error) { 
+				setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+			}
+		); 
 	})
 
 }])
@@ -1087,39 +1151,90 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
     };
  
 }])
-.controller('ImageListCtrl', ['$scope','$rootScope','$ionicModal','$sce','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
-	function($scope, $rootScope, $ionicModal, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
+.controller('ImageListCtrl', function($scope, $cordovaActionSheet,$ionicActionSheet,$rootScope, $ionicModal, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, Auth) {
 
-	$scope.$on('$ionicView.enter', function(event) {
-		$ionicLoading.show({
-			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
-		});
-		//var query = 'http://192.168.1.23/tradeappbackend/ListImages.php';
-		var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
-		var sOptions = {
-			user_id: $rootScope.user_info.user_id,
-			dbTable: "imagefiles"
-		}
+	// $scope.$on('$ionicView.enter', function(event) {
+	// 	$ionicLoading.show({
+	// 		template: '<ion-spinner class="spinner-calm"></ion-spinner>',
+	// 	});
+	// 	//var query = 'http://192.168.1.23/tradeappbackend/ListImages.php';
+	// 	var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+	// 	var sOptions = {
+	// 		user_id: $rootScope.user_info.user_id,
+	// 		dbTable: "imagefiles"
+	// 	}
    		
-   		$http.post(query, sOptions).then(function (res){
-    	$scope.response = res.data;
+ //   		$http.post(query, sOptions).then(function (res){
+ //    	$scope.response = res.data;
 
-        	if ($scope.response.success == true) {
-        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
-        		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Images/";
-        		$scope.Images = $scope.response.file_names;
-        		console.log($scope.Images);
-				$ionicLoading.hide();
-        	} else {
-				$ionicLoading.hide();
-        	}
-    	})
+ //        	if ($scope.response.success == true) {
+ //        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+ //        		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Images/";
+ //        		$scope.Images = $scope.response.file_names;
+ //        		console.log($scope.Images);
+	// 			$ionicLoading.hide();
+ //        	} else {
+	// 			$ionicLoading.hide();
+ //        	}
+ //    	})
+	// })
+
+	$scope.$on('$ionicView.enter', function(event){
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+		});
+		var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+		obj.data   = new FormData();
+		obj.data.append('user_id',$rootScope.user_info.user_id);
+		obj.data.append('dbTable','imagefiles');
+		obj.params = {};
+		   
+		Auth.REQUEST(obj).then(
+			function(success) {
+				$scope.response = success.data;
+				if ($scope.response.success == true) {
+	        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+	        		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Images/";
+	        		$scope.Images = $scope.response.file_names;
+	        		console.log($scope.Images);
+					$ionicLoading.hide();
+	        	} else {
+					$ionicLoading.hide();
+	        	}
+			},
+			function(error) { 
+				setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+			}
+		); 
 	})
+
+	$scope.deleteImg = function(itemIndex){
+		$scope.show(itemIndex);
+	}
 
 	$scope.trustSrc = function(src) {
     	return $sce.trustAsResourceUrl(src);
-  	} 
-}])
+  	}
+
+  	$scope.show = function(itemIndex) {
+
+	   var options = {
+	    title: 'Are you sure you wanted to delete this Image?',
+	    addCancelButtonWithLabel: 'Cancel',
+	    androidEnableCancelButton : true,
+	    winphoneEnableCancelButton : true,
+	    addDestructiveButtonWithLabel : 'Delete it'
+	  };
+
+	   $cordovaActionSheet.show(options)
+      .then(function(btnIndex) {
+        var index = btnIndex;
+      });
+   };
+
+})
 
 // end
 
@@ -1304,30 +1419,61 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 .controller('VideoListCtrl', ['$scope','$sce','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
 	function($scope, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
 
-	$scope.$on('$ionicView.enter', function(event) {
-		$ionicLoading.show({
-			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
-		});
-		var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
-		var sOptions = {
-			user_id: $rootScope.user_info.user_id,
-			dbTable : "videofiles"
-		}
+	// $scope.$on('$ionicView.enter', function(event) {
+	// 	$ionicLoading.show({
+	// 		template: '<ion-spinner class="spinner-calm"></ion-spinner>',
+	// 	});
+	// 	var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+	// 	var sOptions = {
+	// 		user_id: $rootScope.user_info.user_id,
+	// 		dbTable : "videofiles"
+	// 	}
    		
-   		$http.post(query, sOptions).then(function (res){
-    	$scope.response = res.data;
+ //   		$http.post(query, sOptions).then(function (res){
+ //    	$scope.response = res.data;
 
-        	if ($scope.response.success == true) {
-        		$scope.mainDIR =  $rootScope.baseURL + '/MediaFiles/';
-        		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Videos/";
-        		$scope.Videos = $scope.response.file_names;
-        		console.log($scope.Videos);
-				$ionicLoading.hide();
-        	} else {
-				console.log(JSON.stringify($scope.response.success));
-				$ionicLoading.hide();
-        	}
-    	})
+ //        	if ($scope.response.success == true) {
+ //        		$scope.mainDIR =  $rootScope.baseURL + '/MediaFiles/';
+ //        		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Videos/";
+ //        		$scope.Videos = $scope.response.file_names;
+ //        		console.log($scope.Videos);
+	// 			$ionicLoading.hide();
+ //        	} else {
+	// 			console.log(JSON.stringify($scope.response.success));
+	// 			$ionicLoading.hide();
+ //        	}
+ //    	})
+	// })
+
+	$scope.$on('$ionicView.enter', function(event){
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+		});
+		var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+		obj.data   = new FormData();
+		obj.data.append('user_id',$rootScope.user_info.user_id);
+		obj.data.append('dbTable','videofiles');
+		obj.params = {};
+		   
+		Auth.REQUEST(obj).then(
+			function(success) {
+				$scope.response = success.data;
+				if ($scope.response.success == true) {
+	        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+	        		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Videos/";
+	        		$scope.Videos = $scope.response.file_names;
+	        		console.log($scope.Images);
+					$ionicLoading.hide();
+	        	} else {
+					$ionicLoading.hide();
+	        	}
+			},
+			function(error) { 
+				setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+			}
+		); 
 	})
 
 	$scope.trustSrc = function(src) {

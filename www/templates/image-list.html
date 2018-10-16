@@ -8,12 +8,15 @@
 	  	</div>
 	</div>
 	<div class="list">
-    <a class="item item-thumbnail-left" ng-repeat = "files in Images">
+    <div id ="imageItem{{ $index }}" class="item item-thumbnail-left item-button-right" ng-repeat = "files in Images">
       <img ng-src="{{ mainDIR + IdholderDIR + files.file_name }}" style="width: 100%;
 height: auto;">
       <h2>{{ files.file_name }}</h2>
       <p>Added {{ files.dateadded }}</p>
-    </a>
+      <button class="button button-assertive" id="{{ $index }}" ng-click="deleteImg($index)">
+      	<i class="icon ion-trash-a"></i>
+      </button>
+    </div>
 	</div>
 	
 	</ion-content>

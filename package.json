@@ -22,7 +22,8 @@
       "cordova-plugin-file-transfer": {},
       "com-badrit-base64": {},
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-x-toast": {}
+      "cordova-plugin-x-toast": {},
+      "cordova-plugin-actionsheet": {}
     },
     "platforms": [
       "android"
@@ -33,6 +34,7 @@
     "angular-sanitize": "^1.3.6",
     "com-badrit-base64": "^0.2.0",
     "cordova-android": "7.0.0",
+    "cordova-plugin-actionsheet": "git+https://github.com/EddyVerbruggen/cordova-plugin-actionsheet.git",
     "cordova-plugin-advanced-http": "^1.11.1",
     "cordova-plugin-camera": "^4.0.3",
     "cordova-plugin-device": "^2.0.2",
