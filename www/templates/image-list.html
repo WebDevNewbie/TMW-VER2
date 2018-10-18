@@ -13,7 +13,7 @@
 height: auto;">
       <h2>{{ files.file_name }}</h2>
       <p>Added {{ files.dateadded }}</p>
-      <button class="button button-assertive" id="{{ $index }}" ng-click="deleteImg($index)">
+      <button class="button button-assertive" id="{{ $index }}" ng-click="deleteFile($index,files.id,files.file_name,'imagefiles','Images')">
       	<i class="icon ion-trash-a"></i>
       </button>
     </div>

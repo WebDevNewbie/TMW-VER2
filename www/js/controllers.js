@@ -553,35 +553,6 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		return str.replace(new RegExp(find, 'g'), replace);
 	}
 
-	// $scope.$on('$ionicView.enter', function(event) {
-	// 	$ionicLoading.show({
-	// 		template: '<ion-spinner class="spinner-calm"></ion-spinner>',
-	// 	});
-	// 	//var query = 'http://192.168.1.23/tradeappbackend/ListImages.php';
-	// 	var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
-	// 	var sOptions = {
-	// 		user_id: $rootScope.s_u_ID,
-	// 		dbTable: "imagefiles"
-	// 	}
-   		
- //   		$http.post(query, sOptions).then(function (res){
- //    	$scope.response = res.data;
-
- //        	if ($scope.response.success == true) {
-        		
- //        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
- //        		$scope.IdholderDIR =  $rootScope.s_u_ID + "/Images/";
- //        		$scope.tradeImages = $scope.response.file_names;
- //        		console.log($scope.Videos);
-
-	// 			$ionicLoading.hide();
- //        	} else {
- //        		$scope.tradeImages = null;
-	// 			$ionicLoading.hide();
- //        	}
- //    	})
-	// })
-
 	$scope.$on('$ionicView.enter', function(event){
 		$ionicLoading.show({
 			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
@@ -626,35 +597,6 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
     {
 		return str.replace(new RegExp(find, 'g'), replace);
 	}
-	
-	// $scope.$on('$ionicView.enter', function(event) {
-	// 	$ionicLoading.show({
-	// 		template: '<ion-spinner class="spinner-calm"></ion-spinner>',
-	// 	});
-	// 	//var query = 'http://192.168.1.23/tradeappbackend/ListImages.php';
-	// 	var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
-	// 	var sOptions = {
-	// 		user_id: $rootScope.s_u_ID,
-	// 		dbTable: "videofiles"
-	// 	}
-   		
- //   		$http.post(query, sOptions).then(function (res){
- //    	$scope.response = res.data;
-
- //        	if ($scope.response.success == true) {
-        		
- //        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
- //        		$scope.IdholderDIR =  $rootScope.s_u_ID + "/Videos/";
- //        		$scope.tradeVideos = $scope.response.file_names;
- //        		console.log($scope.Videos);
-        		
-	// 			$ionicLoading.hide();
- //        	} else {
- //        		$scope.tradeVideos = null;
-	// 			$ionicLoading.hide();
- //        	}
- //    	})
-	// })
 
 	$scope.$on('$ionicView.enter', function(event){
 		$ionicLoading.show({
@@ -1178,6 +1120,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
  //        	}
  //    	})
 	// })
+	
 
 	$scope.$on('$ionicView.enter', function(event){
 		$ionicLoading.show({
@@ -1210,16 +1153,19 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		); 
 	})
 
-	$scope.deleteImg = function(itemIndex){
-		$scope.show(itemIndex);
-	}
-
 	$scope.trustSrc = function(src) {
     	return $sce.trustAsResourceUrl(src);
   	}
 
-  	$scope.show = function(itemIndex) {
+  	$scope.showSuccessMessage = function(message) {
+	   var alertPopup = $ionicPopup.alert({
+		 title: 'SUCCESS!',
+		 template: message
+	   });
+	}
 
+  	$scope.deleteFile = function(itemIndex,imgID,imgName,table,storage) {
+  		
 	   var options = {
 	    title: 'Are you sure you wanted to delete this Image?',
 	    addCancelButtonWithLabel: 'Cancel',
@@ -1230,9 +1176,40 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 
 	   $cordovaActionSheet.show(options)
       .then(function(btnIndex) {
-        var index = btnIndex;
-      });
-   };
+        if(btnIndex === 1){
+        	$ionicLoading.show({
+				template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+			});
+        	var obj    = new Object();
+			obj.method = 'POST';
+			obj.url    = $rootScope.baseURL + "/mobile/upload_controller/deleteMedia";
+			obj.data   = new FormData();
+			obj.data.append('user_id',$rootScope.user_info.user_id);
+			obj.data.append('storage',storage);
+			obj.data.append('filename',imgName);
+			obj.data.append('img_id',imgID);
+			obj.data.append('dbTable',table);
+			obj.params = {};
+			   
+			Auth.REQUEST(obj).then(
+				function(success) {
+					$scope.response = success.data;
+					if ($scope.response.success == true) {
+		        		$scope.Images.splice(itemIndex,1);
+		        		$scope.showSuccessMessage($scope.response.message);
+						$ionicLoading.hide();
+		        	} else {
+						$ionicLoading.hide();
+		        	}
+				},
+				function(error) { 
+					setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+				}
+			);
+        	
+         }
+     });
+  };
 
 })
 
