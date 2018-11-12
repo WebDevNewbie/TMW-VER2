@@ -1,0 +1,31 @@
+<ion-view title="Connect">
+	<ion-content style="background:#F0F3F8;">
+
+	<div class="list">
+
+	  <a class="item item-avatar" ng-repeat="chatMessages in chats">
+      	<img src="img/man.png">
+      	<h2>{{ chatMessages.username }}</h2>
+      	<p>{{ chatMessages.message }}</p>
+      </a>
+
+      <div class="card"  ng-show="chats === null">
+		<div class="item item-avatar"> 
+		    <img src="img/warning.png">
+		    <h2>Opps!</h2>
+		    <p>No chat history messages to show!</p>
+	  	</div>
+	  </div>
+	  
+	</div>
+	
+	
+	</ion-content>
+	<div class="bar bar-footer item-input-inset">
+	  <label class="item-input-wrapper">
+	    <textarea id ="search" ng-model="trader.chat" placeholder=" Your Message.." style="width:100%;"></textarea>
+	  </label>
+	  <button class="button button-outline button-positive icon ion-android-send" ng-click="sendMessage()">
+	  </button>
+	</div>
+</ion-view>

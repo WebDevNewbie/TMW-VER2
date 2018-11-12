@@ -41,6 +41,11 @@
           Trade Videos
          
         </ion-item>
+         <ion-item menu-close class="item item-icon-left menu-item" href="#/menu/all-connections">
+         <i class="icon ion-chatbubble-working"></i>
+          Connections
+         <span ng-show="unseen_messages != 0" class="badge badge-assertive">{{ unseen_messages }}</span>
+        </ion-item>
         <ion-item menu-close class="item item-icon-left menu-item" ng-click="logout()">
           <i class="icon ion-power"></i>
           Log Out

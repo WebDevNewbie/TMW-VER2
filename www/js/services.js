@@ -4,9 +4,9 @@ app.factory('Auth', ['$http','$rootScope',
 {
 	// $rootScope.baseURL   = 'http://tradeapp.com';
   // prod backend connection url
-	$rootScope.baseURL   = 'http://escaperoomfactory.net/tradeappbackend/public_html';
+	$rootScope.baseURL   = 'http://trademyworld.club/tradeappbackend/public_html';
   // local backend connection url
-  // $rootScope.baseURL   = 'http://192.168.1.23/tradeappbackend/public_html';
+  // $rootScope.baseURL   = 'http://192.168.1.31/tradeappbackend/public_html';
   // set backend connection here
 	// $rootScope.baseURL   = ''; 
 	
@@ -16,6 +16,8 @@ app.factory('Auth', ['$http','$rootScope',
 	$rootScope.s_u_ID = 0;
   $rootScope.newFilename = 0;
   $rootScope.pathTodel = 0;
+  $rootScope.curChatID = 0;
+  $rootScope.prevChatID  = 0;
 	$rootScope._remove_white_space = function (str)
 	  {
 		var string = str;

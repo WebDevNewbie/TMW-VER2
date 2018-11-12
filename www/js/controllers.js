@@ -529,6 +529,10 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 				);   	
 	})
 
+	$scope.ConnectWithTrader = function(traderid){
+		$rootScope.s_u_ID = traderid;
+		window.location.href = "#/menu/connect-trader";
+	}
 	$scope.viewImages = function(){
 		window.location.href = "#/n-trader-images";
 	}
@@ -635,6 +639,32 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	//$rootScope.isLogged  = false;
 	//console.log($rootScope.isLogged);
 	console.log($rootScope.user_info);
+	$scope.$on('$ionicView.enter', function(event){
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+		});
+		var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/chat_controller/count_unseen_messages";
+		obj.data   = new FormData();
+		obj.data.append('user_id',$rootScope.user_info.user_id);
+		obj.params = {};
+		   
+		Auth.REQUEST(obj).then(
+			function(success) {
+				$scope.response = success.data;
+				if ($scope.response.success == true) {
+	        		$scope.unseen_messages = $scope.response.unseen_messages;
+					$ionicLoading.hide();
+	        	} else {
+					$ionicLoading.hide();
+	        	}
+			},
+			function(error) { 
+				setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+			}
+		); 
+	})
 
 	$scope.logout = function()
     {
@@ -1396,32 +1426,6 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 .controller('VideoListCtrl', ['$scope','$sce','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
 	function($scope, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
 
-	// $scope.$on('$ionicView.enter', function(event) {
-	// 	$ionicLoading.show({
-	// 		template: '<ion-spinner class="spinner-calm"></ion-spinner>',
-	// 	});
-	// 	var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
-	// 	var sOptions = {
-	// 		user_id: $rootScope.user_info.user_id,
-	// 		dbTable : "videofiles"
-	// 	}
-   		
- //   		$http.post(query, sOptions).then(function (res){
- //    	$scope.response = res.data;
-
- //        	if ($scope.response.success == true) {
- //        		$scope.mainDIR =  $rootScope.baseURL + '/MediaFiles/';
- //        		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Videos/";
- //        		$scope.Videos = $scope.response.file_names;
- //        		console.log($scope.Videos);
-	// 			$ionicLoading.hide();
- //        	} else {
-	// 			console.log(JSON.stringify($scope.response.success));
-	// 			$ionicLoading.hide();
- //        	}
- //    	})
-	// })
-
 	$scope.$on('$ionicView.enter', function(event){
 		$ionicLoading.show({
 			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
@@ -1460,6 +1464,198 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 
 
 // end
+
+.controller('ConnectCtrl', ['$scope','$sce','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','$interval','$timeout','Auth', 
+	function($scope, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, $interval, $timeout, Auth) {
+	
+ 
+	$scope.$on('$ionicView.enter', function(event){
+		$scope.chats = [];
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+		});
+		var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/chat_controller/fetch_messages";
+		obj.data   = new FormData();
+		obj.data.append('fromTrader',$rootScope.user_info.user_id);
+		obj.data.append('toTrader',$rootScope.s_u_ID);
+		obj.params = {};
+		   
+		Auth.REQUEST(obj).then(
+			function(success) {
+				$scope.response = success.data;
+				if ($scope.response.success == true) {
+	        		$scope.chats = $scope.response.chat_messages;
+	        		console.log(JSON.stringify($scope.chats));
+					$ionicLoading.hide();
+	        	} else {
+					$ionicLoading.hide();
+	        	}
+			},
+			function(error) { 
+				setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+			}
+		);
+	})
+
+	$scope.sendMessage = function(){
+		
+		var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/chat_controller/insert_chat";
+		obj.data   = new FormData();
+		obj.data.append('fromTrader',$rootScope.user_info.user_id);
+		obj.data.append('toTrader',$rootScope.s_u_ID);
+		obj.data.append('chatMessage',$scope.trader.chat);
+		
+		obj.params = {};
+   
+		Auth.REQUEST(obj).then(
+		  function(success) { 
+			  if(JSON.stringify(success.data.success) == "true"){
+				
+				// fetch chat messages
+				$scope.trader.chat = "";
+				var chatdata = [];
+				// if ($rootScope.user_info.username == success.data.chat_messages[0].username) {
+				// 	var username = 'You';
+				// } else {
+				// 	var username = success.data.chat_messages[0].username;
+				// }
+				chatdata.username = success.data.chat_messages[0].username;
+				chatdata.message = success.data.chat_messages[0].message;
+				$scope.chats.unshift(chatdata);
+				//$scope.retreiveMessage();
+				
+				
+				// end
+				
+			  }
+			  else{
+				$ionicLoading.hide();
+				//console.log("false");
+				//$rootScope.showToast('Invalid Username or Password, Please try again!');
+			  }
+			},
+			function(error) { 
+			  $ionicLoading.hide();
+			  // $rootScope.showToast('Invalid Username/Password');
+			}
+		);   
+	}
+
+	$scope.chatMessagerealtime = function(){
+    	var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/chat_controller/latest_chat_message";
+		obj.data   = new FormData();
+		obj.data.append('loggged_id',$rootScope.user_info.user_id);
+		obj.params = {};
+		   
+		Auth.REQUEST(obj).then(
+			function(success) {
+				$scope.response = success.data;
+				if ($scope.response.success == true && $scope.response.new_message != null) {
+					var chatdata = [];
+					$rootScope.curChatID = $scope.response.new_message[0].chat_id;
+					chatdata.username = success.data.new_message[0].username;
+					chatdata.message = success.data.new_message[0].message;
+					$scope.chats.unshift(chatdata);
+	        	} else {
+  					$rootScope.curChatID  = 0;
+  					$rootScope.prevChatID  = 0;
+
+	        	}
+			},
+			function(error) { 
+				//setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+			}
+		); 
+  	}
+
+  	$scope.updateStatusmessage = function(){
+  		var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/chat_controller/update_latest_message";
+		obj.data   = new FormData();
+		obj.data.append('chat_id',$rootScope.curChatID);
+		obj.params = {};
+		   
+		Auth.REQUEST(obj).then(
+			function(success) {
+				$scope.response = success.data;
+				if ($scope.response.success == true && $scope.response.status != null) {
+					console.log('updated!');
+	        	} else {
+  					console.log('error!');
+	        	}
+			},
+			function(error) { 
+				//setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+			}
+		); 
+  	}
+
+	$scope.showSuccessMessage = function(message) {
+	   var alertPopup = $ionicPopup.alert({
+		 title: 'NEW MESSAGE ID!',
+		 template: message
+	   });
+	}
+
+	$scope.trustSrc = function(src) {
+    	return $sce.trustAsResourceUrl(src);
+  	};
+
+}])
+
+.controller('ConnectionsCtrl', ['$scope','$sce','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
+	function($scope, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
+	
+
+
+	$scope.$on('$ionicView.enter', function(event){
+	
+		var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/chat_controller/fetch_connections";
+		obj.data   = new FormData();
+		obj.data.append('user_id',$rootScope.user_info.user_id);
+		obj.params = {};
+		   
+		Auth.REQUEST(obj).then(
+			function(success) {
+				$scope.response = success.data;
+				if ($scope.response.success == true) {
+	        		$scope.userConnections = $scope.response.userConnections;
+					$ionicLoading.hide();
+	        	} else {
+					$ionicLoading.hide();
+	        	}
+			},
+			function(error) { 
+				setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+			}
+		); 
+	})
+
+	$scope.viewChatHistory = function(traderID){
+		$rootScope.s_u_ID = traderID;
+		window.location.href = "#/menu/connect-trader";
+	}
+
+	$scope.showSuccessMessage = function(message) {
+	   var alertPopup = $ionicPopup.alert({
+		 title: 'SUCCESS!',
+		 template: message
+	   });
+	}
+
+	$scope.trustSrc = function(src) {
+    	return $sce.trustAsResourceUrl(src);
+  	};  
+}])
 
 .controller('AccountCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
   $scope.settings = {

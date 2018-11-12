@@ -1,0 +1,26 @@
+<ion-view title="All Connections">
+	<ion-content style="background:#F0F3F8;">
+
+	<div class="list">
+	<div ng-repeat = "usernames in userConnections">
+		<a class="item item-avatar item-icon-left" ng-click="viewChatHistory(usernames.user_id)">
+      	<img src="img/man.png">
+      	<h2>{{ usernames.username }}</h2>
+      	<p>{{ usernames.last_message }}</p>
+      	<span ng-show = "usernames.unseen_chat != 0" class="badge badge-assertive">{{ usernames.unseen_chat }}</span>
+      </a>
+	</div>
+	 
+      <div class="card" ng-show="userConnections === null">
+		<div class="item item-avatar"> 
+		    <img src="img/warning.png">
+		    <h2>Opps!</h2>
+		    <p>No Connected Traders to show!</p>
+	  	</div>
+	  </div>
+	  
+	</div>
+	
+	
+	</ion-content>
+</ion-view>

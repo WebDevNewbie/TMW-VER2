@@ -1,7 +1,7 @@
 
 angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services','ngCordova','ngSanitize'])
 
-.run(function($ionicPlatform, $rootScope, $cordovaToast) {
+.run(function($ionicPlatform, $rootScope, $cordovaToast, $http, $ionicPopup, $interval,Auth) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -14,6 +14,7 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    
   });
   $rootScope.showToast = function(msg)
   {
@@ -27,6 +28,7 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
     });
 
   }
+ 
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -50,6 +52,15 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
         'menuContent': {
           templateUrl: 'templates/usersearch.html',
           controller: 'SearchCtrl'
+        }
+      }
+    })
+  .state('menu.all-connections', {
+      url: '/all-connections',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/all-connections.html',
+          controller: 'ConnectionsCtrl'
         }
       }
     })
@@ -111,6 +122,15 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
         'menuContent': {
           templateUrl: 'templates/add-image.html',
           controller: 'FilesCtrl'
+        }
+      }
+    })
+  .state('menu.connect-trader', {
+      url: '/connect-trader',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/connect-trader.html',
+          controller: 'ConnectCtrl'
         }
       }
     })
