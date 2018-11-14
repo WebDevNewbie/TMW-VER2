@@ -1,10 +1,20 @@
 <ion-view title="Trade Image List">
 	<ion-content style="background:#F0F3F8;">
-	<div class="card" >
+	<div class="card" ng-show="(Uploads != 2 && package == 1) || (Uploads != 12 && package == 2) || (Uploads != 24 && package == 3)">
 		<div class="item item-avatar"> 
 		    <img src="img/pictures.png">
 		    <h2>Trade Images Uploaded</h2>
 		    <p>will be displayed here!</p>
+	  	</div>
+	</div>
+	<div class="card" ng-show="(Uploads == 2 && package == 1) || (Uploads == 12 && package == 2) || (Uploads == 24 && package == 3)">
+		<div class="item item-avatar"> 
+		    <img src="img/warning.png">
+		    <h2>Upload limit reached!</h2>
+		    <p>Get our Paid Membership now!</p>
+		    <button class="button button-full button-positive">
+      			Check it out!
+    		</button>
 	  	</div>
 	</div>
 	<div class="list">
@@ -20,10 +30,16 @@ height: auto;">
 	</div>
 	
 	</ion-content>
-	<div class="tabs tabs-icon-left">
-	<a class="tab-item" href="#/menu/add-image" style="font-size: 15px;color:#7ec12e">
-	  	<i class="icon ion-images"></i>
-	  	Upload an Image
-	  </a>
+
+	<div class="tabs tabs-icon-left" ng-show="(Uploads != 2 && package == 1) || (Uploads != 12 && package == 2) || (Uploads != 24 && package == 3)">
+		<a class="tab-item" href="#/menu/add-image" style="font-size: 15px;color:#7ec12e">
+	  		<i class="icon ion-images"></i>
+	  		Upload an Image
+	    </a>
 	</div>
+	<div class="bar bar-footer bar-energized" ng-show="(Uploads == 2 && package == 1) || (Uploads == 12 && package == 2) || (Uploads == 24 && package == 3)">
+	  	<p class="title"><i class="icon ion-alert-circled"></i> Upload limit reached!</p>
+	</div>
+	
+	
 </ion-view>

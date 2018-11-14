@@ -649,7 +649,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		obj.data   = new FormData();
 		obj.data.append('user_id',$rootScope.user_info.user_id);
 		obj.params = {};
-		   
+		$scope.package = $rootScope.user_info.user_role;
 		Auth.REQUEST(obj).then(
 			function(success) {
 				$scope.response = success.data;
@@ -1059,7 +1059,43 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 // handling Upload of images Contollers
 .controller('FilesCtrl', ['$scope','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
 	function($scope, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
+    
     $scope.pictureUrl = null;
+
+    $scope.$on('$ionicView.enter', function(event){
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+		});
+		var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+		obj.data   = new FormData();
+		obj.data.append('user_id',$rootScope.user_info.user_id);
+		obj.data.append('dbTable','imagefiles');
+		obj.params = {};
+		   
+		Auth.REQUEST(obj).then(
+			function(success) {
+				$scope.response = success.data;
+				$scope.package = $rootScope.user_info.user_role;
+				if ($scope.response.success == true) {
+					console.log("in IF");
+	        	
+	        		$rootScope.fileCount = $scope.response.file_names[0].imgCount;
+	        		
+					$ionicLoading.hide();
+	        	} else {
+	        		console.log("in ELSE");
+	        		$rootScope.fileCount = $scope.response.file_names;
+					$ionicLoading.hide();
+	        	}
+			},
+			function(error) { 
+				setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+			}
+		); 
+	})
+
     $scope.takePicture = function(){
     	var options = {
     	  sourceType : Camera.PictureSourceType.SAVEDPHOTOALBUM,
@@ -1109,6 +1145,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			  if(JSON.stringify(success.data.success) == "true"){
 				$ionicLoading.hide();
         		$scope.showSuccessMessage(success.data.message);
+        		$rootScope.fileCount++;
         		$scope.pictureUrl = null;
 			  }
 			  else{
@@ -1125,32 +1162,6 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 }])
 .controller('ImageListCtrl', function($scope, $cordovaActionSheet,$ionicActionSheet,$rootScope, $ionicModal, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, Auth) {
 
-	// $scope.$on('$ionicView.enter', function(event) {
-	// 	$ionicLoading.show({
-	// 		template: '<ion-spinner class="spinner-calm"></ion-spinner>',
-	// 	});
-	// 	//var query = 'http://192.168.1.23/tradeappbackend/ListImages.php';
-	// 	var query = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
-	// 	var sOptions = {
-	// 		user_id: $rootScope.user_info.user_id,
-	// 		dbTable: "imagefiles"
-	// 	}
-   		
- //   		$http.post(query, sOptions).then(function (res){
- //    	$scope.response = res.data;
-
- //        	if ($scope.response.success == true) {
- //        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
- //        		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Images/";
- //        		$scope.Images = $scope.response.file_names;
- //        		console.log($scope.Images);
-	// 			$ionicLoading.hide();
- //        	} else {
-	// 			$ionicLoading.hide();
- //        	}
- //    	})
-	// })
-	
 
 	$scope.$on('$ionicView.enter', function(event){
 		$ionicLoading.show({
@@ -1167,13 +1178,18 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		Auth.REQUEST(obj).then(
 			function(success) {
 				$scope.response = success.data;
+				$scope.package = $rootScope.user_info.user_role;
 				if ($scope.response.success == true) {
+					console.log("in IF");
 	        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
 	        		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Images/";
 	        		$scope.Images = $scope.response.file_names;
+	        		$rootScope.Uploads = $scope.response.file_names[0].imgCount;
 	        		console.log($scope.Images);
 					$ionicLoading.hide();
 	        	} else {
+	        		console.log("in ELSE");
+	        		$rootScope.Uploads = $scope.response.file_names;
 					$ionicLoading.hide();
 	        	}
 			},
@@ -1182,6 +1198,12 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			}
 		); 
 	})
+
+	$scope.subCount = function(){
+		if($rootScope.Uploads != 0){
+			$rootScope.Uploads--;
+		}
+	}
 
 	$scope.trustSrc = function(src) {
     	return $sce.trustAsResourceUrl(src);
@@ -1227,6 +1249,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 					if ($scope.response.success == true) {
 		        		$scope.Images.splice(itemIndex,1);
 		        		$scope.showSuccessMessage($scope.response.message);
+		        		$scope.subCount();
 						$ionicLoading.hide();
 		        	} else {
 						$ionicLoading.hide();
@@ -1251,6 +1274,40 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
     
 	$scope.videoLoaded = null;
 
+	$scope.$on('$ionicView.enter', function(event){
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+		});
+		var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+		obj.data   = new FormData();
+		obj.data.append('user_id',$rootScope.user_info.user_id);
+		obj.data.append('dbTable','videofiles');
+		obj.params = {};
+		   
+		Auth.REQUEST(obj).then(
+			function(success) {
+				$scope.response = success.data;
+				$scope.package = $rootScope.user_info.user_role;
+				if ($scope.response.success == true) {
+	        		// $scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+	        		// $scope.IdholderDIR =  $rootScope.user_info.user_id + "/Videos/";
+	        		$rootScope.vidFilecount = $scope.response.file_names[0].imgCount;
+	        		$scope.Videos = $scope.response.file_names;
+	        		
+					$ionicLoading.hide();
+	        	} else {
+	        		$rootScope.vidFilecount = $scope.response.file_names;
+					$ionicLoading.hide();
+	        	}
+			},
+			function(error) { 
+				setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+			}
+		); 
+	})
+
     $scope.showSuccessMessage = function(message) {
 	   var alertPopup = $ionicPopup.alert({
 		 title: 'SUCCESS!',
@@ -1273,42 +1330,6 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	      	console.log(JSON.stringify('Error copying:' + e.message));
 	    });
 	}
-  	
-  	// temprorary comment
-	// $scope.captureVideo = function() {
-	//     var options = { limit: 1, duration: 15 };
-
-	//     $cordovaCapture.captureVideo(options).then(function(videoData) {
-	//     	$ionicLoading.show({
-	// 			template: '<ion-spinner class="spinner-calm"></ion-spinner>',
-	// 		});
-
-	// 		 console.log(videoData);
-	//      	 var name = videoData[0].fullPath.substr(videoData[0].fullPath.lastIndexOf('/') + 1);
- //        	 var namePath = videoData[0].fullPath.substr(0, videoData[0].fullPath.lastIndexOf('/') + 1);
- //        	 var newName = name;
- //        	 var tempDirname = 'TMWFILES';
- //        	 var toPath = cordova.file.dataDirectory;
- //        	 var pathTocopy = toPath + tempDirname;
-	// 		 $rootScope.newFilename = newName;
-
-	// 		 window.resolveLocalFileSystemURL( toPath , function (dirEntry) {
-	// 		 	 console.log("dataDirectory path:" + cordova.file.dataDirectory);
-	// 		 	 $cordovaFile.checkDir(toPath, tempDirname)
-	// 		      .then(function (success) {
-	// 		      	// if it exists, copy video 
-	// 		       	$scope.copyFile(namePath,newName,pathTocopy,newName);
-	// 		        $ionicLoading.hide();
-	// 		     }, function (error) {
-	// 		       // else create directory and copy video
-	// 		       $scope.createTempstorage(toPath,tempDirname,pathTocopy,newName,namePath);
-	// 		       $ionicLoading.hide();
-	// 		     });
-	// 	     });
-	//     }, function(err) {
-	//     	 $ionicLoading.hide();
-	//     });
-	// }
 
 	$scope.selectVideo = function(){
     	var options = {
@@ -1394,6 +1415,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
       		// if upload was a success.
        		$scope.showSuccessMessage(result.response);
        		$scope.fileTodelete(pathTodel,filename);
+       		$rootScope.vidFilecount++;
        		$scope.videoLoaded = null;
        		$ionicLoading.hide();
       	}, function(err) {
@@ -1423,8 +1445,8 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
  
 }])
 
-.controller('VideoListCtrl', ['$scope','$sce','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
-	function($scope, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
+.controller('VideoListCtrl', ['$scope','$sce','$http','$cordovaActionSheet','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
+	function($scope, $sce, $http, $cordovaActionSheet ,$cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
 
 	$scope.$on('$ionicView.enter', function(event){
 		$ionicLoading.show({
@@ -1441,13 +1463,16 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		Auth.REQUEST(obj).then(
 			function(success) {
 				$scope.response = success.data;
+				$scope.package = $rootScope.user_info.user_role;
 				if ($scope.response.success == true) {
-	        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
-	        		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Videos/";
+	        		// $scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+	        		// $scope.IdholderDIR =  $rootScope.user_info.user_id + "/Videos/";
+	        		$rootScope.vidUploads = $scope.response.file_names[0].imgCount;
 	        		$scope.Videos = $scope.response.file_names;
-	        		console.log($scope.Images);
+	        		
 					$ionicLoading.hide();
 	        	} else {
+	        		$rootScope.vidUploads = $scope.response.file_names;
 					$ionicLoading.hide();
 	        	}
 			},
@@ -1456,6 +1481,66 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			}
 		); 
 	})
+
+	$scope.subVidcnt = function(){
+		if($rootScope.vidUploads != 0){
+			$rootScope.vidUploads--;
+		}
+	}
+
+	$scope.deleteVid = function(itemIndex,imgID,imgName,table,storage) {
+  		
+	   var options = {
+	    title: 'Are you sure you wanted to delete this Video?',
+	    addCancelButtonWithLabel: 'Cancel',
+	    androidEnableCancelButton : true,
+	    winphoneEnableCancelButton : true,
+	    addDestructiveButtonWithLabel : 'Delete it'
+	  };
+
+	   $cordovaActionSheet.show(options)
+      .then(function(btnIndex) {
+        if(btnIndex === 1){
+        	$ionicLoading.show({
+				template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+			});
+        	var obj    = new Object();
+			obj.method = 'POST';
+			obj.url    = $rootScope.baseURL + "/mobile/upload_controller/deleteMedia";
+			obj.data   = new FormData();
+			obj.data.append('user_id',$rootScope.user_info.user_id);
+			obj.data.append('storage',storage);
+			obj.data.append('filename',imgName);
+			obj.data.append('img_id',imgID);
+			obj.data.append('dbTable',table);
+			obj.params = {};
+			   
+			Auth.REQUEST(obj).then(
+				function(success) {
+					$scope.response = success.data;
+					if ($scope.response.success == true) {
+		        		$scope.Videos.splice(itemIndex,1);
+		        		$scope.showSuccessMessage($scope.response.message);
+		        		$scope.subVidcnt();
+						$ionicLoading.hide();
+		        	} else {
+						$ionicLoading.hide();
+		        	}
+				},
+				function(error) { 
+					setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+				}
+			);
+        	
+         }
+     });
+  }
+  	$scope.showSuccessMessage = function(message) {
+	   var alertPopup = $ionicPopup.alert({
+		 title: 'SUCCESS!',
+		 template: message
+	   });
+	}
 
 	$scope.trustSrc = function(src) {
     	return $sce.trustAsResourceUrl(src);

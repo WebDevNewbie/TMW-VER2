@@ -18,6 +18,11 @@ app.factory('Auth', ['$http','$rootScope',
   $rootScope.pathTodel = 0;
   $rootScope.curChatID = 0;
   $rootScope.prevChatID  = 0;
+  $rootScope.Uploads = 0;
+  $rootScope.vidUploads = 0;
+  $rootScope.fileCount = 0;
+  $rootScope.vidFilecount = 0;
+  //$rootScope.vidUploads = 0;
 	$rootScope._remove_white_space = function (str)
 	  {
 		var string = str;

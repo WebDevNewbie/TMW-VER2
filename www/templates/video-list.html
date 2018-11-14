@@ -1,30 +1,62 @@
 <ion-view title="Trade Video List">
 	<ion-content style="background:#F0F3F8;">
-	<div class="card" >
+	<div class="card" ng-show="(vidUploads != 2 && package == 2) || (vidUploads != 5 && package == 3)">
 		<div class="item item-avatar"> 
 		    <img src="img/movie-player.png">
 		    <h2>Trade Videos Uploaded</h2>
 		    <p>will be displayed here!</p>
 	  	</div>
 	</div>
+	<div class="card" ng-show="(vidUploads == 2 && package == 2) || (vidUploads == 5 && package == 3)">
+		<div class="item item-avatar"> 
+		    <img src="img/warning.png">
+		    <h2>Upload limit reached!</h2>
+		    <p>Get our Paid Membership now!</p>
+		    <button class="button button-full button-positive">
+      			Check it out!
+    		</button>
+	  	</div>
+	</div>
 
-	<div class="list card" ng-repeat="files in Videos">
-	  <div class="item item-body">
+	<div class="list">
+	  <!-- <div class="item item-body">
 	    <video class="full-image" ng-src="{{ trustSrc(mainDIR + IdholderDIR + files.file_name) }}" controls="controls" style="width:100%;height:250px;"></video>
-	    
 	  </div>
-	 
   	    <label class="item">
 	    <span class="icon ion-calendar" style="color:#a7d341;"> <i style="color:#9a9999;">Added {{ files.dateadded }}</i>
-	  </label>
+	  </label> -->
+	<div class="item item-thumbnail-left item-button-right" ng-repeat = "files in Videos">
+      <img src="img/movie-player.png" style="width: 100%;
+height: auto;">
+      <h2>{{ files.file_name }}</h2>
+      <p>Added {{ files.dateadded }}</p>
+      <button class="button button-assertive" id="{{ $index }}" ng-click="deleteVid($index,files.id,files.file_name,'videofiles','Videos')">
+  		<i class="icon ion-trash-a"></i>
+  	  </button>
+    </div>
+	 
+	<!-- <div class="item item-thumbnail-left item-button-right" >
+		<img src="img/movie-player.png" style="width: 100%;
+height: auto;">
+		<p>{{ files.file_name }}</p>
+		<p>{{ files.dateadded }}</p>
+		<button class="button button-assertive" id="{{ $index }}" ng-click="deleteVid($index,files.id,files.file_name,'videofiles','Videos')">
+  		<i class="icon ion-trash-a"></i>
+  		</button>
+	 </div> -->
+	  
+
 	</div>
 	
 
 	</ion-content>
-	<div class="tabs tabs-icon-left">
+	<div class="tabs tabs-icon-left" ng-show="(vidUploads != 2 && package == 2) || (vidUploads != 5 && package == 3)">
 	<a class="tab-item" style="font-size: 18px;color:#7ec12e" href="#/menu/add-video">
 	  	<i class="icon ion-videocamera"></i>
 	  	Upload a Video
 	  </a>
+	</div>
+	<div class="bar bar-footer bar-energized" ng-show="(vidUploads == 2 && package == 2) || (vidUploads == 5 && package == 3)">
+	  	<p class="title"><i class="icon ion-alert-circled"></i> Upload limit reached!</p>
 	</div>
 </ion-view>
