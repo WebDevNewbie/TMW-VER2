@@ -35,14 +35,14 @@
 		  </label>
 		  <br>
 		  <label class="item item-input">
-			<input type="text" placeholder="Service Name" ng-model="user.servname">
+			<input type="text" placeholder="My Trade" ng-model="user.servname">
 		  </label>
 		  <span ng-show="user.servname_error" class="h6 assertive">{{ user.servname_desc}}</span> 
-		  <br>
+		  <!--<br>
 		  <label class="item item-input">
-			<textarea placeholder="Service Description" ng-model="user.servdesc" style="height:60px"></textarea>
+			<textarea placeholder="Trade Description" ng-model="user.servdesc" style="height:60px"></textarea>
 		  </label>
-		  <span ng-show="user.servdesc_error" class="h6 assertive">{{ user.servdesc_desc}}</span> 
+		  <span ng-show="user.servdesc_error" class="h6 assertive">{{ user.servdesc_desc}}</span> -->
 		  <br>
 		</div>
 		
@@ -65,7 +65,7 @@
 		  </label>
 		  <span ng-show="user.age_error" class="h6 assertive">{{ user.age_desc}}</span> 
 		  <br>
-		  <label class="item item-input">
+		  <!--<label class="item item-input">
 			<span class="input-label">Birthdate</span>
 			<input type="date" placeholder="Birthday" ng-model="user.bday">
 		  </label>
@@ -74,7 +74,7 @@
 		  <label class="item item-input">
 			<input type="text" placeholder="Address" ng-model="user.address">
 		  </label>
-		  <span ng-show="user.address_error" class="h6 assertive">{{ user.address_desc}}</span> 
+		  <span ng-show="user.address_error" class="h6 assertive">{{ user.address_desc}}</span> -->
 		</div>
 		<div class="list list-inset">
 			<button ng-click="register()" type="submit" class="button button-block button-positive">Sign Up</button>

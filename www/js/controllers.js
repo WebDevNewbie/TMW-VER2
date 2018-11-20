@@ -81,14 +81,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		
 		var validInput = $scope.VALIDATE_REGISTER_INPUT();
 		if(validInput){
-			var tDate = new Date($scope.user.bday);
+			/*var tDate = new Date($scope.user.bday);
 			var monD = tDate.getMonth() + 1;
 			var todD = tDate.getDate();
 			if(monD < 10){ monD = "0"+monD }
 			if(todD < 10){ todD = "0"+todD }
-			var newDate = tDate.getFullYear()+"-"+monD+"-"+todD;
+			var newDate = tDate.getFullYear()+"-"+monD+"-"+todD;*/
 			$scope.user.pack = document.getElementById('user_role').value;
-			$scope.user.bday = newDate;
+			//$scope.user.bday = newDate;
 		
 			$scope.ADD_TO_SERVER();
 			console.log("add to server");
@@ -102,15 +102,15 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	  {
 		
 		if($scope.user.servname == undefined) $scope.user.servname="";  
-		if($scope.user.servdesc == undefined) $scope.user.servdesc="";  
+		//if($scope.user.servdesc == undefined) $scope.user.servdesc="";  
 		if($scope.user.uname == undefined) $scope.user.uname="";  
 		if($scope.user.pass == undefined) $scope.user.pass="";  
 		if($scope.user.cpass == undefined) $scope.user.cpass="";  
 		if($scope.user.fname == undefined) $scope.user.fname="";  
 		if($scope.user.lname == undefined) $scope.user.lname="";  
 		if($scope.user.age == undefined) $scope.user.age="";  
-		if($scope.user.bday == undefined) $scope.user.bday="";  
-		if($scope.user.address == undefined) $scope.user.address=""; 
+		//if($scope.user.bday == undefined) $scope.user.bday="";  
+		//if($scope.user.address == undefined) $scope.user.address=""; 
 		if($scope.user.pass != $scope.user.cpass){
 			$scope.notEqual.error = true;
 			$scope.notEqual.desc = "Password did not match.";
@@ -121,9 +121,9 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		$scope.clean_age = $rootScope._remove_white_space($scope.user.age);
 		
 		$scope.clean_servname = $rootScope._remove_white_space($scope.user.servname);
-		$scope.clean_servdesc = $rootScope._remove_white_space($scope.user.servdesc);
+		//$scope.clean_servdesc = $rootScope._remove_white_space($scope.user.servdesc);
 		
-		$scope.clean_address = $rootScope._remove_white_space($scope.user.address);
+		//$scope.clean_address = $rootScope._remove_white_space($scope.user.address);
 		
 		$scope.clean_uname = $rootScope._remove_white_space($scope.user.uname);
 		$scope.clean_userPass = $rootScope._remove_white_space($scope.user.pass);
@@ -139,14 +139,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		} else {
 		  $scope.user.servname_error = false;
 		}
-		if(!$rootScope.inputBlank($scope.clean_servdesc))
+		/*if(!$rootScope.inputBlank($scope.clean_servdesc))
 		{
 		  $scope.user.servdesc_error = true;
 		  $scope.user.servdesc_desc = "Please fill out this field.";
 		  ret = false;
 		} else {
 		  $scope.user.servdesc_error = false;
-		}
+		}*/
 		if(!$rootScope.inputBlank($scope.clean_fname))
 		{
 		  $scope.user.fname_error = true;
@@ -184,14 +184,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		} else {
 		  $scope.user.bday_error = false;
 		}
-		if(!$rootScope.inputBlank($scope.clean_address))
+		/*if(!$rootScope.inputBlank($scope.clean_address))
 		{
 		  $scope.user.address_error = true;
 		  $scope.user.address_desc = "Please fill out this field.";
 		  ret = false;
 		} else {
 		  $scope.user.address_error = false;
-		}
+		}*/
 		
 		if(!$rootScope.inputLength($scope.clean_uname))
 		{
@@ -238,7 +238,9 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	  
 	$scope.ADD_TO_SERVER = function ()
 	{
-
+		$scope.user.servdesc ="";
+		$scope.user.address = "";
+		$scope.user.bday = "2018-01-01";
 		$ionicLoading.show({
           template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
         });
@@ -348,7 +350,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 				  else{
 					$ionicLoading.hide();
 					//console.log("false");
-					$rootScope.showToast('Invalid Username or Password, Please try again!');
+					//$rootScope.showToast('Invalid Username or Password, Please try again!');
 				  }
 				},
 				function(error) { 
@@ -488,7 +490,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 							console.log(success.data.user_info);
 
 							$scope.user.user_id = success.data.user_info.user_id;
-							document.getElementById("user_bday").value = success.data.user_info.birthday;
+							//document.getElementById("user_bday").value = success.data.user_info.birthday;
 							$scope.user.fname = success.data.user_info.first_name;
 							$scope.user.lname = success.data.user_info.last_name;
 							$scope.user.age = success.data.user_info.age;
@@ -795,14 +797,15 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		
 		var validInput = $scope.VALIDATE_EDITPROFILE_INPUT();
 		if(validInput){
-			var tDate = new Date(document.getElementById("user_bday").value);
+			/*var tDate = new Date(document.getElementById("user_bday").value);
 			var monD = tDate.getMonth() + 1;
 			var todD = tDate.getDate();
 			if(monD < 10){ monD = "0"+monD }
 			if(todD < 10){ todD = "0"+todD }
 			var newDate = tDate.getFullYear()+"-"+monD+"-"+todD;
-			$scope.user.bday = newDate;
-			console.log($scope.user.bday);
+			$scope.user.bday = newDate;*/
+			$scope.user.bday = "2018-01-01";
+			//console.log($scope.user.bday);
 			$scope.UPDATE_TO_SERVER();
 			console.log("add to server");
 
@@ -830,14 +833,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		} else {
 		  $scope.user.servname_error = false;
 		}
-		if(!$rootScope.inputBlank($scope.clean_servdesc))
+		/*if(!$rootScope.inputBlank($scope.clean_servdesc))
 		{
 		  $scope.user.servdesc_error = true;
 		  $scope.user.servdesc_desc = "Please fill out this field.";
 		  ret = false;
 		} else {
 		  $scope.user.servdesc_error = false;
-		}
+		}*/
 		if(!$rootScope.inputBlank($scope.clean_fname))
 		{
 		  $scope.user.fname_error = true;
@@ -867,7 +870,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 				$scope.user.age_error = false;
 			}
 		}
-		if(!$rootScope.inputBlank(document.getElementById("user_bday").value))
+			/*if(!$rootScope.inputBlank(document.getElementById("user_bday").value))
 		{
 		  $scope.user.bday_error = true;
 		  $scope.user.bday_desc = "Please fill out this field.";
@@ -882,7 +885,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		  ret = false;
 		} else {
 		  $scope.user.address_error = false;
-		}
+		}*/
 
 		return ret;
 
@@ -1002,7 +1005,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 							console.log(success.data.user_info);
 
 							
-							document.getElementById("user_bday").value = success.data.user_info.birthday;
+						//	document.getElementById("user_bday").value = success.data.user_info.birthday;
 							$scope.user.fname = success.data.user_info.first_name;
 							$scope.user.lname = success.data.user_info.last_name;
 							$scope.user.age = success.data.user_info.age;
