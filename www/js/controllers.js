@@ -12,6 +12,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	
 	$scope.user.fname_error = false;
 	$scope.user.lname_error = false;
+	$scope.user.email_error = false;
 	$scope.user.age_error = false;
 	$scope.user.bday_error = false;
 	$scope.user.address_error = false;
@@ -101,6 +102,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	$scope.VALIDATE_REGISTER_INPUT = function ()
 	  {
 		
+		if($scope.user.email == undefined) $scope.user.email="";  
 		if($scope.user.servname == undefined) $scope.user.servname="";  
 		//if($scope.user.servdesc == undefined) $scope.user.servdesc="";  
 		if($scope.user.uname == undefined) $scope.user.uname="";  
@@ -119,6 +121,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		$scope.clean_fname = $rootScope._remove_white_space($scope.user.fname);
 		$scope.clean_lname = $rootScope._remove_white_space($scope.user.lname);
 		$scope.clean_age = $rootScope._remove_white_space($scope.user.age);
+		$scope.clean_email = $rootScope._remove_white_space($scope.user.email);
 		
 		$scope.clean_servname = $rootScope._remove_white_space($scope.user.servname);
 		//$scope.clean_servdesc = $rootScope._remove_white_space($scope.user.servdesc);
@@ -138,6 +141,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		  ret = false;
 		} else {
 		  $scope.user.servname_error = false;
+		}
+		if(!$rootScope.inputBlank($scope.clean_email))
+		{
+		  $scope.user.email_error = true;
+		  $scope.user.email_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.email_error = false;
 		}
 		/*if(!$rootScope.inputBlank($scope.clean_servdesc))
 		{
@@ -255,6 +266,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
         obj.data.append('fname',$scope.user.fname);
         obj.data.append('lname',$scope.user.lname);
         obj.data.append('age',$scope.user.age);
+        obj.data.append('email',$scope.user.email);
         obj.data.append('address',$scope.user.address);
         obj.data.append('bday',$scope.user.bday);
         obj.data.append('package',$scope.user.pack);
@@ -272,6 +284,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 						$scope.user.fname = "";
 						$scope.user.lname = "";
 						$scope.user.age = "";
+						$scope.user.email = "";
 						$scope.user.address = "";
 						$scope.user.bday = "";
 						$scope.showSuccessMessage(); 
@@ -760,6 +773,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	$scope.user.fname_error = false;
 	$scope.user.lname_error = false;
 	$scope.user.age_error = false;
+	$scope.user.email_error = false;
 	$scope.user.bday_error = false;
 	$scope.user.address_error = false;
 	$scope.user.clickedEdit = false;
@@ -775,6 +789,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
     {
 		//$scope.user.clickedEdit = false;
 		//$("#profile-wrapper label input").prop("disabled", true);
+		if($scope.user.email == undefined) $scope.user.email="";  
 		if($scope.user.region == undefined) $scope.user.region="";  
 		if($scope.user.state == undefined) $scope.user.state="";  
 		if($scope.user.country == undefined) $scope.user.country="";  
@@ -825,6 +840,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		$scope.clean_fname = $rootScope._remove_white_space($scope.user.fname);
 		$scope.clean_lname = $rootScope._remove_white_space($scope.user.lname);
 		$scope.clean_age = $rootScope._remove_white_space($scope.user.age);
+		$scope.clean_email = $rootScope._remove_white_space($scope.user.email);
 		$scope.clean_servname = $rootScope._remove_white_space($scope.user.servname);
 		$scope.clean_servdesc = $rootScope._remove_white_space($scope.user.servdesc);
 		$scope.clean_address = $rootScope._remove_white_space($scope.user.address);
@@ -838,6 +854,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		  ret = false;
 		} else {
 		  $scope.user.servname_error = false;
+		}
+		if(!$rootScope.inputBlank($scope.clean_email))
+		{
+		  $scope.user.email_error = true;
+		  $scope.user.email_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.email_error = false;
 		}
 		/*if(!$rootScope.inputBlank($scope.clean_servdesc))
 		{
@@ -918,6 +942,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
         obj.data   = new FormData();
         obj.data.append('user_id',$rootScope.user_info.user_id);
         obj.data.append('region',$scope.user.region);
+        obj.data.append('email',$scope.user.email);
         obj.data.append('state',$scope.user.state);
         obj.data.append('country',$scope.user.country);
         obj.data.append('servname',$scope.user.servname);
@@ -1058,12 +1083,86 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 }])
 .controller('ResetPasswordCtrl',['$scope','$window','$ionicActionSheet','$ionicModal','$rootScope','$ionicPlatform','$ionicHistory','$ionicLoading','$ionicPopup','Auth',
                      function($scope, $window, $ionicActionSheet, $ionicModal, $rootScope,  $ionicPlatform,  $ionicHistory,  $ionicLoading, $ionicPopup, Auth){
+	$scope.user = [];
+	$scope.user.uname_error = false;
+	$scope.user.email_error = false;
 	
 	$scope.resetpass = function()
     {
-		console.log(123);
+		var validInput = $scope.VALIDATE_REGISTER_INPUT();
+		if(validInput){
+			$scope.ADD_TO_SERVER();
+			console.log("add to server");
+
+		}
 	}
-						
+	$scope.VALIDATE_REGISTER_INPUT = function ()
+	{
+		if($scope.user.email == undefined) $scope.user.email="";  
+		if($scope.user.uname == undefined) $scope.user.uname="";  
+		$scope.clean_uname = $rootScope._remove_white_space($scope.user.uname);
+		$scope.clean_email = $rootScope._remove_white_space($scope.user.email);
+		var ret = true;
+		if(!$rootScope.inputBlank($scope.clean_uname))
+		{
+		  $scope.user.uname_error = true;
+		  $scope.user.uname_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.uname_error = false;
+		}
+		if(!$rootScope.inputBlank($scope.clean_email))
+		{
+		  $scope.user.email_error = true;
+		  $scope.user.email_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.email_error = false;
+		}
+		
+		return ret;
+	}	
+	$scope.ADD_TO_SERVER = function ()
+	{
+		$ionicLoading.show({
+          template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
+        });
+        var obj    = new Object();
+        obj.method = 'POST';
+        obj.url    = $rootScope.baseURL + "/mobile/user_controller/send_reset_code";
+        obj.data   = new FormData();
+        obj.data.append('username',$scope.user.uname);
+        obj.data.append('email',$scope.user.email);
+        obj.params = {};
+   
+			Auth.REQUEST(obj).then(
+                function(success) { 
+                    console.log(success.data);
+					$ionicLoading.hide();
+					if(success.data.success == true){
+						$scope.user.uname = "";
+						$scope.user.email = "";
+						$scope.showSuccessMessage(); 
+					}
+					             
+                },
+                function(error) { 
+                    $ionicLoading.hide();
+               }
+            ); 
+	}
+	  
+   	$scope.showSuccessMessage = function() {
+	   var alertPopup = $ionicPopup.alert({
+		 title: 'SUCCESS',
+		 template: 'New password has been sent your email address.'
+	   });
+
+	   alertPopup.then(function(res) {
+		   window.location.href = "#/search";
+		 //console.log('Thank you for not eating my delicious ice cream cone');
+	   });
+	};
 }])
 .controller('ChatsCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 

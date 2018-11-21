@@ -65,6 +65,11 @@
 		  </label>
 		  <span ng-show="user.age_error" class="h6 assertive">{{ user.age_desc}}</span> 
 		  <br>
+		  <label class="item item-input">
+			<input type="text" placeholder="Email Address" ng-model="user.email">
+		  </label>
+		  <span ng-show="user.email_error" class="h6 assertive">{{ user.email_desc}}</span> 
+		  <br>
 		  <!--<label class="item item-input">
 			<span class="input-label">Birthdate</span>
 			<input type="date" placeholder="Birthday" ng-model="user.bday">

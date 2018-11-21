@@ -35,6 +35,11 @@
 		</label>	
 		<span ng-show="user.age_error" class="h6 assertive">{{ user.age_desc}}</span>
 		<label class="item item-input item-stacked-label">
+			<span class="input-label">Email Address</span>
+			<input type="text" placeholder="Email Address" ng-model="user.email">
+		</label>
+		<span ng-show="user.email_error" class="h6 assertive">{{ user.email_desc}}</span> 
+		<label class="item item-input item-stacked-label">
 			<span class="input-label">Region</span>
 			<input type="text" placeholder="Region" ng-model="user.region" disabled>
 		</label>
