@@ -184,6 +184,11 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
     templateUrl: "templates/login.html",
     controller: 'LoginCtrl'
   })
+  .state('reset', {
+    url: "/reset",
+    templateUrl: "templates/resetpassword.html",
+    controller: 'ResetPasswordCtrl'
+  })
   .state('register', {
     url: "/register",
     templateUrl: "templates/register.html",

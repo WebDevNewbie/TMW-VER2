@@ -754,6 +754,9 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
                      function($scope, $window, $ionicActionSheet, $ionicModal, $rootScope,  $ionicPlatform,  $ionicHistory,  $ionicLoading, $ionicPopup, Auth){
 	
 	$scope.user = [];
+	$scope.user.region_error = false;
+	$scope.user.state_error = false;
+	$scope.user.country_error = false;
 	$scope.user.fname_error = false;
 	$scope.user.lname_error = false;
 	$scope.user.age_error = false;
@@ -772,6 +775,9 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
     {
 		//$scope.user.clickedEdit = false;
 		//$("#profile-wrapper label input").prop("disabled", true);
+		if($scope.user.region == undefined) $scope.user.region="";  
+		if($scope.user.state == undefined) $scope.user.state="";  
+		if($scope.user.country == undefined) $scope.user.country="";  
 		if($scope.user.servname == undefined) $scope.user.servname="";  
 		if($scope.user.servdesc == undefined) $scope.user.servdesc="";  
 		if($scope.user.fname == undefined) $scope.user.fname="";  
@@ -911,6 +917,9 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
         obj.url    = $rootScope.baseURL + "/mobile/user_controller/updateUser";
         obj.data   = new FormData();
         obj.data.append('user_id',$rootScope.user_info.user_id);
+        obj.data.append('region',$scope.user.region);
+        obj.data.append('state',$scope.user.state);
+        obj.data.append('country',$scope.user.country);
         obj.data.append('servname',$scope.user.servname);
         obj.data.append('servdesc',$scope.user.servdesc);
         obj.data.append('fname',$scope.user.fname);
@@ -1046,6 +1055,15 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	
 	
 	
+}])
+.controller('ResetPasswordCtrl',['$scope','$window','$ionicActionSheet','$ionicModal','$rootScope','$ionicPlatform','$ionicHistory','$ionicLoading','$ionicPopup','Auth',
+                     function($scope, $window, $ionicActionSheet, $ionicModal, $rootScope,  $ionicPlatform,  $ionicHistory,  $ionicLoading, $ionicPopup, Auth){
+	
+	$scope.resetpass = function()
+    {
+		console.log(123);
+	}
+						
 }])
 .controller('ChatsCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 

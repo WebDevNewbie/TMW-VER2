@@ -34,6 +34,18 @@
 			<input type="text" placeholder="Age" ng-model="user.age" disabled>
 		</label>	
 		<span ng-show="user.age_error" class="h6 assertive">{{ user.age_desc}}</span>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Region</span>
+			<input type="text" placeholder="Region" ng-model="user.region" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">State</span>
+			<input type="text" placeholder="State" ng-model="user.state" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Country</span>
+			<input type="text" placeholder="Country" ng-model="user.country" disabled>
+		</label>
 		<!--<label class="item item-input item-stacked-label">
 			<span class="input-label">Birthdate</span>
 			<input type="date" ng-model="user.bday" id="user_bday" disabled>
