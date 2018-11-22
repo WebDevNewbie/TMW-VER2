@@ -15,6 +15,10 @@
     <ion-header-bar class="bar-stable">
     </ion-header-bar>
     <ion-content class="bgGreen">
+    <br>
+    <div><img id="usrprofpic" src="img/man.png" ng-model="usr.imgSrc"></div>
+    <h4 class="text-center color-white" ng-model="usr.fullName">John Doe</h4>
+    <br>
       <ion-list>
         <ion-item menu-close class="item item-icon-left menu-item" href="#/menu/usersearch">
           <i class="icon ion-search"></i>
@@ -39,6 +43,10 @@
         <ion-item menu-close class="item item-icon-left menu-item" href="#/menu/video-list" ng-show="package != 1">
           <i class="icon ion-videocamera"></i>
           Trade Videos
+        </ion-item>
+        <ion-item menu-close class="item item-icon-left menu-item" ng-show="package == 3" href="#/menu/video-promotion-list">
+          <i class="icon ion-film-marker"></i>
+          Promotional Video
         </ion-item>
          <ion-item menu-close class="item item-icon-left menu-item" href="#/menu/all-connections">
          <i class="icon ion-chatbubble-working"></i>

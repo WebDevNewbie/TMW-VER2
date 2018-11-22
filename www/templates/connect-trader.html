@@ -6,10 +6,14 @@
 	  <a class="item item-avatar" ng-repeat="chatMessages in chats">
       	<img src="img/man.png">
       	<h2>{{ chatMessages.username }}</h2>
-      	<p>{{ chatMessages.message }}</p>
+      	<div class="item item-text-wrap" style="padding: 4px;
+    border: none;">
+	   		{{ chatMessages.message }}
+	  </div>
+      	
       </a>
 
-      <div class="card"  ng-show="chats === null">
+      <div class="card" ng-show="chatCount == 0">
 		<div class="item item-avatar"> 
 		    <img src="img/warning.png">
 		    <h2>Opps!</h2>

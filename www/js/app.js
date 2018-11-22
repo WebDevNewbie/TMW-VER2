@@ -152,12 +152,30 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
         }
       }
     })
+    .state('menu.add-video-promotion', {
+      url: '/add-video-promotion',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/add-video-promotion.html',
+          controller: 'VideosCtrl'
+        }
+      }
+    })
   .state('menu.video-list', {
       url: '/video-list',
       views: {
         'menuContent': {
           templateUrl: 'templates/video-list.html',
           controller: 'VideoListCtrl'
+        }
+      }
+    })
+    .state('menu.video-promotion-list', {
+      url: '/video-promotion-list',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/video-promotion-list.html',
+          controller: 'PromotionListCtrl'
         }
       }
     })
@@ -183,6 +201,11 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
     url: "/login",
     templateUrl: "templates/login.html",
     controller: 'LoginCtrl'
+  })
+  .state('reset', {
+    url: "/reset",
+    templateUrl: "templates/resetpassword.html",
+    controller: 'ResetPasswordCtrl'
   })
   .state('register', {
     url: "/register",

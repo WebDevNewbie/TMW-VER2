@@ -12,6 +12,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	
 	$scope.user.fname_error = false;
 	$scope.user.lname_error = false;
+	$scope.user.email_error = false;
 	$scope.user.age_error = false;
 	$scope.user.bday_error = false;
 	$scope.user.address_error = false;
@@ -81,14 +82,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		
 		var validInput = $scope.VALIDATE_REGISTER_INPUT();
 		if(validInput){
-			var tDate = new Date($scope.user.bday);
-			var monD = tDate.getMonth() + 1;
-			var todD = tDate.getDate();
-			if(monD < 10){ monD = "0"+monD }
-			if(todD < 10){ todD = "0"+todD }
-			var newDate = tDate.getFullYear()+"-"+monD+"-"+todD;
+			// var tDate = new Date($scope.user.bday);
+			// var monD = tDate.getMonth() + 1;
+			// var todD = tDate.getDate();
+			// if(monD < 10){ monD = "0"+monD }
+			// if(todD < 10){ todD = "0"+todD }
+			// var newDate = tDate.getFullYear()+"-"+monD+"-"+todD;
 			$scope.user.pack = document.getElementById('user_role').value;
-			$scope.user.bday = newDate;
+			//$scope.user.bday = newDate;
 		
 			$scope.ADD_TO_SERVER();
 			console.log("add to server");
@@ -102,15 +103,15 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	  {
 		
 		if($scope.user.servname == undefined) $scope.user.servname="";  
-		if($scope.user.servdesc == undefined) $scope.user.servdesc="";  
+		//if($scope.user.servdesc == undefined) $scope.user.servdesc="";  
 		if($scope.user.uname == undefined) $scope.user.uname="";  
 		if($scope.user.pass == undefined) $scope.user.pass="";  
 		if($scope.user.cpass == undefined) $scope.user.cpass="";  
 		if($scope.user.fname == undefined) $scope.user.fname="";  
 		if($scope.user.lname == undefined) $scope.user.lname="";  
 		if($scope.user.age == undefined) $scope.user.age="";  
-		if($scope.user.bday == undefined) $scope.user.bday="";  
-		if($scope.user.address == undefined) $scope.user.address=""; 
+		//if($scope.user.bday == undefined) $scope.user.bday="";  
+		//if($scope.user.address == undefined) $scope.user.address=""; 
 		if($scope.user.pass != $scope.user.cpass){
 			$scope.notEqual.error = true;
 			$scope.notEqual.desc = "Password did not match.";
@@ -121,9 +122,9 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		$scope.clean_age = $rootScope._remove_white_space($scope.user.age);
 		
 		$scope.clean_servname = $rootScope._remove_white_space($scope.user.servname);
-		$scope.clean_servdesc = $rootScope._remove_white_space($scope.user.servdesc);
+		//$scope.clean_servdesc = $rootScope._remove_white_space($scope.user.servdesc);
 		
-		$scope.clean_address = $rootScope._remove_white_space($scope.user.address);
+		//$scope.clean_address = $rootScope._remove_white_space($scope.user.address);
 		
 		$scope.clean_uname = $rootScope._remove_white_space($scope.user.uname);
 		$scope.clean_userPass = $rootScope._remove_white_space($scope.user.pass);
@@ -139,14 +140,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		} else {
 		  $scope.user.servname_error = false;
 		}
-		if(!$rootScope.inputBlank($scope.clean_servdesc))
+		/*if(!$rootScope.inputBlank($scope.clean_servdesc))
 		{
 		  $scope.user.servdesc_error = true;
 		  $scope.user.servdesc_desc = "Please fill out this field.";
 		  ret = false;
 		} else {
 		  $scope.user.servdesc_error = false;
-		}
+		}*/
 		if(!$rootScope.inputBlank($scope.clean_fname))
 		{
 		  $scope.user.fname_error = true;
@@ -184,14 +185,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		} else {
 		  $scope.user.bday_error = false;
 		}
-		if(!$rootScope.inputBlank($scope.clean_address))
+		/*if(!$rootScope.inputBlank($scope.clean_address))
 		{
 		  $scope.user.address_error = true;
 		  $scope.user.address_desc = "Please fill out this field.";
 		  ret = false;
 		} else {
 		  $scope.user.address_error = false;
-		}
+		}*/
 		
 		if(!$rootScope.inputLength($scope.clean_uname))
 		{
@@ -1044,6 +1045,89 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	
 	
 }])
+.controller('ResetPasswordCtrl',['$scope','$window','$ionicActionSheet','$ionicModal','$rootScope','$ionicPlatform','$ionicHistory','$ionicLoading','$ionicPopup','Auth',
+                     function($scope, $window, $ionicActionSheet, $ionicModal, $rootScope,  $ionicPlatform,  $ionicHistory,  $ionicLoading, $ionicPopup, Auth){
+	$scope.user = [];
+	$scope.user.uname_error = false;
+	$scope.user.email_error = false;
+	
+	$scope.resetpass = function()
+    {
+		var validInput = $scope.VALIDATE_REGISTER_INPUT();
+		if(validInput){
+			$scope.ADD_TO_SERVER();
+			console.log("add to server");
+
+		}
+	}
+	$scope.VALIDATE_REGISTER_INPUT = function ()
+	{
+		if($scope.user.email == undefined) $scope.user.email="";  
+		if($scope.user.uname == undefined) $scope.user.uname="";  
+		$scope.clean_uname = $rootScope._remove_white_space($scope.user.uname);
+		$scope.clean_email = $rootScope._remove_white_space($scope.user.email);
+		var ret = true;
+		if(!$rootScope.inputBlank($scope.clean_uname))
+		{
+		  $scope.user.uname_error = true;
+		  $scope.user.uname_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.uname_error = false;
+		}
+		if(!$rootScope.inputBlank($scope.clean_email))
+		{
+		  $scope.user.email_error = true;
+		  $scope.user.email_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.email_error = false;
+		}
+		
+		return ret;
+	}	
+	$scope.ADD_TO_SERVER = function ()
+	{
+		$ionicLoading.show({
+          template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
+        });
+        var obj    = new Object();
+        obj.method = 'POST';
+        obj.url    = $rootScope.baseURL + "/mobile/user_controller/send_reset_code";
+        obj.data   = new FormData();
+        obj.data.append('username',$scope.user.uname);
+        obj.data.append('email',$scope.user.email);
+        obj.params = {};
+   
+			Auth.REQUEST(obj).then(
+                function(success) { 
+                    console.log(success.data);
+					$ionicLoading.hide();
+					if(success.data.success == true){
+						$scope.user.uname = "";
+						$scope.user.email = "";
+						$scope.showSuccessMessage(); 
+					}
+					             
+                },
+                function(error) { 
+                    $ionicLoading.hide();
+               }
+            ); 
+	}
+	  
+   	$scope.showSuccessMessage = function() {
+	   var alertPopup = $ionicPopup.alert({
+		 title: 'SUCCESS',
+		 template: 'New password has been sent your email address.'
+	   });
+
+	   alertPopup.then(function(res) {
+		   window.location.href = "#/search";
+		 //console.log('Thank you for not eating my delicious ice cream cone');
+	   });
+	};
+}])
 .controller('ChatsCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 
   $scope.chats = Chats.all();
@@ -1388,7 +1472,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	    });
 	}
 
-  	$scope.uploadVideo = function(){
+  	$scope.uploadVideo = function(location,table){
   		$ionicLoading.show({
 		  template: '<ion-spinner class="spinner-calm" icon="android"> Uploading Trade video..</ion-spinner> ',
 		});
@@ -1405,7 +1489,9 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		    mimeType: "multipart/form-data",
 		    params : {
 		    	'fileName': filename,
-		    	'user'	  : $rootScope.user_info.user_id			
+		    	'user'	  : $rootScope.user_info.user_id,
+		    	'location'	: location,
+		    	'table'		: table			
 		    }
 		};
 
@@ -1572,9 +1658,11 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 				$scope.response = success.data;
 				if ($scope.response.success == true) {
 	        		$scope.chats = $scope.response.chat_messages;
-	        		console.log(JSON.stringify($scope.chats));
+	        		//console.log(JSON.stringify($scope.chats));
+	        		$rootScope.chatCount = $scope.response.chat_messages[0].count;
 					$ionicLoading.hide();
 	        	} else {
+	        		$rootScope.chatCount = $scope.response.chat_messages;
 					$ionicLoading.hide();
 	        	}
 			},
@@ -1601,16 +1689,12 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			  if(JSON.stringify(success.data.success) == "true"){
 				
 				// fetch chat messages
-				$scope.trader.chat = "";
 				var chatdata = [];
-				// if ($rootScope.user_info.username == success.data.chat_messages[0].username) {
-				// 	var username = 'You';
-				// } else {
-				// 	var username = success.data.chat_messages[0].username;
-				// }
 				chatdata.username = success.data.chat_messages[0].username;
 				chatdata.message = success.data.chat_messages[0].message;
 				$scope.chats.unshift(chatdata);
+				$rootScope.chatCount++;
+				$scope.trader.chat = "";
 				//$scope.retreiveMessage();
 				
 				
@@ -1742,8 +1826,149 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
   	};  
 }])
 
+.controller('PromotionListCtrl', ['$scope','$sce','$http','$cordovaActionSheet','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
+	function($scope, $sce, $http, $cordovaActionSheet ,$cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
+
+	$scope.$on('$ionicView.enter', function(event){
+		$ionicLoading.show({
+			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+		});
+		var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/upload_controller/ListMedia";
+		obj.data   = new FormData();
+		obj.data.append('user_id',$rootScope.user_info.user_id);
+		obj.data.append('dbTable','video_promotion');
+		obj.params = {};
+		   
+		Auth.REQUEST(obj).then(
+			function(success) {
+				$scope.response = success.data;
+				if ($scope.response.success == true) {
+	        		$scope.Videos = $scope.response.file_names;
+					$ionicLoading.hide();
+	        	} else {
+	        		$scope.Videos = $scope.response.file_names;
+					$ionicLoading.hide();
+	        	}
+			},
+			function(error) { 
+				setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+			}
+		); 
+	})
+
+	$scope.subVidcnt = function(){
+		if($rootScope.vidUploads != 0){
+			$rootScope.vidUploads--;
+		}
+	}
+
+	$scope.deleteVid = function(itemIndex,imgID,imgName,table,storage) {
+  		
+	   var options = {
+	    title: 'Are you sure you wanted to delete this Video?',
+	    addCancelButtonWithLabel: 'Cancel',
+	    androidEnableCancelButton : true,
+	    winphoneEnableCancelButton : true,
+	    addDestructiveButtonWithLabel : 'Delete it'
+	  };
+
+	   $cordovaActionSheet.show(options)
+      .then(function(btnIndex) {
+        if(btnIndex === 1){
+        	$ionicLoading.show({
+				template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
+			});
+        	var obj    = new Object();
+			obj.method = 'POST';
+			obj.url    = $rootScope.baseURL + "/mobile/upload_controller/deleteMedia";
+			obj.data   = new FormData();
+			obj.data.append('user_id',$rootScope.user_info.user_id);
+			obj.data.append('storage',storage);
+			obj.data.append('filename',imgName);
+			obj.data.append('img_id',imgID);
+			obj.data.append('dbTable',table);
+			obj.params = {};
+			   
+			Auth.REQUEST(obj).then(
+				function(success) {
+					$scope.response = success.data;
+					if ($scope.response.success == true) {
+		        		$scope.Videos.splice(itemIndex,1);
+		        		$scope.showSuccessMessage($scope.response.message);
+		        		$scope.subVidcnt();
+						$ionicLoading.hide();
+		        	} else {
+						$ionicLoading.hide();
+		        	}
+				},
+				function(error) { 
+					setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+				}
+			);
+        	
+         }
+     });
+  }
+  	$scope.showSuccessMessage = function(message) {
+	   var alertPopup = $ionicPopup.alert({
+		 title: 'SUCCESS!',
+		 template: message
+	   });
+	}
+
+	$scope.toggleChange = function(promotion_id){
+		if($scope.value == false) {
+		   $scope.value = true; 
+
+		   console.log('testToggle changed to '+$scope.value); 
+		   console.log('1');
+		   $scope.num = 1;
+
+		   // if its off
+		} else {
+		   $scope.value = false;
+		   console.log('testToggle changed to '+$scope.value);
+		   console.log('2');
+		   $scope.num = 0;
+		   // if its on
+		}
+
+		var obj    = new Object();
+		obj.method = 'POST';
+		obj.url    = $rootScope.baseURL + "/mobile/upload_controller/promotionVideostatus";
+		obj.data   = new FormData();
+		obj.data.append('user_id',$rootScope.user_info.user_id);
+		obj.data.append('promotion_id',promotion_id);
+		obj.data.append('Trigger',$scope.num);
+		obj.params = {};
+		   
+		Auth.REQUEST(obj).then(
+			function(success) {
+				$scope.response = success.data;
+				if ($scope.response.success == true) {
+	        		console.log($scope.response.message);
+	        	} else {
+	        		console.log($scope.response.message);
+	        	}
+			},
+			function(error) { 
+				setTimeout(function(){ $ionicLoading.hide(); }, 1000);
+			}
+		); 
+	}
+
+	$scope.trustSrc = function(src) {
+    	return $sce.trustAsResourceUrl(src);
+  	};  
+}])
+
+
 .controller('AccountCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
   $scope.settings = {
     enableFriends: true
   };
 });
+
+

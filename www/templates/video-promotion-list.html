@@ -1,0 +1,70 @@
+<ion-view title="Video Promotion List">
+	<ion-content style="background:#F0F3F8;">
+<!-- 	<div class="list">
+	<div class="item item-avatar-left item-button-right" ng-repeat = "files in Videos">
+      <img src="img/play.png" style="width: 100%;
+height: auto;">
+      <p>{{ files.file_name }}</p>
+      <button>
+      	<div class="item item-toggle">
+	     <label class="toggle toggle-assertive">
+	       <input type="checkbox">
+	       <div class="track">
+	         <div class="handle"></div>
+	       </div>
+	     </label>
+  	 	</div>
+      </button>
+    </div>
+    <div class="card" ng-show="Videos == 0">
+		<div class="item item-avatar"> 
+		    <img src="img/warning.png">
+		    <h2>Opps!</h2>
+		    <p>No Promotion videos to show.</p>
+	  	</div>
+	  </div>
+	</div> -->
+	<div class="list" >
+
+	  <div class="item item-toggle item-avatar-left" ng-repeat = "files in Videos">
+	   	  <img src="img/play.png" style="width: 100%;
+height: auto;">
+	     <p class="item item-text-wrap" style="padding: 4px;
+    border: none;font-weight:bold;">{{ files.file_name }}</p>
+    	 <i class="item item-text-wrap" style="padding: 4px;
+    border: none;">Added {{ files.dateadded }}</i>
+	     <label class="toggle toggle-balanced" ng-show="files.status == 0" >
+
+	       <input type="checkbox" ng-checked="false" ng-model=value ng-change="toggleChange(files.id)">
+	       <div class="track">
+	         <div class="handle"></div>
+	       </div>
+	     </label>
+	     <label class="toggle toggle-balanced" ng-show="files.status == 1">
+
+	       <input type="checkbox" ng-checked="true" ng-model=value ng-change="toggleChange(files.id)">
+	       <div class="track">
+	         <div class="handle"></div>
+	       </div>
+	     </label>
+	  </div>
+
+	  <div class="card" ng-show="Videos == 0">
+		<div class="item item-avatar"> 
+		    <img src="img/warning.png">
+		    <h2>Opps!</h2>
+		    <p>No Promotion videos to show.</p>
+	  	</div>
+	  </div>
+
+	</div>
+	
+
+	</ion-content>
+	<div class="tabs tabs-icon-left">
+	<a class="tab-item" style="font-size: 18px;color:#7ec12e" href="#/menu/add-video-promotion">
+	  	<i class="icon ion-film-marker"></i>
+	  	Upload a Video
+	  </a>
+	</div>
+</ion-view>

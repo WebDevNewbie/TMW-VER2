@@ -1,6 +1,15 @@
 <ion-view title="Trade Video List">
 	<ion-content style="background:#F0F3F8;">
-	<div class="card" ng-show="(vidUploads != 2 && package == 2) || (vidUploads != 5 && package == 3)">
+	<div class="card" ng-show="package == 3">
+		<div class="item item-avatar"> 
+		    <img src="img/promotion.png">
+		    <h2>Promote your Trade and let it be known!</h2>
+		    <button class="button icon-left ion-film-marker button-positive">
+		    Upload a Promotion Video!
+			</button>
+	  	</div>
+	</div>
+	<div class="card" ng-show="(vidUploads != 2 && package != 3)">
 		<div class="item item-avatar"> 
 		    <img src="img/movie-player.png">
 		    <h2>Trade Videos Uploaded</h2>

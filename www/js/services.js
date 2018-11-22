@@ -2,13 +2,14 @@ var app = angular.module('tradeapp.services', [])
 app.factory('Auth', ['$http','$rootScope', 
 			 function($http,  $rootScope)
 {
-	// $rootScope.baseURL   = 'http://tradeapp.com';
+  // $rootScope.baseURL   = 'http://tradeapp.com';
   // prod backend connection url
-	$rootScope.baseURL   = 'http://trademyworld.club/tradeappbackend/public_html';
+  //$rootScope.baseURL   = 'http://localhost/tradeappbackend/public_html';
+  $rootScope.baseURL   = 'http://trademyworld.club/tradeappbackend/public_html';
   // local backend connection url
   // $rootScope.baseURL   = 'http://192.168.1.31/tradeappbackend/public_html';
   // set backend connection here
-	// $rootScope.baseURL   = ''; 
+  // $rootScope.baseURL   = '';
 	
 	$rootScope.user_info   = {};
   $rootScope.pictureImage = 0;
@@ -22,6 +23,7 @@ app.factory('Auth', ['$http','$rootScope',
   $rootScope.vidUploads = 0;
   $rootScope.fileCount = 0;
   $rootScope.vidFilecount = 0;
+  $rootScope.chatCount = 0;
   //$rootScope.vidUploads = 0;
 	$rootScope._remove_white_space = function (str)
 	  {
