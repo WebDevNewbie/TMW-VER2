@@ -102,6 +102,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	$scope.VALIDATE_REGISTER_INPUT = function ()
 	  {
 		
+		if($scope.user.email == undefined) $scope.user.email="";  
 		if($scope.user.servname == undefined) $scope.user.servname="";  
 		//if($scope.user.servdesc == undefined) $scope.user.servdesc="";  
 		if($scope.user.uname == undefined) $scope.user.uname="";  
@@ -120,6 +121,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		$scope.clean_fname = $rootScope._remove_white_space($scope.user.fname);
 		$scope.clean_lname = $rootScope._remove_white_space($scope.user.lname);
 		$scope.clean_age = $rootScope._remove_white_space($scope.user.age);
+		$scope.clean_email = $rootScope._remove_white_space($scope.user.email);
 		
 		$scope.clean_servname = $rootScope._remove_white_space($scope.user.servname);
 		//$scope.clean_servdesc = $rootScope._remove_white_space($scope.user.servdesc);
@@ -139,6 +141,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		  ret = false;
 		} else {
 		  $scope.user.servname_error = false;
+		}
+		if(!$rootScope.inputBlank($scope.clean_email))
+		{
+		  $scope.user.email_error = true;
+		  $scope.user.email_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.email_error = false;
 		}
 		/*if(!$rootScope.inputBlank($scope.clean_servdesc))
 		{
@@ -239,7 +249,9 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	  
 	$scope.ADD_TO_SERVER = function ()
 	{
-
+		$scope.user.servdesc ="";
+		$scope.user.address = "";
+		$scope.user.bday = "2018-01-01";
 		$ionicLoading.show({
           template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>'
         });
@@ -254,6 +266,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
         obj.data.append('fname',$scope.user.fname);
         obj.data.append('lname',$scope.user.lname);
         obj.data.append('age',$scope.user.age);
+        obj.data.append('email',$scope.user.email);
         obj.data.append('address',$scope.user.address);
         obj.data.append('bday',$scope.user.bday);
         obj.data.append('package',$scope.user.pack);
@@ -271,6 +284,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 						$scope.user.fname = "";
 						$scope.user.lname = "";
 						$scope.user.age = "";
+						$scope.user.email = "";
 						$scope.user.address = "";
 						$scope.user.bday = "";
 						$scope.showSuccessMessage(); 
@@ -349,7 +363,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 				  else{
 					$ionicLoading.hide();
 					//console.log("false");
-					$rootScope.showToast('Invalid Username or Password, Please try again!');
+					//$rootScope.showToast('Invalid Username or Password, Please try again!');
 				  }
 				},
 				function(error) { 
@@ -489,7 +503,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 							console.log(success.data.user_info);
 
 							$scope.user.user_id = success.data.user_info.user_id;
-							document.getElementById("user_bday").value = success.data.user_info.birthday;
+							//document.getElementById("user_bday").value = success.data.user_info.birthday;
 							$scope.user.fname = success.data.user_info.first_name;
 							$scope.user.lname = success.data.user_info.last_name;
 							$scope.user.age = success.data.user_info.age;
@@ -753,9 +767,13 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
                      function($scope, $window, $ionicActionSheet, $ionicModal, $rootScope,  $ionicPlatform,  $ionicHistory,  $ionicLoading, $ionicPopup, Auth){
 	
 	$scope.user = [];
+	$scope.user.region_error = false;
+	$scope.user.state_error = false;
+	$scope.user.country_error = false;
 	$scope.user.fname_error = false;
 	$scope.user.lname_error = false;
 	$scope.user.age_error = false;
+	$scope.user.email_error = false;
 	$scope.user.bday_error = false;
 	$scope.user.address_error = false;
 	$scope.user.clickedEdit = false;
@@ -771,6 +789,10 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
     {
 		//$scope.user.clickedEdit = false;
 		//$("#profile-wrapper label input").prop("disabled", true);
+		if($scope.user.email == undefined) $scope.user.email="";  
+		if($scope.user.region == undefined) $scope.user.region="";  
+		if($scope.user.state == undefined) $scope.user.state="";  
+		if($scope.user.country == undefined) $scope.user.country="";  
 		if($scope.user.servname == undefined) $scope.user.servname="";  
 		if($scope.user.servdesc == undefined) $scope.user.servdesc="";  
 		if($scope.user.fname == undefined) $scope.user.fname="";  
@@ -796,14 +818,15 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		
 		var validInput = $scope.VALIDATE_EDITPROFILE_INPUT();
 		if(validInput){
-			var tDate = new Date(document.getElementById("user_bday").value);
+			/*var tDate = new Date(document.getElementById("user_bday").value);
 			var monD = tDate.getMonth() + 1;
 			var todD = tDate.getDate();
 			if(monD < 10){ monD = "0"+monD }
 			if(todD < 10){ todD = "0"+todD }
 			var newDate = tDate.getFullYear()+"-"+monD+"-"+todD;
-			$scope.user.bday = newDate;
-			console.log($scope.user.bday);
+			$scope.user.bday = newDate;*/
+			$scope.user.bday = "2018-01-01";
+			//console.log($scope.user.bday);
 			$scope.UPDATE_TO_SERVER();
 			console.log("add to server");
 
@@ -817,6 +840,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		$scope.clean_fname = $rootScope._remove_white_space($scope.user.fname);
 		$scope.clean_lname = $rootScope._remove_white_space($scope.user.lname);
 		$scope.clean_age = $rootScope._remove_white_space($scope.user.age);
+		$scope.clean_email = $rootScope._remove_white_space($scope.user.email);
 		$scope.clean_servname = $rootScope._remove_white_space($scope.user.servname);
 		$scope.clean_servdesc = $rootScope._remove_white_space($scope.user.servdesc);
 		$scope.clean_address = $rootScope._remove_white_space($scope.user.address);
@@ -831,14 +855,22 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		} else {
 		  $scope.user.servname_error = false;
 		}
-		if(!$rootScope.inputBlank($scope.clean_servdesc))
+		if(!$rootScope.inputBlank($scope.clean_email))
+		{
+		  $scope.user.email_error = true;
+		  $scope.user.email_desc = "Please fill out this field.";
+		  ret = false;
+		} else {
+		  $scope.user.email_error = false;
+		}
+		/*if(!$rootScope.inputBlank($scope.clean_servdesc))
 		{
 		  $scope.user.servdesc_error = true;
 		  $scope.user.servdesc_desc = "Please fill out this field.";
 		  ret = false;
 		} else {
 		  $scope.user.servdesc_error = false;
-		}
+		}*/
 		if(!$rootScope.inputBlank($scope.clean_fname))
 		{
 		  $scope.user.fname_error = true;
@@ -868,7 +900,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 				$scope.user.age_error = false;
 			}
 		}
-		if(!$rootScope.inputBlank(document.getElementById("user_bday").value))
+			/*if(!$rootScope.inputBlank(document.getElementById("user_bday").value))
 		{
 		  $scope.user.bday_error = true;
 		  $scope.user.bday_desc = "Please fill out this field.";
@@ -883,7 +915,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		  ret = false;
 		} else {
 		  $scope.user.address_error = false;
-		}
+		}*/
 
 		return ret;
 
@@ -909,6 +941,10 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
         obj.url    = $rootScope.baseURL + "/mobile/user_controller/updateUser";
         obj.data   = new FormData();
         obj.data.append('user_id',$rootScope.user_info.user_id);
+        obj.data.append('region',$scope.user.region);
+        obj.data.append('email',$scope.user.email);
+        obj.data.append('state',$scope.user.state);
+        obj.data.append('country',$scope.user.country);
         obj.data.append('servname',$scope.user.servname);
         obj.data.append('servdesc',$scope.user.servdesc);
         obj.data.append('fname',$scope.user.fname);
@@ -1003,7 +1039,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 							console.log(success.data.user_info);
 
 							
-							document.getElementById("user_bday").value = success.data.user_info.birthday;
+						//	document.getElementById("user_bday").value = success.data.user_info.birthday;
 							$scope.user.fname = success.data.user_info.first_name;
 							$scope.user.lname = success.data.user_info.last_name;
 							$scope.user.age = success.data.user_info.age;
