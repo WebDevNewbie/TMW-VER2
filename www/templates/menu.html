@@ -16,8 +16,31 @@
     </ion-header-bar>
     <ion-content class="bgGreen">
     <br>
-    <div><img id="usrprofpic" src="img/man.png" ng-model="usr.imgSrc"></div>
-    <h4 class="text-center color-white" ng-model="usr.fullName">John Doe</h4>
+    <div>
+    <div ng-show="face_img == 'none'">
+       <img id="usrprofpic" src="img/man.png">
+    </div>
+    <div id="noImgholdermenu" ng-show="face_img != 'none'">
+       <img id="usrprofpic" ng-src="{{ mainDIR + profileFolder + face_img }}">
+    </div>
+     
+     
+    </div>
+    <h4 class="text-center color-white" ng-model="usr.fullName">{{ username }}</h4>
+    <h4 ng-show="package == 1" class="text-center color-white" ng-model="usr.fullName"><i class="icon ion-ribbon-a" style="color:#cd7f32;"></i> Free Membership</h4>
+    <h4 ng-show="package == 2" class="text-center color-white" ng-model="usr.fullName"><i class="icon ion-ribbon-a" style="color:#FFD700;"></i> Gold Membership</h4>
+    <h4 ng-show="package == 3" class="text-center color-white" ng-model="usr.fullName"><i class="icon ion-ribbon-a" style="color:#b8d8e7;"></i> Diamond Membership</h4>
+    <p>
+       <a menu-close style="width: 54%;margin: 0 auto;" class="button button-block button-small button-stable icon-left ion-images" ng-show="face_img == 'none'" href="#/menu/upload-img">
+      Add a Profile Image
+    </a>
+    <a menu-close style="width: 54%;margin: 0 auto;" class="button button-block  button-small button-positive icon-left ion-edit" ng-show="face_img != 'none'" href="#/menu/upload-img">
+      Change Profile Image
+    </a>
+    </p>
+   
+  
+     
     <br>
       <ion-list>
         <ion-item menu-close class="item item-icon-left menu-item" href="#/menu/usersearch">

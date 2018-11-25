@@ -1,0 +1,23 @@
+<ion-view title="Upload a Profile Picture">
+	<ion-content style="background:#F0F3F8;">
+
+	<div id="loginWrapper" style="padding: 15px;" ng-show="pictureUrl === null">
+		<div id="img-wrapper"><img src="img/user.png"></div>
+		<h4 class="text-center h3 color-white" style="font-size:21px;color:#394638;">Upload Your Profile Picture!</h4>
+		<p style="text-align:center">Choose the best picture and build your Profile!</p>
+	</div>
+	<div id="loginWrapper" style="padding: 15px;" ng-show="pictureUrl != null">
+		<div id="noImgholder"><img ng-src="{{ pictureUrl }}" style="width:100%;"></div>
+		<h4 class="text-center h3 color-white" style="font-size:21px;color:#394638;">Your Profile Image is now Ready!</h4>
+		<p style="text-align:center">Hit Upload Image button!</p>
+	</div>
+	
+	</ion-content>
+	<div class="tabs tabs-icon-left">
+	  <div class="button-bar">
+	  <button class="button icon ion-upload button-balanced button-outline" ng-show="face_img == 'none'" ng-disabled="pictureUrl === null" ng-click="uploadImage('Profile_images','no')"> Upload Image</button>
+	  <button ng-show="face_img != 'none'" class="button icon ion-upload button-balanced button-outline" ng-disabled="pictureUrl === null && face_image != 'none'" ng-click="uploadImage('Profile_images','yes')"> Upload Image</button>
+	  <button ng-click="takePicture()" class="button icon ion-camera button-positive button-outline" >  Choose Image</button>
+	  </div>
+	</div>
+</ion-view>

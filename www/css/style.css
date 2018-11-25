@@ -121,4 +121,24 @@ box-shadow: 0px 1px 10px 2px rgba(241,243,245,1);
     max-width: 125px;
     margin: 0 auto;
     display: block;
+    border-radius:70px;
+}
+#noImgholdermenu{
+    height:100px;
+    width:100px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: block;
+    margin:0 auto;
+}
+#noImgholder{
+    height:150px;
+    width:150px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: block;
+    margin:0 auto;
+}
+#noImgholdermenu img, #noImageholder img{
+    width:100%;
 }

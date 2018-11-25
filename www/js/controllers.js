@@ -337,18 +337,21 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			Auth.REQUEST(obj).then(
 			  function(success) { 
 				  if(JSON.stringify(success.data.success) == "true"){
-					 // console.log(success.data.user_info);
+					 console.log(success.data.user_info);
 					 $scope.user.name = "";
 					 $scope.user.pass = "";
-					  var obj          = new Object();
-						  obj.user_id       = success.data.user_info.user_id;
-						  obj.username     = success.data.user_info.username;
-						  obj.user_role     = success.data.user_info.user_role;
+					  var obj = new Object();
+					  obj.user_id  = success.data.user_info[0].user_id;
+					  obj.username = success.data.user_info[0].username;
+					  obj.user_role = success.data.user_info[0].user_role;
+					  obj.face_img  = success.data.user_info[0].face_img;
 			   
 					  Auth.STORE_DATA('userData',obj);
 					  $rootScope.isLogged  = true;
 					  $rootScope.user_info =  Auth.FETCH_DATA('userData');
-					  console.log(JSON.stringify($rootScope.user_info.user_id));	
+					  console.log($rootScope.user_info.user_id);
+					  console.log($rootScope.user_info.face_img);
+					  //console.log(JSON.stringify($rootScope.user_info.user_id));	
 					  
 					  /*if(obj.role == 0){
 							window.location.href = "#/menuAdmin/dashboardAdmin";
@@ -655,6 +658,10 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	//console.log($rootScope.isLogged);
 	console.log($rootScope.user_info);
 	$scope.$on('$ionicView.enter', function(event){
+		$scope.username = $rootScope.user_info.username;
+		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+	    $scope.profileFolder =  $rootScope.user_info.user_id + "/Profile_images/";
+	    $scope.face_img = $rootScope.user_info.face_img;
 		$ionicLoading.show({
 			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
 		});
@@ -1178,10 +1185,10 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 
 // handling Upload of images Contollers
 .controller('FilesCtrl', ['$scope','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','Auth', 
-	function($scope, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, Auth) {
+	function($scope, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet,Auth) {
     
     $scope.pictureUrl = null;
-
+    $scope.face_img = $rootScope.user_info.face_img;
     $scope.$on('$ionicView.enter', function(event){
 		$ionicLoading.show({
 			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
@@ -1245,7 +1252,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	   });
 	}
 
-    $scope.uploadImage = function(){
+    $scope.uploadImage = function(folder,hasProfileimg){
     	$ionicLoading.show({
 		  template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
 		});
@@ -1254,9 +1261,10 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		obj.method = 'POST';
 		obj.url    = $rootScope.baseURL + "/mobile/upload_controller/upload_image";
 		obj.data   = new FormData();
-		obj.data.append('folder',"Images");
+		obj.data.append('folder',folder);
 		obj.data.append('base64',$rootScope.pictureImage);
 		obj.data.append('user_id',$rootScope.user_info.user_id);
+		obj.data.append('hasProfileimg',hasProfileimg);
 		obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
 		obj.params = {};
    
@@ -1265,7 +1273,13 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			  if(JSON.stringify(success.data.success) == "true"){
 				$ionicLoading.hide();
         		$scope.showSuccessMessage(success.data.message);
-        		$rootScope.fileCount++;
+        		if(success.data.file != 'notProfile'){
+        			$rootScope.user_info.face_img = success.data.file;
+        		} else {
+        			$rootScope.fileCount++;
+        		}
+
+        		
         		$scope.pictureUrl = null;
 			  }
 			  else{
@@ -1305,6 +1319,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	        		$scope.IdholderDIR =  $rootScope.user_info.user_id + "/Images/";
 	        		$scope.Images = $scope.response.file_names;
 	        		$rootScope.Uploads = $scope.response.file_names[0].imgCount;
+	        		console.log($rootScope.Uploads);
 	        		console.log($scope.Images);
 					$ionicLoading.hide();
 	        	} else {

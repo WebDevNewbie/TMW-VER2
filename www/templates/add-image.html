@@ -25,7 +25,7 @@
 	</ion-content>
 	<div class="tabs tabs-icon-left" ng-show="(fileCount != 2 && package == 1) || (fileCount != 12 && package == 2) || (fileCount != 24 && package == 3)">
 	  <div class="button-bar">
-		  <button class="button icon ion-upload button-balanced button-outline" ng-disabled="pictureUrl === null" ng-click="uploadImage()"> Upload Image</button>
+		  <button class="button icon ion-upload button-balanced button-outline" ng-disabled="pictureUrl === null" ng-click="uploadImage('Images')"> Upload Image</button>
 		  <button class="button icon ion-android-download button-positive button-outline" ng-click="takePicture()"> Select Image</button>
 	  </div>
 	</div>

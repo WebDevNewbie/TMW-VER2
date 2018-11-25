@@ -106,6 +106,15 @@ angular.module('tradeapp', ['ionic', 'tradeapp.controllers', 'tradeapp.services'
         }
       }
     })
+  .state('menu.upload-img', {
+    url: '/upload-img',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/upload-img.html',
+          controller: 'FilesCtrl'
+        }
+      }
+  })
   .state('n-trader-images', {
     url: "/n-trader-images",
     templateUrl: "templates/n-trader-images.html",
