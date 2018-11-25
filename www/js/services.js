@@ -5,9 +5,9 @@ app.factory('Auth', ['$http','$rootScope',
   // $rootScope.baseURL   = 'http://tradeapp.com';
   // prod backend connection url
   // $rootScope.baseURL   = 'http://localhost/tradeappbackend/public_html';
-  // $rootScope.baseURL   = 'http://trademyworld.club/tradeappbackend/public_html';
+  $rootScope.baseURL   = 'http://trademyworld.club/tradeappbackend/public_html';
   // local backend connection url
-  $rootScope.baseURL   = 'http://192.168.1.31/tradeappbackend/public_html';
+  // $rootScope.baseURL   = 'http://192.168.1.31/tradeappbackend/public_html';
   // set backend connection here
   // $rootScope.baseURL   = '';
 	
