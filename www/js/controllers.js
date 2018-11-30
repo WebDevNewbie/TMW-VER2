@@ -510,6 +510,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 							$scope.user.fname = success.data.user_info.first_name;
 							$scope.user.lname = success.data.user_info.last_name;
 							$scope.user.age = success.data.user_info.age;
+							$scope.user.gender = success.data.user_info.gender;
 							$scope.user.address = success.data.user_info.address;
 							
 							$scope.user.occupation = success.data.user_info.occupation;
@@ -797,6 +798,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		//$scope.user.clickedEdit = false;
 		//$("#profile-wrapper label input").prop("disabled", true);
 		if($scope.user.email == undefined) $scope.user.email="";  
+		if($scope.user.gender == undefined) $scope.user.gender="";  
 		if($scope.user.region == undefined) $scope.user.region="";  
 		if($scope.user.state == undefined) $scope.user.state="";  
 		if($scope.user.country == undefined) $scope.user.country="";  
@@ -949,6 +951,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
         obj.data   = new FormData();
         obj.data.append('user_id',$rootScope.user_info.user_id);
         obj.data.append('region',$scope.user.region);
+        obj.data.append('gender',$scope.user.gender);
         obj.data.append('email',$scope.user.email);
         obj.data.append('state',$scope.user.state);
         obj.data.append('country',$scope.user.country);
