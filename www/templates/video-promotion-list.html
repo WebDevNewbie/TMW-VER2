@@ -33,20 +33,20 @@ height: auto;">
     border: none;font-weight:bold;">{{ files.file_name }}</p>
     	 <i class="item item-text-wrap" style="padding: 4px;
     border: none;">Added {{ files.dateadded }}</i>
-	     <label class="toggle toggle-balanced" ng-show="files.status == 0" >
-
-	       <input type="checkbox" ng-checked="false" ng-model=value ng-change="toggleChange(files.id)">
-	       <div class="track">
-	         <div class="handle"></div>
-	       </div>
-	     </label>
-	     <label class="toggle toggle-balanced" ng-show="files.status == 1">
+	     <!-- <label class="toggle toggle-balanced" ng-show="files.status == 0" >
 
 	       <input type="checkbox" ng-checked="true" ng-model=value ng-change="toggleChange(files.id)">
 	       <div class="track">
 	         <div class="handle"></div>
 	       </div>
 	     </label>
+	     <label class="toggle toggle-balanced" ng-show="files.status == 1">
+
+	       <input type="checkbox" ng-checked="false" ng-model=value ng-change="toggleChange(files.id)">
+	       <div class="track">
+	         <div class="handle"></div>
+	       </div>
+	     </label> -->
 	  </div>
 
 	  <div class="card" ng-show="Videos == 0">

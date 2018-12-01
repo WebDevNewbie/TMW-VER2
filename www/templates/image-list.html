@@ -1,12 +1,12 @@
 <ion-view title="Trade Image List">
 	<ion-content style="background:#F0F3F8;">
-	<div class="card" ng-show="(Uploads != 2 && package == 1) || (Uploads != 12 && package == 2) || (Uploads != 24 && package == 3)">
+	<!-- <div class="card" ng-show="(Uploads != 2 && package == 1) || (Uploads != 12 && package == 2) || (Uploads != 24 && package == 3) || Images != 0">
 		<div class="item item-avatar"> 
 		    <img src="img/pictures.png">
 		    <h2>Trade Images Uploaded</h2>
 		    <p>will be displayed here!</p>
 	  	</div>
-	</div>
+	</div> -->
 	<div class="card" ng-show="(Uploads == 2 && package == 1) || (Uploads == 12 && package == 2) || (Uploads == 24 && package == 3)">
 		<div class="item item-avatar"> 
 		    <img src="img/warning.png">
@@ -28,6 +28,13 @@ height: auto;">
       </button>
     </div>
 	</div>
+	<div class="card" ng-show="Images == 0">
+		<div class="item item-avatar"> 
+		    <img src="img/warning.png">
+		    <h2>Opps!</h2>
+		    <p>No Trade images to show.</p>
+	  	</div>
+	 </div>
 	
 	</ion-content>
 

@@ -1,9 +1,9 @@
 <ion-view title="Trade Video List">
 	<ion-content style="background:#F0F3F8;">
-	<div class="card" ng-show="package == 3">
+	<div class="card" ng-show="package == 3 && Videos != 0">
 		<div class="item item-avatar"> 
 		    <img src="img/promotion.png">
-		    <h2>Promote your Trade and let it be known!</h2>
+		    <h2>Promote your Trade and be known!</h2>
 		    <button class="button icon-left ion-film-marker button-positive">
 		    Upload a Promotion Video!
 			</button>
@@ -43,6 +43,13 @@ height: auto;">
   		<i class="icon ion-trash-a"></i>
   	  </button>
     </div>
+    <div class="card" ng-show="Videos == 0">
+		<div class="item item-avatar"> 
+		    <img src="img/warning.png">
+		    <h2>Opps!</h2>
+		    <p>No Trade videos to show.</p>
+	  	</div>
+	 </div>
 	 
 	<!-- <div class="item item-thumbnail-left item-button-right" >
 		<img src="img/movie-player.png" style="width: 100%;

@@ -9,7 +9,6 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	$scope.notEqual = [];
 	$scope.clean_uname = "";
 	$scope.uname.check = false;
-	
 	$scope.user.fname_error = false;
 	$scope.user.lname_error = false;
 	$scope.user.email_error = false;
@@ -89,6 +88,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			// if(todD < 10){ todD = "0"+todD }
 			// var newDate = tDate.getFullYear()+"-"+monD+"-"+todD;
 			$scope.user.pack = document.getElementById('user_role').value;
+			$scope.user.gender = document.getElementById('gender').value;
 			//$scope.user.bday = newDate;
 		
 			$scope.ADD_TO_SERVER();
@@ -270,6 +270,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
         obj.data.append('address',$scope.user.address);
         obj.data.append('bday',$scope.user.bday);
         obj.data.append('package',$scope.user.pack);
+        obj.data.append('gender',$scope.user.gender);
         obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
         obj.params = {};
    
@@ -407,7 +408,6 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	$scope.user.servdesc_error = false;
 
 	console.log('in search controller');
-     $scope.navTitle = '<a class="button icon ion-funnel button-clear" ng-click="openModal()"></a>';
 	 $ionicModal.fromTemplateUrl('templates/search-settings.html', {
 	    scope: $scope,
 	    animation: 'slide-in-up'
@@ -438,9 +438,13 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			obj.url    = $rootScope.baseURL + "/mobile/user_controller/startSearch";
 			obj.data   = new FormData();
 			obj.data.append('search',$scope.user.search);
-			obj.data.append('fromage',$rootScope.fage);
-			obj.data.append('toage',$rootScope.tage);
-			obj.data.append('gender',$rootScope.finalGender);
+
+			if($rootScope.fage != 0 && $rootScope.tage != 0 && $rootScope.finalGender != 0){
+				obj.data.append('fromage',$rootScope.fage);
+				obj.data.append('toage',$rootScope.tage);
+				obj.data.append('gender',$rootScope.finalGender);
+			}
+			
 
 			obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
 			obj.params = {};
@@ -1369,6 +1373,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 					$ionicLoading.hide();
 	        	} else {
 	        		console.log("in ELSE");
+	        		$scope.Images = $scope.response.file_names;
 	        		$rootScope.Uploads = $scope.response.file_names;
 					$ionicLoading.hide();
 	        	}
@@ -1654,6 +1659,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	        		
 					$ionicLoading.hide();
 	        	} else {
+	        		$scope.Videos = $scope.response.file_names;
 	        		$rootScope.vidUploads = $scope.response.file_names;
 					$ionicLoading.hide();
 	        	}
@@ -2059,7 +2065,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
     	return $sce.trustAsResourceUrl(src);
   	};  
 }])
-.controller('searchSettingsCtrl', function($scope ,$sce, $ionicPopup, $ionicModal, $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
+.controller('searchSettingsCtrl', function($scope, $sce, $ionicPopup, $ionicModal, $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 	$rootScope.finalGender = 1;
 	$scope.age_bracket = {'value':[
 		{num: 18},

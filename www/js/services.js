@@ -26,6 +26,7 @@ app.factory('Auth', ['$http','$rootScope',
   $rootScope.chatCount = 0;
   $rootScope.fage = 0;
   $rootScope.tage = 0;
+  $rootScope.finalGender = 0;
   //$rootScope.vidUploads = 0;
 	$rootScope._remove_white_space = function (str)
 	  {
