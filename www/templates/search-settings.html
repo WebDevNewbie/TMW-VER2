@@ -1,0 +1,92 @@
+<ion-modal-view>
+<ion-header-bar>
+     <h1 class="title">Advanced Search Settings</h1>
+	 <button class="button button-clear button-primary" ng-click="closeModal()">Cancel</button>
+</ion-header-bar>
+<ion-content ng-controller="searchSettingsCtrl">
+	
+	<div class="list">
+	 <div class="item item-divider">
+	    Age Bracket
+	 </div>
+	  <div class="row">
+		  <div class="col col-50">
+		  	<label class="item item-input item-select">
+			    <div class="input-label">
+			      From
+			    </div>
+			    <select ng-model="fromage.num">
+			      <option id="noVal" selected value="none">Select</option>
+			      <option ng-repeat="age_num in age_bracket.value track by $index" ng-value="age_num.num">{{ age_num.num }}</option>
+			    </select>
+		  	</label>
+		  </div>
+		  <div class="col col-50">
+		  	<label class="item item-input item-select">
+			    <div class="input-label">
+			      To
+			    </div>
+			    <select ng-model="toage.num">
+			      <option ng-repeat="age_num in age_bracket.value track by $index" ng-value="age_num.num">{{ age_num.num }}</option>
+			    </select>
+		  	</label>
+		  </div>
+	  </div>
+	  <div class="item item-divider">
+		 Gender Preference
+	  </div>
+	  <ion-radio ng-repeat="item in genderList"
+               ng-value="item.value"
+               ng-model="data.gender"
+               ng-change="onSelectgender(item)">
+      {{ item.text }}
+      </ion-radio>
+      <!-- <div class="item item-divider">
+		 Ethnicity
+	  </div>
+	   <ion-list>
+		 <div class="row">
+		  	 
+			  <div class="col col-50">
+			  	
+				  <ion-checkbox>Asian</ion-checkbox>
+				
+			  </div>
+			  <div class="col col-50">
+			  	
+				  <ion-checkbox>White</ion-checkbox>
+				
+			  </div>
+		</div>
+		<div class="row">
+			   <div class="col col-50">
+			  	
+				  <ion-checkbox>Hispanic/Latino</ion-checkbox>
+				
+			  </div>
+			   <div class="col col-50">
+			  	
+				  <ion-checkbox>American Indian</ion-checkbox>
+				
+			  </div>
+		</div>
+		<div class="row">
+			  <div class="col col-50">
+			  	
+				  <ion-checkbox>Alaska Native</ion-checkbox>
+				
+			  </div>
+			  <div class="col col-50">
+			  	
+				  <ion-checkbox>Native Hawaiian</ion-checkbox>
+				
+			  </div>
+		</div>
+	   </ion-list> -->
+	 
+	 <button class="button button-block button-balanced" ng-click="submit()">
+  		Set Changes
+	</button>
+	</div>
+</ion-content>
+</ion-modal-view>

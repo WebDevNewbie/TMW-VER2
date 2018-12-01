@@ -366,7 +366,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 				  else{
 					$ionicLoading.hide();
 					//console.log("false");
-					//$rootScope.showToast('Invalid Username or Password, Please try again!');
+					$rootScope.showToast('Invalid Username or Password, Please try again!');
 				  }
 				},
 				function(error) { 
@@ -389,7 +389,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 
 
 })
-.controller('SearchCtrl', function($scope,  $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
+.controller('SearchCtrl', function($scope,$sce,$ionicSlideBoxDelegate, $ionicModal, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 		
 	
 	//$rootScope.isLogged  = false;
@@ -407,6 +407,22 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	$scope.user.servdesc_error = false;
 
 	console.log('in search controller');
+     $scope.navTitle = '<a class="button icon ion-funnel button-clear" ng-click="openModal()"></a>';
+	 $ionicModal.fromTemplateUrl('templates/search-settings.html', {
+	    scope: $scope,
+	    animation: 'slide-in-up'
+	  }).then(function(modal) {
+	    $scope.modal = modal;
+	  });
+	  $scope.openModal = function() {
+	    $scope.modal.show();
+	  };
+	  $scope.closeModal = function() {
+	    $scope.modal.hide();
+	  };
+	$scope.slideChanged = function(index) {
+	    $scope.slideIndex = index;
+	 };
 	$scope.startSearch = function()
     { 
 		//var searchkey = document.getElementById("searchkey").value;
@@ -422,6 +438,10 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			obj.url    = $rootScope.baseURL + "/mobile/user_controller/startSearch";
 			obj.data   = new FormData();
 			obj.data.append('search',$scope.user.search);
+			obj.data.append('fromage',$rootScope.fage);
+			obj.data.append('toage',$rootScope.tage);
+			obj.data.append('gender',$rootScope.finalGender);
+
 			obj.data.append('loginSecret','0ff9346b4edc8dc033bff30762bc3c15d465d3f');
 			obj.params = {};
 	   
@@ -429,8 +449,10 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			  function(success) { 
 				  if(JSON.stringify(success.data.success) == "true"){
 					 console.log(success.data.search_result);
-					 $scope.user.search = "";
 					 $scope.result = success.data.search_result;
+					 $scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+					 //$scope.user.search = "";
+					 
 					 $ionicLoading.hide();
 				  }
 				  else{
@@ -450,6 +472,10 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		}							  
     }
 
+    $scope.trustSrc = function(src) {
+    	return $sce.trustAsResourceUrl(src);
+  	}
+
     $scope.viewMore = function(data)
     { 
 		console.log(data);
@@ -462,7 +488,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		console.log(data);
 		$rootScope.s_u_ID = data;
 		window.location.href = "#/n-trader-profile";
-    }
+    }	
 
 })
 .controller('traderProfileCtrl',['$scope','$window','$ionicActionSheet','$ionicModal','$rootScope','$ionicPlatform','$ionicHistory','$ionicLoading','$ionicPopup','Auth',
@@ -504,14 +530,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 							}
 							setTimeout(function(){ $ionicLoading.hide(); }, 500);
 							console.log(success.data.user_info);
-
+							$scope.user.username = success.data.user_info.username;
 							$scope.user.user_id = success.data.user_info.user_id;
 							//document.getElementById("user_bday").value = success.data.user_info.birthday;
 							$scope.user.fname = success.data.user_info.first_name;
 							$scope.user.lname = success.data.user_info.last_name;
 							$scope.user.age = success.data.user_info.age;
 							$scope.user.address = success.data.user_info.address;
-							
+							$scope.user.package = success.data.user_info.user_role;
 							$scope.user.occupation = success.data.user_info.occupation;
 							$scope.user.hobbies = success.data.user_info.hobbies;
 							$scope.user.skill = success.data.user_info.skills;
@@ -594,8 +620,10 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	        		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
 	        		$scope.IdholderDIR =  $rootScope.s_u_ID + "/Images/";
 	        		$scope.tradeImages = $scope.response.file_names;
+	        		console.log($scope.tradeImages);
 					$ionicLoading.hide();
 	        	} else {
+	        		$scope.tradeImages = $scope.response.file_names;
 					$ionicLoading.hide();
 	        	}
 			},
@@ -641,6 +669,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	        		$scope.tradeVideos = $scope.response.file_names;
 					$ionicLoading.hide();
 	        	} else {
+	        		$scope.tradeVideos = $scope.response.file_names;
 					$ionicLoading.hide();
 	        	}
 			},
@@ -652,7 +681,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 
 }])
 
-.controller('MenuCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
+.controller('MenuCtrl', function($scope,  $ionicModal, $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
 	
 	//$rootScope.isLogged  = false;
 	//console.log($rootScope.isLogged);
@@ -687,6 +716,19 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			}
 		); 
 	})
+
+	$ionicModal.fromTemplateUrl('templates/search-settings.html', {
+	    scope: $scope,
+	    animation: 'slide-in-up'
+	  }).then(function(modal) {
+	    $scope.modal = modal;
+	  });
+	  $scope.openModal = function() {
+	    $scope.modal.show();
+	  };
+	  $scope.closeModal = function() {
+	    $scope.modal.hide();
+	  };
 
 	$scope.logout = function()
     {
@@ -2014,12 +2056,94 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
     	return $sce.trustAsResourceUrl(src);
   	};  
 }])
+.controller('searchSettingsCtrl', function($scope ,$sce, $ionicPopup, $ionicModal, $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
+	$rootScope.finalGender = 1;
+	$scope.age_bracket = {'value':[
+		{num: 18},
+		{num: 19},
+		{num: 20},
+		{num: 21},
+		{num: 22},
+		{num: 23},
+		{num: 24},
+		{num: 25},
+		{num: 26},
+		{num: 27},
+		{num: 28},
+		{num: 29},
+		{num: 30},
+		{num: 31},
+		{num: 32},
+		{num: 33},
+		{num: 34},
+		{num: 35},
+		{num: 36},
+		{num: 37},
+		{num: 38},
+		{num: 39},
+		{num: 40},
+		{num: 41},
+		{num: 42},
+		{num: 43},
+		{num: 44},
+		{num: 45},
+		{num: 46},
+		{num: 47},
+		{num: 48},
+		{num: 49},
+		{num: 50}
+	]};
 
+	$scope.fromage = {
+    'num': 18
+  	};
+  	$scope.toage = {
+    'num': 18
+  	};
+
+  	$scope.genderList = [
+	    { text: "Male", value: "1" },
+	    { text: "Female", value: "2" }
+	];
+	$scope.data = {
+    	gender: '1'
+  	};
+
+  	$scope.onSelectgender = function(item) {
+    	console.log("Selected Gender, text:", item.text, "value:", item.value);
+    	$rootScope.finalGender = item.value;
+  	};
+
+	$scope.submit = function(){
+		$rootScope.fage = $scope.fromage.num;
+		$rootScope.tage = $scope.toage.num;
+	 	console.log($rootScope.fage + " " + $rootScope.tage);
+	 	console.log($rootScope.finalGender + " is selected.");
+		if($rootScope.fage > $rootScope.tage){
+			$scope.showSuccessMessage('FROM AGE must be lesser than TO AGE','OOPS!');
+		} else {
+		 	$scope.showSuccessMessage('Settings Saved!','SUCCESS!');
+		}
+	 	
+	}
+
+	$scope.showSuccessMessage = function(message,title) {
+	   var alertPopup = $ionicPopup.alert({
+		 title: title,
+		 template: message
+	   });
+	}
+
+	$scope.trustSrc = function(src) {
+    	return $sce.trustAsResourceUrl(src);
+  	}; 
+
+	 
+})
 
 .controller('AccountCtrl', function($scope,  $rootScope,  $ionicLoading,  $ionicPlatform,  Auth) {
   $scope.settings = {
     enableFriends: true
   };
 });
-
 

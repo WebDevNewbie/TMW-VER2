@@ -2,7 +2,7 @@
 	
 	<div class="bar bar-header bar-light">
 	  <h1 class="title">Search</h1>
-	  
+	  <a class="button icon ion-funnel button-clear" ng-click="openModal()"></a>
 	</div>
 	<div class="bar bar-subheader item-input-inset" id="searchWrapper">
 	  <label class="item-input-wrapper">
@@ -20,17 +20,36 @@
 	   	
 	   	<img src="img/man.png" style="z-index:1;">
 		<a class="button button-outline" style="border:none;color:#fff;float:right;" ng-click="n_viewMore(data.user_id)">
-      		<i class="icon ion-person-stalker"></i>
+      		<i class="icon ion-chevron-right"></i>
     	</a>
 	    <h2  style="color:#5ea509;">{{ data.service_name }}</h2>
-	    <p  style="color:#fff;">{{ data.address }}</p>
+	    <p ng-show="data.user_role == 1" style="color:#fff;">Free Package</p>
+	    <p ng-show="data.user_role == 2" style="color:#fff;">Gold Package</p>
+	    <p ng-show="data.user_role == 3" style="color:#fff;">Diamond Package</p>
 	  </div>
-	  <div class="item item-text-wrap">
-	    <p>
-	      {{ data.service_desc }}.
-	    </p>
-	   
-	  </div>	
+	  <div class="item item-text-wrap" ng-show="data.assets != 0">
+	  	<div ng-show="data.user_role == 1 || data.user_role == 2">
+	  		<ion-slide-box on-slide-changed="slideChanged($index)" >
+		  		 <ion-slide ng-repeat="img in data.assets" >
+		  		 	<img class="full-image" ng-src="{{ mainDIR + data.user_id + '/Images/' + img.file_name }}">
+		  		 </ion-slide>
+	  		</ion-slide-box>
+	  	</div>
+	    <div ng-show="data.user_role == 3">
+	    	<ion-slide-box on-slide-changed="slideChanged($index)">
+	  		 <ion-slide ng-repeat="img in data.assets" >
+	  		 	<video class="full-image" ng-src="{{ trustSrc(mainDIR + data.user_id + '/Promotion/' + img.file_name) }}" controls="controls" style="width:100%;height:250px;"></video>
+	  		 </ion-slide>
+	  		</ion-slide-box>
+	    </div>
+	  </div>
+	  <div class="card" ng-show="data.assets == 0">
+			<div class="item item-avatar"> 
+			    <img src="img/warning.png">
+			    <h2>Opps!</h2>
+			    <p>No Trade images or videos to show!</p>
+		  	</div>
+		</div>	
 	</div>
 	<div class="card" style="background:transparent;border:none;opacity:0;filter: alpha(opacity=50);height:20px"></div>
 	</ion-content>
@@ -58,7 +77,5 @@
 		Register
 	  </a>
 	</div>
-	
-
 </ion-view>
 
