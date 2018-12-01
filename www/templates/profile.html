@@ -40,6 +40,10 @@
 		</label>
 		<span ng-show="user.email_error" class="h6 assertive">{{ user.email_desc}}</span> 
 		<label class="item item-input item-stacked-label">
+			<span class="input-label">Gender</span>
+			<input type="text" placeholder="Gender" ng-model="user.gender" disabled>
+		</label>
+		<label class="item item-input item-stacked-label">
 			<span class="input-label">Region</span>
 			<input type="text" placeholder="Region" ng-model="user.region" disabled>
 		</label>

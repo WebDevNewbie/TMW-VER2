@@ -33,6 +33,10 @@
 			<input type="text" placeholder="Age" ng-model="user.age" disabled>
 		</label>	
 		<span ng-show="user.age_error" class="h6 assertive">{{ user.age_desc}}</span>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Gender</span>
+			<input type="text" placeholder="Gender" ng-model="user.gender" disabled>
+		</label>
 		<!--<label class="item item-input item-stacked-label">
 			<span class="input-label">Birthdate</span>
 			<input type="date" ng-model="user.bday" id="user_bday" disabled>
