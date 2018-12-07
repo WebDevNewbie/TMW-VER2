@@ -1301,6 +1301,17 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	   });
 	}
 
+	$scope.showSuccessMessageRedirect = function(message) {
+	   var alertPopup = $ionicPopup.alert({
+		 title: 'SUCCESS!',
+		 template: message
+	   });
+	   alertPopup.then(function(res) {
+		   window.location.href = "#/menu/image-list";
+		 //console.log('Thank you for not eating my delicious ice cream cone');
+	   });
+	}
+
     $scope.uploadImage = function(folder,hasProfileimg){
     	$ionicLoading.show({
 		  template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
@@ -1321,17 +1332,22 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		  function(success) { 
 			  if(JSON.stringify(success.data.success) == "true"){
 				$ionicLoading.hide();
-        		$scope.showSuccessMessage(success.data.message);
+        		
         		if(success.data.file != 'notProfile'){
         			$rootScope.user_info.face_img = success.data.file;
         		} else {
         			$rootScope.fileCount++;
         		}
 
-        		
+        		if(folder == 'Images'){
+        			$scope.showSuccessMessageRedirect(success.data.message);
+        		} else {
+        			$scope.showSuccessMessage(success.data.message);
+        		}
         		$scope.pictureUrl = null;
 			  }
 			  else{
+			  	$scope.showSuccessMessage(success.data.message);
 				$ionicLoading.hide();
 				
 			  }
@@ -1500,6 +1516,17 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	   });
 	}
 
+	$scope.showSuccessMessageRedirect = function(message,redirect) {
+	   var alertPopup = $ionicPopup.alert({
+		 title: 'SUCCESS!',
+		 template: message
+	   });
+	   alertPopup.then(function(res) {
+		   window.location.href = redirect;
+		 //console.log('Thank you for not eating my delicious ice cream cone');
+	   });
+	}
+
 	// copy video file
 	$scope.copyFile = function(namePath,name,toPath,filename){
 		$cordovaFile.copyFile(namePath, name, toPath, filename)
@@ -1600,10 +1627,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	   $cordovaFileTransfer.upload(server, filePath, options)
       	.then(function(result) {
       		// if upload was a success.
-       		$scope.showSuccessMessage(result.response);
        		$scope.fileTodelete(pathTodel,filename);
        		$rootScope.vidFilecount++;
        		$scope.videoLoaded = null;
+       		if(location == 'Videos'){
+       			$scope.showSuccessMessageRedirect(result.response,'#/menu/video-list');
+       		} else {
+       			$scope.showSuccessMessageRedirect(result.response,'#/menu/video-promotion-list');
+       		}
        		$ionicLoading.hide();
       	}, function(err) {
       		// if there was an error
