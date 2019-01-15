@@ -17,8 +17,9 @@
 	<ion-content style="margin-top:115px;">
 	<div class="card" ng-repeat="data in result">
 	  <div class="item item-avatar" style="background-image:url('img/noservice-picture.jpg');background-size:cover">
-	   	
-	   	<img src="img/man.png" style="z-index:1;">
+	   	<img ng-src="{{ mainDIR + data.user_id + '/Profile_images/' + data.face_img }}" style="z-index:1;" ng-show="data.face_img != 'none'" >
+   		<img id="searchnoImg" src="img/man.png" style="z-index:1;" ng-show="data.face_img == 'none'">
+   		
 		<a class="button button-outline" style="border:none;color:#fff;float:right;" ng-click="n_viewMore(data.user_id)">
       		<i class="icon ion-chevron-right"></i>
     	</a>

@@ -3,8 +3,11 @@
 
 	<div class="list">
 	<div ng-repeat = "usernames in userConnections">
-		<a class="item item-avatar item-icon-left" ng-click="viewChatHistory(usernames.user_id)">
-      	<img src="img/man.png">
+		<!-- <a class="item item-avatar item-icon-left" ng-click="viewChatHistory(usernames.user_id)"> -->
+		<a class="item item-avatar item-icon-left" ng-click="viewChatHistory(usernames.chat_room_id,usernames.user_id)">
+      	<img ng-src="{{ mainDIR + usernames.user_id + '/Profile_images/' + usernames.face_img }}" style="z-index:1;" ng-show="usernames.face_img != 'none'" >
+   		<img id="searchnoImg" src="img/man.png" style="z-index:1;" ng-show="usernames.face_img == 'none'">
+      	<!-- <img src="img/man.png"> -->
       	<h2>{{ usernames.username }}</h2>
       	<p>{{ usernames.last_message }}</p>
       	<span ng-show = "usernames.unseen_chat != 0" class="badge badge-assertive">{{ usernames.unseen_chat }}</span>

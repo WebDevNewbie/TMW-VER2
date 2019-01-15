@@ -5,9 +5,9 @@ app.factory('Auth', ['$http','$rootScope',
   // $rootScope.baseURL   = 'http://tradeapp.com';
   // prod backend connection url
   // $rootScope.baseURL   = 'http://localhost/tradeappbackend/public_html';
-  $rootScope.baseURL   = 'http://trademyworld.club/tradeappbackend/public_html';
+  // $rootScope.baseURL   = 'http://trademyworld.club/tradeappbackend/public_html';
   // local backend connection url
-  // $rootScope.baseURL   = 'http://192.168.1.31/tradeappbackend/public_html';
+  $rootScope.baseURL   = 'http://192.168.1.25/tradeappbackend/public_html';
   // set backend connection here
   // $rootScope.baseURL   = '';
 	
@@ -27,6 +27,12 @@ app.factory('Auth', ['$http','$rootScope',
   $rootScope.fage = 0;
   $rootScope.tage = 0;
   $rootScope.finalGender = 0;
+  $rootScope.chat_room = 0;
+  
+  // new entry
+  $rootScope.chatOldCnt = 0;
+  $rootScope.chatNewCnt = 0;
+
   //$rootScope.vidUploads = 0;
 	$rootScope._remove_white_space = function (str)
 	  {

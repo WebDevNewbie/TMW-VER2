@@ -8,6 +8,17 @@
 		<div class="title title-center header-item" style="left: 45px; right: 45px;">My Profile</div>
 	  </ion-header-bar>
 	<ion-content>
+	<div id="profileWrapper">
+		<div id="img-wrapper" ng-show="face_img == 'none'">
+       <img id="usrprofpic" src="img/man.png">
+    </div>
+    <div id="img-wrapper" ng-show="face_img != 'none'">
+       <img id="usrprofpic" ng-src="{{ mainDIR + profileFolder + face_img }}">
+    </div>
+		
+		<!-- <h4 class="text-center h3 color-white" style="font-size:21px;color:#394638;">Upload Your Profile Picture!</h4>
+		<p style="text-align:center">Choose the best picture and build your Profile!</p> -->
+	</div>
 	<div class="list" id="profile-wrapper">
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">First Name</span>

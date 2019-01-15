@@ -578,7 +578,12 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 				);   	
 	})
 
-	$scope.ConnectWithTrader = function(traderid){
+	// $scope.ConnectWithTrader = function(traderid){
+	// 	$rootScope.s_u_ID = traderid;
+	// 	window.location.href = "#/menu/connect-trader";
+	// }
+	$scope.ConnectWithTrader = function(chat_room,traderid){
+		$rootScope.chat_room = chat_room;
 		$rootScope.s_u_ID = traderid;
 		window.location.href = "#/menu/connect-trader";
 	}
@@ -833,6 +838,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	$scope.user.clickedEdit = false;
 	$scope.user.servname_error = false;
 	$scope.user.servdesc_error = false;
+
 	
 	$scope.editProfile = function()
     {
@@ -1064,6 +1070,9 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	}
 	$scope.$on('$ionicView.enter', function(event) {
 		//console.log("get data");
+		$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
+	    $scope.profileFolder =  $rootScope.user_info.user_id + "/Profile_images/";
+		$scope.face_img = $rootScope.user_info.face_img;
 		console.log(JSON.stringify($rootScope.user_info));
 		$ionicLoading.show({
 			template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
@@ -1096,6 +1105,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 
 							
 						//	document.getElementById("user_bday").value = success.data.user_info.birthday;
+							$scope.user.gender = success.data.user_info.gender;
 							$scope.user.fname = success.data.user_info.first_name;
 							$scope.user.lname = success.data.user_info.last_name;
 							$scope.user.age = success.data.user_info.age;
@@ -1534,9 +1544,60 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 	      	console.log('Copying file..');
 	      	$rootScope.pathTodel = toPath;
 	       	$scope.videoLoaded = info.nativeURL;
-	       	$rootScope.videofile = info.nativeURL;	
+	       	$rootScope.videofile = info.nativeURL;
+	       	var thumbname = info.nativeURL.slice(0, -4);
+        	var mainDir = cordova.file.dataDirectory;
+        	var thumbDir = 'TMWFILES/VIDTHUMBS';
+        	var pathTothumbs = mainDir + thumbDir;
+        	
+
+        	// generate thumbnail image from video
+	       	window.PKVideoThumbnail.createThumbnail (info.nativeURL, thumbname + '.png', function(vidThumb) {
+			 	var thumbPath = vidThumb.substr(0, vidThumb.lastIndexOf('/') + 1);
+			 	var img = vidThumb.substr(vidThumb.lastIndexOf('/') + 1);
+
+			 	window.resolveLocalFileSystemURL( mainDir , function (dirEntry) {
+			 	 	// check VIDTHUMBS directory does exists 
+			    	$cordovaFile.checkDir(mainDir, thumbDir)
+		      		.then(function (success) {
+		      			console.log('DOES EXISTS');
+		      			// if does exists, copy image to TMWTHUMBS
+			      		$cordovaFile.copyFile('file://' + thumbPath,img,pathTothumbs,img)
+					      .then(function (thumbFile) {
+					        // success
+					        console.log('New image Path:' + JSON.stringify(thumbFile));
+					        $scope.thumbNailimage = thumbFile.nativeURL;
+					      }, function (error) {
+					        // error
+					        console.log('Error in copying Found:' + error.message);
+					    });
+			     	}, function (error) {
+			       		// else create VIDTHUMBS write image to directory
+				       	function successHandler() {
+			    			console.log('Directory created');
+			    			// copy image to VIDTHUMBS directory
+				    		$cordovaFile.copyFile('file://' + thumbPath,img,pathTothumbs,img)
+						      .then(function (thumbFile) {
+						        // success
+						        console.log('New image Path:' + JSON.stringify(thumbFile));
+						        $scope.thumbNailimage = thumbFile.nativeURL;
+						      }, function (error) {
+						        // error
+						        console.log('Error in copying Found:' + error.message);
+						    });
+				    	}
+				    	function errorHandler(err) {
+				    		console.log('Error in creating directory.', err);
+				    	}
+				       	dirEntry.getDirectory(thumbDir, { create: true }, successHandler, errorHandler);
+				    });
+			    });
+		 		
+			},function(error){
+	    		console.log('Thumbnail Error:' + error);
+	    	});
+
 	       	console.log('Copied file:' + JSON.stringify(info));
-	       
 	       	$ionicLoading.hide();
 	      }, function(e) {
 	      	console.log(JSON.stringify('Error copying:' + e.message));
@@ -1556,13 +1617,18 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		});
     	$cordovaCamera.getPicture(options)
     	.then(function(videoData){
-    		console.log(videoData);
+    		
 	     	var name = videoData.substr(videoData.lastIndexOf('/') + 1);
         	var namePath = videoData.substr(0, videoData.lastIndexOf('/') + 1);
-        	var newName = name;
+        	console.log(namePath);
+        	var text = '';
+			var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+			for ( var i=0; i < 5; i++ ) {
+				text += possible.charAt(Math.floor(Math.random() * possible.length));
+			}
+        	var newName = text + name;
     		var tempDirname = 'TMWFILES';
         	var toPath = cordova.file.dataDirectory;
-        	//var toPath = cordova.file.externalRootDirectory;
         	var pathTocopy = toPath + tempDirname;
 			$rootScope.newFilename = newName;
     		window.resolveLocalFileSystemURL( toPath , function (dirEntry) {
@@ -1570,7 +1636,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			 	 $cordovaFile.checkDir(toPath, tempDirname)
 			      .then(function (success) {
 			      	// if it exists, copy video 
-			       	$scope.copyFile('file://'+ namePath,newName,pathTocopy,newName);
+			       	$scope.copyFile('file://'+ namePath,name,pathTocopy,newName);
 			        $ionicLoading.hide();
 			     }, function (error) {
 			       // else create directory and copy video
@@ -1772,7 +1838,21 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 .controller('ConnectCtrl', ['$scope','$sce','$http','$cordovaCamera','$rootScope','$ionicLoading','$ionicPlatform','$ionicPopup','$ionicActionSheet','$interval','$timeout','Auth', 
 	function($scope, $sce, $http, $cordovaCamera, $rootScope,  $ionicLoading,  $ionicPlatform, $ionicPopup, $ionicActionSheet, $interval, $timeout, Auth) {
 	
- 
+	// update Dec 28, 2018
+	
+	// var ret = $interval(function(){ 
+ //      	$scope.get_old_messages_count_by_chatroom();
+ //      	$scope.get_new_messages_count_by_chatroom();
+      	
+ //      	console.log("OLD COUNT:" + parseInt(localStorage.getItem('OldCount')));
+ //      	console.log("NEW COUNT:" + $rootScope.chatNewCnt);
+	// },1000);
+	
+
+	$scope.stopRetrieve = function(){
+		$interval.cancel(ret);
+	}
+
 	$scope.$on('$ionicView.enter', function(event){
 		$scope.chats = [];
 		$ionicLoading.show({
@@ -1784,12 +1864,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		obj.data   = new FormData();
 		obj.data.append('fromTrader',$rootScope.user_info.user_id);
 		obj.data.append('toTrader',$rootScope.s_u_ID);
+		obj.data.append('chat_room',$rootScope.chat_room);
 		obj.params = {};
 		   
 		Auth.REQUEST(obj).then(
 			function(success) {
 				$scope.response = success.data;
 				if ($scope.response.success == true) {
+					$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
 	        		$scope.chats = $scope.response.chat_messages;
 	        		//console.log(JSON.stringify($scope.chats));
 	        		$rootScope.chatCount = $scope.response.chat_messages[0].count;
@@ -1814,6 +1896,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		obj.data.append('fromTrader',$rootScope.user_info.user_id);
 		obj.data.append('toTrader',$rootScope.s_u_ID);
 		obj.data.append('chatMessage',$scope.trader.chat);
+		obj.data.append('chat_room',$rootScope.chat_room);
 		
 		obj.params = {};
    
@@ -1823,14 +1906,14 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 				
 				// fetch chat messages
 				var chatdata = [];
+				chatdata.user_id = success.data.chat_messages[0].user_id;
+				chatdata.face_img = success.data.chat_messages[0].face_img;
 				chatdata.username = success.data.chat_messages[0].username;
 				chatdata.message = success.data.chat_messages[0].message;
 				$scope.chats.unshift(chatdata);
 				$rootScope.chatCount++;
 				$scope.trader.chat = "";
-				//$scope.retreiveMessage();
-				
-				
+				//$scope.RetrieveMessage();
 				// end
 				
 			  }
@@ -1852,7 +1935,8 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		obj.method = 'POST';
 		obj.url    = $rootScope.baseURL + "/mobile/chat_controller/latest_chat_message";
 		obj.data   = new FormData();
-		obj.data.append('loggged_id',$rootScope.user_info.user_id);
+		obj.data.append('logged_id',$rootScope.user_info.user_id);
+		obj.data.append('chat_room',$rootScope.chat_room);
 		obj.params = {};
 		   
 		Auth.REQUEST(obj).then(
@@ -1860,7 +1944,10 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 				$scope.response = success.data;
 				if ($scope.response.success == true && $scope.response.new_message != null) {
 					var chatdata = [];
-					$rootScope.curChatID = $scope.response.new_message[0].chat_id;
+					//$rootScope.curChatID = $scope.response.new_message[0].chat_id;
+
+					chatdata.user_id = success.data.new_message[0].user_id;
+					chatdata.face_img = success.data.new_message[0].face_img;
 					chatdata.username = success.data.new_message[0].username;
 					chatdata.message = success.data.new_message[0].message;
 					$scope.chats.unshift(chatdata);
@@ -1930,6 +2017,7 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 			function(success) {
 				$scope.response = success.data;
 				if ($scope.response.success == true) {
+					$scope.mainDIR = $rootScope.baseURL + '/MediaFiles/';
 	        		$scope.userConnections = $scope.response.userConnections;
 					$ionicLoading.hide();
 	        	} else {
@@ -1942,7 +2030,12 @@ angular.module('tradeapp.controllers', ['ngCordova','ngSanitize'])
 		); 
 	})
 
-	$scope.viewChatHistory = function(traderID){
+	// $scope.viewChatHistory = function(traderID){
+	// 	$rootScope.s_u_ID = traderID;
+	// 	window.location.href = "#/menu/connect-trader";
+	// }
+	$scope.viewChatHistory = function(chat_room,traderID){
+		$rootScope.chat_room = chat_room;
 		$rootScope.s_u_ID = traderID;
 		window.location.href = "#/menu/connect-trader";
 	}

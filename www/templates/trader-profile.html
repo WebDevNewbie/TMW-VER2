@@ -161,7 +161,11 @@
 	  <a class="tab-item"  style="font-size: 20px;max-width:30px;color:#7ec12e;top: -4px;position: relative;">
 		|
 	  </a>
-	  <a class="tab-item" style="font-size: 14px;color:#7ec12e;max-width: 150px;" ng-click="ConnectWithTrader(user.user_id)">
+	  <!-- <a class="tab-item" style="font-size: 14px;color:#7ec12e;max-width: 150px;" ng-click="ConnectWithTrader(user.user_id)">
+		<i class="icon ion-chatbubble-working"></i>
+		Connect
+	  </a> -->
+	  <a class="tab-item" style="font-size: 14px;color:#7ec12e;max-width: 150px;" ng-click="ConnectWithTrader('chat_room' + user.user_id,user.user_id)">
 		<i class="icon ion-chatbubble-working"></i>
 		Connect
 	  </a>

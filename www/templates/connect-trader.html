@@ -4,7 +4,9 @@
 	<div class="list">
 
 	  <a class="item item-avatar" ng-repeat="chatMessages in chats">
-      	<img src="img/man.png">
+	  	<img ng-src="{{ mainDIR + chatMessages.user_id + '/Profile_images/' + chatMessages.face_img }}" style="z-index:1;" ng-show="chatMessages.face_img != 'none'" >
+   		<img id="searchnoImg" src="img/man.png" style="z-index:1;" ng-show="chatMessages.face_img == 'none'">
+      	<!-- <img src="img/man.png"> -->
       	<h2>{{ chatMessages.username }}</h2>
       	<div class="item item-text-wrap" style="padding: 4px;
     border: none;">
